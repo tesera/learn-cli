@@ -1,0 +1,1 @@
+lviHmat <- ldaHmat(xDataset,CLASSIFICATION)

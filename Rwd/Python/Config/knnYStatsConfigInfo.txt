@@ -1,0 +1,25 @@
+drive: The drive containing the filepaths
+prepcodeDirFilePath: Directory containing the kNN routine 
+
+dataInPath: Data input file location LVINEW.csv with reference data and QTARGET.csv with target data plus XVARSELV1 for selection of X and Y variables
+dataDictPath: Location of data dictionaries for reference ...knnData ... varSelectTable  datasets; leave blank if no dicionary
+dataDictTableName: A dictionary identifying the table names plus associated variable names and variable types (e.g. float or string or integer); leave blank of no dictionary
+dataOutPath: Location where new files will be written to
+errorDiagnosticPath: Path to where error files may be produced and written particularly where there are problems with data types or data dictionaries
+knnReferenceData: Name of the file containing the reference data; this should be in the dataInPath
+refKeyVarNames: Key variable name in reference dataset - standard LVI_FCOID - must be a single unique integer ID for each observation
+knnTableNameList: A list of the names of the datasets (separated by comma's) containing the unique id's (associated with refKeyVarName) indicating k nearest neighbours
+knnKeyVarNameList: The list of key variable names including the columns containing the target data set id's (e.g. TARGOBS) and also the variable set numbers (e.g. VARSET)  
+knnMax: The maximum number of nearest neighbours to be considered from 1 to knnMAX for each target observation (must be an integer)
+varSelectTableName: Standard filename for preliminary selection of X and Y variables XVARSELV1.csv; this should be located in the dataInPath
+varSelectKeyVarNames: Standard key variable name VARNAME
+varSelectIndicator: Generally an X is entered to select desired X-Variables or a Y to select desired Y-variables associated with each refKeyVarName value (unique ID)
+largeDatasetReadLines: The maximum number of lines (e.g. 20000) to be read in a file (knnData only) before processing (the number of lines should be > than the total number of lines in the knnReferenceData)
+distanceWeight: 0 indicates each nearest neighbour weighted equally; 1 indicates distance weighted to the power of 1; may be a float or integer
+listOfExcludedValues: A list of values to exclude from calculations separated by comma's (may be numeric or string but generally former); leave blank if no exclusions
+minIncludeValue: A minimum value to include in calculations (float type); leave blank if no minimum 
+maxIncludeValue: A maximum value to include in calculations (float type); leave blank if no maximum
+printTypes: Indicate YES if you wish the variable types to be printed when importing a file without a data disctionary; to supress printing indicate NO 
+knnStatsOutputTableName: This is the name of the file that you wish to write the output to; this will be appended to each table in the knnTableNameList (after removing the file extension)
+outputMean: Enter YES if you wish to calculate mean values; otherwise NO
+outputStdev: Enter YES if you wish to claculate standard deviations; otherwise NO

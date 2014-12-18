@@ -1,0 +1,22 @@
+drive:D
+cmeansDataInPath:\Rwd\
+cmeansDataOutPath:\Rwd\
+errorFilePath: \Rwd\
+dataDictionaryFilePath:
+dataDictionaryFileName:
+cmeansGnoRange:5,5
+cmeansError:0.001
+cmeansDataFileName:interp_c2.csv
+cmeansDataUniqueIds:NPLOTID
+cmeansVariableSelect:XVARSELV1.csv
+cmeansVariableSelectCriteria:Y
+cmeansMValue:2
+classificationType:FCM_E
+normalizeData:YES
+normStatsTableName:STATSNORM_SP.csv
+normalizedDataTableName:REFNORM_SP.csv
+fuzzyCentroidFileName:FCENTROID_SP.csv
+fuzzyMembershipFileName:FMEMBERSHIP_SP.csv
+fuzzyClassFileName:FCLASS_SP.csv
+classBaseName:C_SP
+printDataTypes:YES 

@@ -1,0 +1,12 @@
+drive: Main drive where files will be found (e.g. C)
+dataInPath: File path without drive where data (stageDataFileName) will be found (e.g. /Rwd/)
+dataOutPath: File path to which data table(stageDataOutFileName) will be written (e.g. /Rwd/)
+dataInFileName: Input data table with slope-aspect-elevation variables (e.g. WLREFFIN.csv)
+dataPrimaryKey: Name of variable containing primary key set (e.g. LVI_FCOID or TFCOID)
+dataOutFileName: Name of file to which newly compiled stage terrain data will be written (e.g.STAGE_TERRAIN.csv)
+readErrorFilePath:Path for errors related to reading new variables and changing their type (e.g. integer; float; or string; e.g. /Rwd/Python/PyReadError/)
+slopeVarName: The name of the field (column header) containing the slope variable (in degrees)
+elevationVarName: The name of the field (column header) containing the elevation (m above sea level)
+aspectVarName: The name of the field (columnHeader) containing the aspect (azimuth in degrees) 
+outputVarNameList: The list of output variables in the order they occurr (i.e.ELEV2,SLOPELEV2,SLOPCASP,SLOPSASP,SLNELEV,SLNELEVCA,SLNELEVSA,SE2CA,SE2SA)
+largeDatasetReadLines: The number of lines in a file to be read; analyzed; and written to file at any one time

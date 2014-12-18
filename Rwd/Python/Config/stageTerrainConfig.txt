@@ -1,0 +1,12 @@
+drive:D
+dataInPath:/Rwd/
+dataOutPath:/Rwd/
+dataInFileName:QNREF.csv
+dataPrimaryKey:LVI_FCOID
+dataOutFileName:QN_STAGE_TERRAIN_REF.csv
+readErrorFilePath:/Rwd/Python/PyReadError/
+slopeVarName:SLOPE_MEAN
+elevationVarName:DEM_MEAN
+aspectVarName:ASPECT_MEAN
+outputVarNameList:ELEV2,SLOPELEV2,SLOPCASP,SLOPSASP,SLNELEV,SLNELEVCA,SLNELEVSA,SE2CA,SE2SA
+largeDatasetReadLines: 20000
