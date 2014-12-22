@@ -1,0 +1,5 @@
+2014-12-22 21:53:09,286 - testsetLogger - DEBUG - This is a log test
+2014-12-22 21:54:14,735 - testsetLogger - DEBUG - This is a log test
+2014-12-22 21:54:14,740 - testsetLogger - DEBUG - This is a log test after second setLogger
+2014-12-22 21:54:41,855 - testsetLogger - DEBUG - This is a log test
+2014-12-22 21:54:41,860 - testsetLogger - DEBUG - This is a log test after second setLogger

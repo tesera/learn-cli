@@ -52,6 +52,8 @@ def _check_logfile(log_path, logfile, app_name):
     else:
         try:
             logfile + "string"
+            if ".log" not in (logfile[-4:]).lower():
+                logfile = logfile + ".log" 
             return logfile
         
         except TypeError, e:
@@ -111,7 +113,13 @@ def _check_log_path(log_path):
         # If directory HAS been passed...
         # Verify its (at least) an actual windows or linux path format
         # Does NOT check if it exists
-        if not checkPathFormat(log_path):
+
+        #####################################################################
+        # REPLACE THE FOLLOWING WITH THE PATHING CONVERSION MODULE
+        if log_path[-1:] != "/": log_path = log_path + "/"
+        #####################################################################
+
+        if not checkPathFormat(log_path, endslash = True):
             errorlog.write("File path is not in a usable format.")
 #                 errorlogger.cleanup(False) # Override setting due to error
             raise Exception(log_path_err)
@@ -172,14 +180,16 @@ def _createLogger(app_name,
                                  log_level)  
 
     """
+
     logger = _generate_logger(app_name, log_level)
     nh = _set_devnull(log_level)        
     formatter = _set_formatter()
     
     # create file handler which logs even debug messages
     if logfile is not None:
-        errorlog.write(("Creating logfile handler: " + str(logfile)))
-        fh = _set_fileHandler(logfile, log_level, formatter)
+        full_path = log_path + logfile
+        errorlog.write(("Creating logfile handler: " + str(full_path)))
+        fh = _set_fileHandler(full_path, log_level, formatter)
 
     else:
         errorlog.write("Logger will not write to a file.")
@@ -263,9 +273,10 @@ def setLogger(app_name = None,
               screendump = False, 
               debug = False
               ):
-    """"""
+    """"""    
+
     global errorlog
-    errorlog = errorLogger('loghandler', screendump = screendump, debug = debug)
+    errorlog = errorLogger("loghandler", screendump = screendump, debug = debug)
 
     original_app_name = app_name
     app_name = _check_app_name(app_name)
@@ -280,18 +291,26 @@ def setLogger(app_name = None,
     
     if _isExistingLogger(app_name):
         # logger already exists
-        # FOR NOW, if it exists, AND all the params passed were the defaul
+        # FOR NOW, if it exists, 
         # (implying the call was 'setLogger()', then just return existing 
         # In a future version that parameters can be checked against what was
-        # passed into setLogger and the logger can be modified. 
-        if ((original_app_name == None) and  
-            (logfile == "")             and 
-            (log_path == None)          and  
-            (log_level == 40)           and  
-            (screendump == False)       and 
-            (debug == False)
-            ):
-            return logging.Logger.manager.loggerDict[app_name]
+        # passed into setLogger and the logger can be modified.
+        
+        ######################################################################
+        # NEED TO ADD CHECKS TO SEE IF THE LOGGER'S PARAMS NEED TO BE CHANGED
+        # BASED ON WHAT IS PASSED INTO setLogger VERSUS HOW THE LOGGER IS 
+        # ALREADY CONFIGRED
+        #if ((original_app_name == None) and  
+        #    (logfile == "")             and 
+        #    (log_path == None)          and  
+        #    (log_level == 40)           and  
+        #    (screendump == False)       and 
+        #    (debug == False)
+        #    ):
+        ######################################################################
+            
+        errorlog.write(("logger: " + str(app_name) + "exists. "))
+        return logging.Logger.manager.loggerDict[app_name]
 
     #If a existing logger exists, and no parameters were sent to the 
     # setLogger()...then a return will have already happened. 
@@ -299,29 +318,32 @@ def setLogger(app_name = None,
     
     # Checks for logfile. If none, set a default logfile in local directory
     # If nothing is passed, set to default logfile path and name
+
+    print "Calling createlogger..." #333
+
     log_path = _check_log_path(log_path)
     logfile = _check_logfile(log_path, logfile, app_name)
     log_level = _check_log_level(log_level)
         
-    return _createLogger(app_name, 
-                         logfile,
-                         log_path, 
-                         log_level, 
-                         screendump, 
-                         debug, 
+    return _createLogger(app_name = app_name, 
+                         logfile    = logfile,
+                         log_path   = log_path, 
+                         log_level  = log_level, 
+                         screendump = screendump, 
+                         debug      = debug 
                          )
                       
 if __name__ == "__main__":
     
-    log = setLogger(
-                       app_name = None, 
-                       logfile = "", 
-                       log_level = 10, 
-                       screendump = True, 
-                       debug = True
-                       )
+    log = setLogger(app_name = "testsetLogger", 
+                    logfile = "test.log",
+                    log_path = "/shared/GitHub/Tesera/MRAT_Refactor/log", 
+                    log_level = 10, 
+                    screendump = True, 
+                    debug = True
+                    )
     log.debug("This is a log test")
     
-    log = setLogger()
+    log = setLogger(app_name = "testsetLogger")
     log.debug("This is a log test after second setLogger")
     

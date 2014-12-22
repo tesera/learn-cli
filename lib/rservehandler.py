@@ -6,7 +6,7 @@ __author__      = "Mike Rightmire"
 __copyright__   = "BioCom Software"
 __license__     = "Tesera"
 __license_file__= "Clause1.PERPETUAL_AND_UNLIMITED_LICENSING_TO_THE_CLIENT.py"
-__version__     = "0.9.0.3"
+__version__     = "0.9.0.0"
 __maintainer__  = "Mike Rightmire"
 __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
@@ -50,13 +50,21 @@ class rserveHandler:
 
         self._load_config_file()        
 
-        sys.exit() #333
+        self.log = setLogger(
+                             app_name = self.app_name, 
+                             logfile = self.logfile,
+                             log_path = self.log_path, 
+                             log_level = self.log_level, 
+                             screendump = self.screendump, 
+                             debug = self.debug
+                             )
 
-        self._start_logging()
 
         for i in self.__dict__.keys(): #333
             print i, self.__dict__[i] #3333
-        
+
+        sys.exit() #333
+
         
         # Override any self.vars passed into class
         print "loading keyword overrides..." #333
@@ -103,42 +111,42 @@ class rserveHandler:
         customErrorHandler = errorhandler.errorhandler(self.log)
         self.err = customErrorHandler.err()
         
-    def _start_logging(self):
-        try:
-            # Test for a string
-            self.logfile + "string"
- 
-        except NameError, e:
-            e = ''.join(["ParameterNotSet: ", 
-                         "Variable 'self.logfile' does not appear to exist. ", 
-                         "Please confirm there is an entry in the ", 
-                         "configuration file or the config_file parameter ",
-                         "has been properly passed into the class. ", 
-                         "A default logfile will be created in this directory."
-                         ])
-#             print e
-            self.logfile = ''.join(["./",self.__class__.__name__,".log"])
-         
-        except (TypeError, AttributeError), e:
-            e = ''.join(["ParameterNotSet: ", 
-                         "Variable 'self.logfile' does not appear to ", 
-                         "be a string. Please confirm the entry in the ", 
-                         "configuration file or the config_file parameter ",
-                         "has been properly passed into the class. ", 
-                         "A default logfile will be created in this directory."
-                         ])
-#             print e
-            self.logfile = ''.join(["./",self.__class__.__name__,".log"])
- 
-        # epicarlo is the main callable, so use createLogger and not checkLogger
-        self.log = createLogger(app_name = self.__class__.__name__, 
-                                logfile = self.logfile, 
-                                log_level = self.log_level, 
-                                screen = self.log_to_screen)
- 
-        self.log.info(''.join([str(self.__class__.__name__), 
-                               " logger started."
-                               ]))
+#     def _start_logging(self):
+#         try:
+#             # Test for a string
+#             self.logfile + "string"
+#  
+#         except NameError, e:
+#             e = ''.join(["ParameterNotSet: ", 
+#                          "Variable 'self.logfile' does not appear to exist. ", 
+#                          "Please confirm there is an entry in the ", 
+#                          "configuration file or the config_file parameter ",
+#                          "has been properly passed into the class. ", 
+#                          "A default logfile will be created in this directory."
+#                          ])
+# #             print e
+#             self.logfile = ''.join(["./",self.__class__.__name__,".log"])
+#          
+#         except (TypeError, AttributeError), e:
+#             e = ''.join(["ParameterNotSet: ", 
+#                          "Variable 'self.logfile' does not appear to ", 
+#                          "be a string. Please confirm the entry in the ", 
+#                          "configuration file or the config_file parameter ",
+#                          "has been properly passed into the class. ", 
+#                          "A default logfile will be created in this directory."
+#                          ])
+# #             print e
+#             self.logfile = ''.join(["./",self.__class__.__name__,".log"])
+#  
+#         # epicarlo is the main callable, so use createLogger and not checkLogger
+#         self.log = createLogger(app_name = self.__class__.__name__, 
+#                                 logfile = self.logfile, 
+#                                 log_level = self.log_level, 
+#                                 screen = self.log_to_screen)
+#  
+#         self.log.info(''.join([str(self.__class__.__name__), 
+#                                " logger started."
+#                                ]))
                 
     def open(self):
         """

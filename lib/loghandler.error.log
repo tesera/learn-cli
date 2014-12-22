@@ -1,0 +1,19 @@
+2014-12-22 21:55:01,819 - loghandler - DEBUG - Checking app_name of 'MRATrefactor'...
+2014-12-22 21:55:01,820 - loghandler - DEBUG - ----- Starting loghandler.setLogger ----- 
+2014-12-22 21:55:01,820 - loghandler - DEBUG - app_name    = MRATrefactor
+2014-12-22 21:55:01,820 - loghandler - DEBUG - logfile     = MRATrefactor
+2014-12-22 21:55:01,820 - loghandler - DEBUG - log_path    = /shared/GitHub/Tesera/MRAT_Refactor/log
+2014-12-22 21:55:01,821 - loghandler - DEBUG - log_level   = 10
+2014-12-22 21:55:01,821 - loghandler - DEBUG - screendump  = True
+2014-12-22 21:55:01,821 - loghandler - DEBUG - debug       = True
+2014-12-22 21:55:01,821 - loghandler - DEBUG - Checking log path of '/shared/GitHub/Tesera/MRAT_Refactor/log'...
+2014-12-22 21:55:01,823 - loghandler - DEBUG - log_path set to : '/shared/GitHub/Tesera/MRAT_Refactor/log/'
+2014-12-22 21:55:01,823 - loghandler - DEBUG - Instantiating persistent logger...
+2014-12-22 21:55:01,823 - loghandler - DEBUG - Setting log level of 10
+2014-12-22 21:55:01,823 - loghandler - DEBUG - Creating mandatory null handler...
+2014-12-22 21:55:01,824 - loghandler - DEBUG - Setting log formatter...
+2014-12-22 21:55:01,824 - loghandler - DEBUG - Creating logfile handler: /shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log
+2014-12-22 21:55:01,824 - loghandler - DEBUG - Creating STDOUT handler: 
+2014-12-22 21:55:01,825 - loghandler - DEBUG - Adding handlers to logger...
+2014-12-22 21:55:01,828 - loghandler - DEBUG - Retaining errorLogger temp log file ./loghandler.error.log
+2014-12-22 21:55:01,829 - loghandler - DEBUG - errorlogger.errorLogger object terminated
