@@ -4,7 +4,7 @@
 # violation of the licensing and copyright agreement. 
 __author__      = "Mike Rightmire"
 __copyright__   = "BioCom Software"
-__license__     = "Jeff Wright"
+__license__     = "Tesera"
 __license_file__= "Clause1.PERPETUAL_AND_UNLIMITED_LICENSING_TO_THE_CLIENT.py"
 __version__     = "0.9.0.0"
 __maintainer__  = "Mike Rightmire"
@@ -15,28 +15,44 @@ __status__      = "Development"
 from checks import checkObject as obj
 from checks import fileExists
 from ConfigParser import SafeConfigParser
-from loghandler import checkLogger
+from errorlogger import errorLogger
+from errorhandler import errorhandler
 
 import ConfigParser 
 import errorhandler
+import sys
 
-class ConfigHandler(object):
-    def __init__(self, config_file, log = ""):
+class configHandler(object):
+    def __init__(self, 
+                 config_file,
+                 screendump = False, 
+                 debug = False, 
+                 ):
 
-        # Set logger ----------------------------------------------------------
-        self.log = checkLogger(log, 
-                               callingobj = self, 
-                               log_path = "" )
+        self.config_file    = config_file
+        self.screendump     = screendump 
+        self.debug          = debug 
+        
+        with errorLogger('configHandler', 
+                         screendump = screendump, 
+                         debug = debug) as self.errorlog:
 
-        # Set errorhandler ----------------------------------------------------
-        self.CustomErrorHandler = errorhandler.errorhandler(self.log)
-        self.err = self.CustomErrorHandler.err()
+            self.errorlog.write("confighandler.ConfigHandler: started.")
+                        
+#             # Set errorhandler ----------------------------------------------------
+#             self.CustomErrorHandler = errorhandler.errorhandler(self.log)
+#             self.err = self.CustomErrorHandler.err()
 
-        # Set config handler --------------------------------------------------
-        self.config_file = config_file
-        self.log.debug(''.join(["Config file:", str(self.config_file)]))
-        self.verify_file()
-        self.open_file()
+            # Set config handler --------------------------------------------------
+            self.config_file    = config_file
+            self.screendump     = screendump 
+            self.debug          = debug
+
+            self.errorlog.write(("config_file = " + str(self.config_file)))            
+            self.errorlog.write(("screendump  = " + str(self.screendump)))
+            self.errorlog.write(("debug       = " + str(self.debug))) 
+
+            self.open_file()
 
     def readvalue(self, section, valuename, default = None):
         try:
@@ -62,29 +78,41 @@ class ConfigHandler(object):
                 return default
             
     def open_file(self):
-#         self.log.debug(''.join(["Reading config file..."]))
+        self.verify_file()
+        self.errorlog.write(("Opening " + str(self.config_file)))
         self.config = SafeConfigParser()
         self.config.read(self.config_file)
-#         self.log.debug(''.join(["Good."]))
         
-    
-    def load_vars(self, callobj, section):
+    def load_vars(self, callobj, section = None):
         for section_name in self.config.sections():
-            if section_name.lower() == str(section).lower():
-#                 self.log.debug(''.join(["Loading config file '", 
-#                                         str(self.config_file),
-#                                         "' section '", 
-#                                         str(section_name), "'."]))
+            if ((section_name.lower() == str(section).lower()) or 
+                (section is None)):
+                self.errorlog.write(("Loading section: " + str(section_name)))                
                 for name, value in self.config.items(section_name):
                     callobj.__dict__[name] = value
     
     def verify_file(self):
+        """"""
+        self.errorlog.write(("Verfiying " + str(self.config_file)))
         # Check config file exists since parser will not error if you 
         # attempt to open a non-existent file
-#         self.log.debug(''.join(["Verifying config file..."]))
         if not fileExists(self.config_file):
             e = ''.join(["ConfigFileNotFound(", 
                          str(self.config_file),"):"])
-    #             self.err(e, getmembers(self), stack())
             raise IOError(e) # Remove me and active self.err line
-#         self.log.debug(''.join(["Good."]))
+
+if __name__ == "__main__":
+
+    class forttest(object):
+        def __init__(self):
+            self.vartest= 1
+                    
+    obj = forttest()
+
+    config = configHandler(config_file = "./test.conf",
+                           screendump = True, 
+                           debug = True 
+                           )
+    
+    config.load_vars(obj)
+    print vars(obj)
