@@ -1,0 +1,104 @@
+2014-12-23 11:58:04,940 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 11:58:04,949 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 11:58:04,950 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 11:58:44,459 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 11:58:44,466 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 11:58:44,467 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 11:59:23,866 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 11:59:23,870 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 11:59:23,873 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 11:59:23,874 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 11:59:36,650 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 11:59:36,654 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 11:59:36,658 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 11:59:36,658 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 12:00:54,991 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 12:00:54,996 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 12:00:55,000 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 12:00:55,000 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 12:01:27,496 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 12:01:27,500 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 12:01:27,505 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 12:01:27,506 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 12:05:20,841 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 12:05:20,848 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 12:05:20,854 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 12:05:20,855 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 12:06:21,298 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 12:06:21,304 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 12:06:21,312 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 12:06:21,313 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 12:06:52,362 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 12:06:52,366 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 12:06:52,372 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 12:06:52,372 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 12:07:44,269 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 12:07:44,274 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 12:07:44,276 - rservehandler - DEBUG - errorlogger.errorLogger.transfer: transferring errorlogger temporary log file './rservehandler.error.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 12:07:44,292 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 12:07:44,292 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 12:10:05,650 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 12:10:05,658 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 12:10:05,658 - rservehandler - DEBUG - Starting permanent log file...
+2014-12-23 12:10:05,667 - rservehandler - DEBUG - Transferring startup log to permanent log file...
+2014-12-23 12:10:05,668 - rservehandler - DEBUG - errorlogger.errorLogger.transfer: transferring errorlogger temporary log file './rservehandler.error.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 12:10:05,674 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 12:10:05,674 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 14:33:10,358 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 14:33:10,593 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 14:33:10,593 - rservehandler - DEBUG - Starting permanent log file...
+2014-12-23 14:33:10,690 - rservehandler - DEBUG - Transferring startup log to permanent log file...
+2014-12-23 14:33:10,690 - rservehandler - DEBUG - errorlogger.errorLogger.transfer: transferring errorlogger temporary log file './rservehandler.error.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 14:33:10,699 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 14:33:10,699 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 14:36:22,332 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 14:36:22,337 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 14:36:22,337 - rservehandler - DEBUG - Starting permanent log file...
+2014-12-23 14:36:22,344 - rservehandler - DEBUG - Transferring startup log to permanent log file...
+2014-12-23 14:36:22,345 - rservehandler - DEBUG - errorlogger.errorLogger.transfer: transferring errorlogger temporary log file './rservehandler.error.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 14:36:22,351 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 14:36:22,352 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 14:39:55,638 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 14:39:55,663 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 14:39:55,664 - rservehandler - DEBUG - rservehandler: Starting permanent log file...
+2014-12-23 14:39:55,671 - rservehandler - DEBUG - rservehandler: Transferring startup log to permanent log file '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 14:39:55,672 - rservehandler - DEBUG - errorlogger.errorLogger.transfer: transferring errorlogger temporary log file './rservehandler.error.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 14:39:55,676 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 14:39:55,676 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 14:42:14,434 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 14:42:14,438 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 14:42:14,439 - rservehandler - DEBUG - rservehandler: Starting permanent log file...
+2014-12-23 14:42:14,446 - rservehandler - DEBUG - rservehandler: Transferring startup log to permanent log file '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 14:42:14,446 - rservehandler - DEBUG - errorlogger.errorLogger.transfer: transferring errorlogger temporary log file './rservehandler.error.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 14:42:14,451 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 14:42:14,452 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 14:43:04,811 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 14:43:04,815 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 14:43:04,815 - rservehandler - DEBUG - rservehandler: Starting permanent log file...
+2014-12-23 14:43:04,847 - rservehandler - DEBUG - rservehandler: Transferring startup log to permanent log file '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 14:43:04,847 - rservehandler - DEBUG - errorlogger.errorLogger.transfer: transferring errorlogger temporary log file './rservehandler.error.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 14:43:04,853 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 14:43:04,854 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 14:44:59,273 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 14:44:59,277 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 14:44:59,277 - rservehandler - DEBUG - rservehandler: Starting permanent log file...
+2014-12-23 14:44:59,284 - rservehandler - DEBUG - rservehandler: Transferring startup log to permanent log file '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 14:44:59,284 - rservehandler - DEBUG - errorlogger.errorLogger.transfer: transferring errorlogger temporary log file './rservehandler.error.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 14:44:59,289 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 14:44:59,290 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 14:47:32,038 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 14:47:32,042 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 14:47:32,048 - rservehandler - DEBUG - rservehandler: Transferring startup log to permanent log file '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 14:47:32,049 - rservehandler - DEBUG - errorlogger.errorLogger.transfer: transferring errorlogger temporary log file './rservehandler.error.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 14:47:32,053 - rservehandler - DEBUG - Retaining errorLogger temp log file ./rservehandler.error.log
+2014-12-23 14:47:32,054 - rservehandler - DEBUG - errorlogger.errorLogger object terminated
+2014-12-23 14:48:27,557 - rservehandler - DEBUG - Loading config file../etc/XIterativeVarSel.py.conf
+2014-12-23 14:48:27,562 - rservehandler - DEBUG - Starting permanent log...
+2014-12-23 14:48:27,572 - rservehandler - DEBUG - rservehandler: Transferring startup log to permanent log file '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 14:48:27,573 - rservehandler - DEBUG - errorlogger.errorLogger.transfer: transferring errorlogger temporary log file './rservehandler.error.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 15:39:52,151 - MRATrefactor - INFO - Permanent logger started.
+2014-12-23 15:39:52,152 - MRATrefactor - DEBUG - rservehandler: Transferring startup log to permanent log file '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 15:40:54,093 - MRATrefactor - INFO - Permanent logger started.
+2014-12-23 15:40:54,093 - MRATrefactor - DEBUG - rservehandler: Transferring startup log to permanent log file '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.
+2014-12-23 15:41:16,626 - MRATrefactor - INFO - Permanent logger started.
+2014-12-23 15:41:16,627 - MRATrefactor - DEBUG - rservehandler: Transferring startup log to permanent log file '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'.

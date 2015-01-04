@@ -1,9 +1,0 @@
-2014-12-22 21:55:01,815 - configHandler - DEBUG - confighandler.ConfigHandler: started.
-2014-12-22 21:55:01,815 - configHandler - DEBUG - config_file = ../etc/XIterativeVarSel.py.conf
-2014-12-22 21:55:01,816 - configHandler - DEBUG - screendump  = True
-2014-12-22 21:55:01,816 - configHandler - DEBUG - debug       = True
-2014-12-22 21:55:01,816 - configHandler - DEBUG - Verfiying ../etc/XIterativeVarSel.py.conf
-2014-12-22 21:55:01,817 - configHandler - DEBUG - Opening ../etc/XIterativeVarSel.py.conf
-2014-12-22 21:55:01,818 - configHandler - DEBUG - Retaining errorLogger temp log file ./configHandler.error.log
-2014-12-22 21:55:01,818 - configHandler - DEBUG - errorlogger.errorLogger object terminated
-2014-12-22 21:55:01,819 - configHandler - DEBUG - Loading section: MRAT

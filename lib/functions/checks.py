@@ -6,7 +6,7 @@ __author__      = "Mike Rightmire"
 __copyright__   = "BioCom Software"
 __license__     = "Tesera"
 __license_file__= "Clause1.PERPETUAL_AND_UNLIMITED_LICENSING_TO_THE_CLIENT.py"
-__version__     = "0.9.0.3"
+__version__     = "0.9.0.4"
 __maintainer__  = "Mike Rightmire"
 __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
@@ -44,23 +44,32 @@ def checkObject(obj):
 
 def checkWindowsPathFormat(_path, endslash = False):
     _path = str(_path)
+
+    wp = re.compile("^(([a-zA-Z]:\\\)|(\.\\\)|(\.\.\\\)).*$")
+
+    if not re.match(wp, _path): return False
+
     if endslash:
-        wp = re.compile("^(([a-zA-Z]:\\\)|(\.\\\)|(\.\.\\\)).*\\\$")
-    else:
-        wp = re.compile("^(([a-zA-Z]:\\\)|(\.\\\)|(\.\.\\\)).*$")
-    _path = str(_path).encode('string-escape')
-    if re.match(wp, _path): return True
-    else: return False
+        if _path[-1:] == "\\": return True
+        else: return False
+
+# Don't remember why this is here        
+#     _path = str(_path).encode('string-escape')
     
 def checkLinuxPathFormat(_path, endslash = False):
     _path = str(_path)
+    
+    lp = re.compile("^((\./)|(\.\./)|(/)).*$")
+
+    if not re.match(lp, _path): return False
+    
+    #Must come after re.match
     if endslash:
-        lp = re.compile("^((\./)|(\.\./)|/).*/$")
-    else:
-        lp = re.compile("^((\./)|(\.\./)|/).*$")
-    _path = str(_path).encode('string-escape')
-    if re.match(lp, _path): return True
-    else: return False    
+        if _path[-1:] == "/": return True
+        else: return False
+
+# Don't remember why this is here        
+#     _path = str(_path).encode('string-escape')
 
 def checkPathFormat(_path, endslash = False):
     _path = str(_path)
@@ -263,5 +272,5 @@ def checkOS(os = None):
     else: return False
     
 if __name__ == "__main__":
-    print directoryExists('linux')
+    print checkLinuxPathFormat("./", endslash = True)
     

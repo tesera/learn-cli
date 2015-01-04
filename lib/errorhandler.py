@@ -17,17 +17,73 @@ __status__      = "Development"
 
 # from loghandler import checkLogger
 
-from loghandler import setLogger
+# from loghandler import setLogger
 
 import inspect
+import functools
 import sys
 
+def raisetry(msg):
+    """"""    
+    def concrete_decorator(func):
 
-### Baseclass for dealing with unhandled errors
-#   Extends class Exception
+        @functools.wraps(func)
+        def wrapped(self, *args, **kwargs):
+
+            cls = str(self.__class__.__name__)
+            module = func.__name__
+
+            try:
+                result = func(self, *args, **kwargs)
+                return result
+                            
+            except Exception as err:
+                if not err.args: 
+                    err.args=('',)
+                
+                err.args = (
+                    (cls + "." + module + ": " + msg + ". " + err.args[0],) + 
+                            err.args[1:]
+                            )
+                raise
+        
+        return wrapped
+
+    return concrete_decorator      
+
+def handlertry(msg):
+    """"""    
+    def concrete_decorator(func):
+
+        @functools.wraps(func)
+        def wrapped(self, *args, **kwargs):
+
+            import errorhandler
+            from inspect import getmembers, stack
+            self.CustomErrorHandler = errorhandler.errorhandler()
+            self.err = self.CustomErrorHandler.err()
+
+            cls = str(self.__class__.__name__)
+            module = func.__name__
+
+            try:
+                result = func(self, *args, **kwargs)
+                return result
+
+            except Exception, e:
+#             except Exception as err:
+                    e = str(msg) + str(e) 
+                    self.err(e, getmembers(self), stack())
+        
+        return wrapped
+
+    return concrete_decorator          
+
 class CustomError(Exception):
     """
     Base user extensible exception class
+    Baseclass for dealing with unhandled errors
+    Extends class Exception
     """
     def __init__(self, message):
         self.message = message
@@ -121,13 +177,14 @@ class errorhandler(object):
         No other methods are intended or recommended to be user callable.  
     """
 
-    def __init__(self, log):
-        self.log = setLogger(app_name = log, 
-                             logfile = "", 
-                             log_level = 10, 
-                             screendump = True, 
-                             debug = True
-                       )
+    def __init__(self): #, log):
+        pass
+#         self.log = setLogger(app_name = log, 
+#                              logfile = "", 
+#                              log_level = 10, 
+#                              screendump = True, 
+#                              debug = True
+#                        )
             
     def _format_original_error(self, e):
         return "".join(["[Original error: ", str(e), "]"])
@@ -136,7 +193,7 @@ class errorhandler(object):
         # Format message
         e = "".join([message, str(self._format_original_error(e))])
         # Send to log
-        self.log.error(e)
+#         self.log.error(e)
         return
 
     def err(self):
@@ -335,6 +392,7 @@ class errorhandler(object):
         # Sends the message and original error to the LOGGER
         self._custom_error(message, e)
         ### METHOD ACTIONS
+        print "Pass through exception hit"
                             
     def FatalError(self, e):
         # Custom message to BE SENT TO THE LOGGER
@@ -353,3 +411,14 @@ class errorhandler(object):
         self._custom_error(message, e)
         ### METHOD ACTIONS
         raise FatalException(e)    
+
+
+if __name__ == "__main__":
+    
+    @raisetry("hello")
+    def func():
+        print no
+        
+    func()
+    
+    
