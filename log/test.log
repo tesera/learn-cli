@@ -1,13 +1,13 @@
-2015-01-04 12:27:38,499 - loghanderStartup - INFO - logger started as 'loghanderStartup' at './loghandlertmp.log'. 
-2015-01-04 12:27:38,499 - loghanderStartup - INFO - Temp startup log created.
-2015-01-04 12:27:38,500 - loghanderStartup - DEBUG - Checking parameter 'app_name'.
-2015-01-04 12:27:38,501 - loghanderStartup - DEBUG - 'app_name': realAppName
-2015-01-04 12:27:38,501 - loghanderStartup - DEBUG - Checking parameter 'logfile'.
-2015-01-04 12:27:38,501 - loghanderStartup - DEBUG - 'logfile': test.log
-2015-01-04 12:27:38,502 - loghanderStartup - DEBUG - Checking parameter 'log_path'.
-2015-01-04 12:27:38,503 - loghanderStartup - DEBUG - 'log_path': /shared/GitHub/Tesera/MRAT_Refactor/log/
-2015-01-04 12:27:38,504 - loghanderStartup - DEBUG - Checking parameter 'log_level'.
-2015-01-04 12:27:38,504 - loghanderStartup - DEBUG - 'log_level': 10
-2015-01-04 12:27:38,505 - loghanderStartup - DEBUG - 'full_log_path': /shared/GitHub/Tesera/MRAT_Refactor/log/test.log
-2015-01-04 12:27:38,505 - loghanderStartup - DEBUG - Setting formatter.
-2015-01-04 12:27:38,506 - realAppName - INFO - logger started as 'realAppName' at '/shared/GitHub/Tesera/MRAT_Refactor/log/test.log'. 
+2015-01-04 12:38:30,213 - loghanderStartup - INFO - logger started as 'loghanderStartup' at './loghandlertmp.log'. 
+2015-01-04 12:38:30,213 - loghanderStartup - INFO - Temp startup log created.
+2015-01-04 12:38:30,213 - loghanderStartup - DEBUG - Checking parameter 'app_name'.
+2015-01-04 12:38:30,214 - loghanderStartup - DEBUG - 'app_name': realAppName
+2015-01-04 12:38:30,214 - loghanderStartup - DEBUG - Checking parameter 'logfile'.
+2015-01-04 12:38:30,214 - loghanderStartup - DEBUG - 'logfile': test.log
+2015-01-04 12:38:30,215 - loghanderStartup - DEBUG - Checking parameter 'log_path'.
+2015-01-04 12:38:30,217 - loghanderStartup - DEBUG - 'log_path': /shared/GitHub/Tesera/MRAT_Refactor/log/
+2015-01-04 12:38:30,217 - loghanderStartup - DEBUG - Checking parameter 'log_level'.
+2015-01-04 12:38:30,218 - loghanderStartup - DEBUG - 'log_level': 10
+2015-01-04 12:38:30,218 - loghanderStartup - DEBUG - 'full_log_path': /shared/GitHub/Tesera/MRAT_Refactor/log/test.log
+2015-01-04 12:38:30,218 - loghanderStartup - DEBUG - Setting formatter.
+2015-01-04 12:38:30,219 - realAppName - INFO - logger started as 'realAppName' at '/shared/GitHub/Tesera/MRAT_Refactor/log/test.log'. 

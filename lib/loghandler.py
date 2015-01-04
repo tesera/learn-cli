@@ -6,7 +6,7 @@ __author__      = "Mike Rightmire"
 __copyright__   = "BioCom Software"
 __license__     = "Tesera"
 __license_file__= "Clause1.PERPETUAL_AND_UNLIMITED_LICENSING_TO_THE_CLIENT.py"
-__version__     = "0.9.1.0"
+__version__     = "0.9.2.0"
 __maintainer__  = "Mike Rightmire"
 __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
@@ -75,7 +75,6 @@ class setLogger(object):
         # Do the work to create the logger object
         self._set_full_logpath()
         self._set_formatter() 
-#         self._set_logger()
 
         self._start_log(app_name     = self.app_name, 
                             logfile      = self.full_log_path, 
@@ -175,124 +174,6 @@ class setLogger(object):
 
         self.logger.critical(''.join(["Successfully purged '", 
                                       str(self.full_log_path), "'. "]))
-                
-            
-    def _read(self):
-        """"""
-        _list = open(self.full_log_path, "r", 0).read().splitlines()
-        return _list
- 
-    def _isExistingLogger(self, app_name):
-        """
-        """
-        if app_name in str(logging.Logger.manager.loggerDict.keys()):
-            return True
-        else:
-            return False
-    
-#     def _set_logger(self):
-# 
-#         @raisetry(''.join(["Failure calling 'logging.getLogger'. "]))
-#         def _setit(self):
-#             self.logger = logging.getLogger(self.app_name)
-#             return True
-#         
-#         _setit(self)
-#         self.templog.debug("getLogger called with '" + self.app_name + "'.")
-#         return True
-    
-    @raisetry(''.join(["Unable to open the startup log. "]))
-    def _start_templog(self, 
-                       app_name     = "loghanderStartup", 
-                       logfile      = "./loghandlertmp.log", 
-                       log_level    = 10, 
-                       formatter    = None,
-                       screendump   = False
-                       ):
-        
-                self.templog = self._start_log(app_name, 
-                                               logfile, 
-                                               log_level, 
-                                               formatter,
-                                               screendump
-                                               )
-         
-                self.templog.info("Temp startup log created.")    
-
-    def _start_log(self, 
-                   app_name     = "loghanderStartup", 
-                   logfile      = "./loghandlertmp.log", 
-                   log_level    = 10, 
-                   formatter    = None,
-                   screendump   = False
-                   ): 
-        
-        @raisetry(''.join(["Unable to open the log. "]))
-        def _log(self, 
-                 app_name, 
-                 logfile, 
-                 log_level,
-                 formatter, 
-                 screendump
-                 ):
-            
-            # Remove the existing logger
-            if self._isExistingLogger(app_name):
-                self._remove_handler(app_name)
-            
-            logger = logging.getLogger(app_name)
-            logger.setLevel(level=log_level)
-            if ((formatter is "") or (formatter is None)): 
-                formatter = logging.Formatter(
-                        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    
-            # create file handler which logs even debug messages
-            fh = logging.FileHandler("./loghandlertmp.log")
-            fh.setLevel(level=log_level)
-            fh.setFormatter(formatter)
-    
-            # create console handler with a higher log level
-            if screendump:
-                ch = logging.StreamHandler()
-                ch.setLevel(level=log_level)
-                ch.setFormatter(formatter)
-            else:
-                ch = False
-                    
-            # add the handlers to the logger
-            if fh: logger.addHandler(fh)
-            if ch: logger.addHandler(ch)
-            return logger
-        
-        logger = _log(self,                  
-                      app_name, 
-                      logfile, 
-                      log_level,
-                      formatter, 
-                      screendump
-                      )
-        
-        logger.info(''.join(["logger started as '", 
-                             str(app_name), 
-                             "' at '",
-                             str(logfile),
-                             "'. " 
-                             ]))
-        self.logger = logger
-        
-        return logger
-    
-    def _set_full_logpath(self):
-
-        @raisetry(''.join(["Failure setting full log path. "]))
-        def _setit(self):
-            self.full_log_path = self.log_path + self.logfile
-            return True
-        
-        _setit(self)
-        self.templog.debug(''.join(["'full_log_path': ", 
-                                    self.full_log_path]))
-        return True
 
     def _check_app_name(self):
         @raisetry(''.join(["Failure setting 'self.app_name'. ",  
@@ -441,18 +322,62 @@ class setLogger(object):
         
         _checkit(self)    
 
-    def _set_formatter(self):
-        self.templog.debug("Setting formatter.")
-
-        @raisetry(''.join(["Failure setting formatter."]))
-        def _setit(self):
-            self.formatter = logging.Formatter(
-                        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-                        )
+    def _isExistingLogger(self, app_name):
+        """
+        """
+        if app_name in str(logging.Logger.manager.loggerDict.keys()):
             return True
-        
+        else:
+            return False
+    
+    def _migrate_templog(self):
+        @raisetry(''.join(["Failure migrating templog './loghandlertmp.log' ", 
+                           "to permanent log path '", 
+                           str(self.full_log_path), 
+                           "'. "]))
+        def _setit(self):
+            with open("./loghandlertmp.log", "r", 0) as IN:
+                with open(self.full_log_path, "w", 0) as OUT:
+                    for line in IN: OUT.write(line)
+            # Use perm logger not templog         
+            self.logger.debug(''.join(["templog migrated to .", 
+                                       self.full_log_path]))
+
+        @raisetry(''.join(["Failure removing templog './loghandlertmp.log'. "]))
+        def _remove_tempfile(self):
+            os.remove("./loghandlertmp.log")
+            
         _setit(self)
+        _remove_tempfile(self)
+        # Use perm logger not templog         
+        self.logger.debug(''.join(["templog './loghandlertmp.log' purged."]))
         return True
+        
+    def _read(self):
+        """"""
+        _list = open(self.full_log_path, "r", 0).read().splitlines()
+        return _list
+ 
+    def _remove_handler(self, app_name):
+
+        @handlertry(''.join(["PassThroughException: ", 
+                            "Failure removing logging handler '",
+                           str(app_name), "'. " 
+                           ]))
+        def _setit(self, app_name):
+            self.logger.debug(''.join(["Attempting to remove handler '", 
+                                   str(app_name), "'..." 
+                                   ]))
+
+            if self._isExistingLogger(app_name):
+                del logging.Logger.manager.loggerDict[app_name]
+
+            self.logger.debug(''.join(["handler '", 
+                                       str(app_name), 
+                                       "' removed. " 
+                                       ]))
+
+        _setit(self, app_name)
 
     def _set_fileHandler(self, 
                          logfile, 
@@ -477,6 +402,31 @@ class setLogger(object):
             return True
         
         _setit(self, logfile, log_level, formatter)
+        return True
+
+    def _set_formatter(self):
+        self.templog.debug("Setting formatter.")
+
+        @raisetry(''.join(["Failure setting formatter."]))
+        def _setit(self):
+            self.formatter = logging.Formatter(
+                        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+                        )
+            return True
+        
+        _setit(self)
+        return True
+
+    def _set_full_logpath(self):
+
+        @raisetry(''.join(["Failure setting full log path. "]))
+        def _setit(self):
+            self.full_log_path = self.log_path + self.logfile
+            return True
+        
+        _setit(self)
+        self.templog.debug(''.join(["'full_log_path': ", 
+                                    self.full_log_path]))
         return True
 
     def _set_screendump(self, 
@@ -510,49 +460,86 @@ class setLogger(object):
     # For now, only the standard logging levels are supported as recommended
     # by the logging documentation
 
-    def _migrate_templog(self):
-        @raisetry(''.join(["Failure migrating templog './loghandlertmp.log' ", 
-                           "to permanent log path '", 
-                           str(self.full_log_path), 
-                           "'. "]))
-        def _setit(self):
-            with open("./loghandlertmp.log", "r", 0) as IN:
-                with open(self.full_log_path, "w", 0) as OUT:
-                    for line in IN: OUT.write(line)
-            # Use perm logger not templog         
-            self.logger.debug(''.join(["templog migrated to .", 
-                                       self.full_log_path]))
-
-        @raisetry(''.join(["Failure removing templog './loghandlertmp.log'. "]))
-        def _remove_tempfile(self):
-            os.remove("./loghandlertmp.log")
-            
-        _setit(self)
-        _remove_tempfile(self)
-        # Use perm logger not templog         
-        self.logger.debug(''.join(["templog './loghandlertmp.log' purged."]))
-        return True
+    def _start_log(self, 
+                   app_name     = "loghanderStartup", 
+                   logfile      = "./loghandlertmp.log", 
+                   log_level    = 10, 
+                   formatter    = None,
+                   screendump   = False
+                   ): 
         
-    def _remove_handler(self, app_name):
-
-        @handlertry(''.join(["PassThroughException: ", 
-                            "Failure removing logging handler '",
-                           str(app_name), "'. " 
-                           ]))
-        def _setit(self, app_name):
-            self.logger.debug(''.join(["Attempting to remove handler '", 
-                                   str(app_name), "'..." 
-                                   ]))
-
+        @raisetry(''.join(["Unable to open the log. "]))
+        def _log(self, 
+                 app_name, 
+                 logfile, 
+                 log_level,
+                 formatter, 
+                 screendump
+                 ):
+            
+            # Remove the existing logger
             if self._isExistingLogger(app_name):
-                del logging.Logger.manager.loggerDict[app_name]
-
-            self.logger.debug(''.join(["handler '", 
-                                       str(app_name), 
-                                       "' removed. " 
-                                       ]))
-
-        _setit(self, app_name)
+                self._remove_handler(app_name)
+            
+            logger = logging.getLogger(app_name)
+            logger.setLevel(level=log_level)
+            if ((formatter is "") or (formatter is None)): 
+                formatter = logging.Formatter(
+                        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    
+            # create file handler which logs even debug messages
+            fh = logging.FileHandler("./loghandlertmp.log")
+            fh.setLevel(level=log_level)
+            fh.setFormatter(formatter)
+    
+            # create console handler with a higher log level
+            if screendump:
+                ch = logging.StreamHandler()
+                ch.setLevel(level=log_level)
+                ch.setFormatter(formatter)
+            else:
+                ch = False
+                    
+            # add the handlers to the logger
+            if fh: logger.addHandler(fh)
+            if ch: logger.addHandler(ch)
+            return logger
+        
+        logger = _log(self,                  
+                      app_name, 
+                      logfile, 
+                      log_level,
+                      formatter, 
+                      screendump
+                      )
+        
+        logger.info(''.join(["logger started as '", 
+                             str(app_name), 
+                             "' at '",
+                             str(logfile),
+                             "'. " 
+                             ]))
+        self.logger = logger
+        
+        return logger
+    
+    @raisetry(''.join(["Unable to open the startup log. "]))
+    def _start_templog(self, 
+                       app_name     = "loghanderStartup", 
+                       logfile      = "./loghandlertmp.log", 
+                       log_level    = 10, 
+                       formatter    = None,
+                       screendump   = False
+                       ):
+        
+                self.templog = self._start_log(app_name, 
+                                               logfile, 
+                                               log_level, 
+                                               formatter,
+                                               screendump
+                                               )
+         
+                self.templog.info("Temp startup log created.")    
 
                       
 if __name__ == "__main__":
