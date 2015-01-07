@@ -26,6 +26,219 @@ import re
 
 class setLogger(object):
     """
+    :NAME:
+    setLogger( app_name, 
+               [logfile, 
+                log_path, 
+                log_level, 
+                screendump, 
+                create_paths]) 
+
+    :DESCRIPTION:
+    setLogger is a log object manager intended to handle the details of 
+    creating and altering a logger. 
+    
+    The setLogger class is a singleton, meaning
+    once an object is created by a calling script, all CHILD SCRIPTS attempting  
+    to instantiate a setLogger object will - in actuality - recieve the existing
+    setLogger object. The advantage of this is that each object, function or 
+    child process of the original script can simply call setLogger once and 
+    in-the-blind to continue logging appropriately.   
+     
+    :ARGUMENTS:
+    app_name:  The friendly name of the application actually instantiating a log 
+               object. This is the name used to create a python "logging.logger"
+               instance, and the name that will appear next to the data in 
+               the log file to identify what application generated the log 
+               information.
+               
+               MANDATORY: No default at this time, however does not need to 
+                          be set if the setLogger object exists and is called by 
+                          a child script or process. 
+               
+               
+                
+    logfile:   The filename (only) of the logfile to which log data will be 
+               written. 
+               
+               DEFAULTS TO: "" which causes setLogger to use <app_name>.log as
+               the filename.
+               
+               Passing "None" as logfile tells set logger not to log to a file.
+                  
+    log_path:  The full DIRECTORY (ONLY) path to the logfile.
+
+               I.e. "/var/log/dir1/dir2/"
+
+               DEFAULTS TO: "./"
+               
+    log_level: The logging object's "log level" as defined by the Python 
+               "logging" module. This sets the level of message that is actually 
+               passed to the logger to be included in the logfile.
+               
+               Can be passed as a number between 0 and 50.
+               
+               Can be passed as one of the following strings:
+                 critical
+                 error
+                 warning
+                 info
+                 debug
+                 
+               DEFAULTS TO: 40 (ERROR) 
+                   
+    screendump (True/False): 
+               If screendump is set to True, all log info that passes the log
+               level and filters (is to be written to the log file) will also 
+               be written to STD_OUT.
+               
+    create_paths (True/False):
+               If True, in the event the log_path does not exist, it will be 
+               created. If False, an exception si raised. 
+               
+               DEFAULTS TO: False 
+
+    :METHODS:
+    screendump()
+        :Description: 
+            Will dump the contents of the current logfile to STD_OUT.
+
+        :Parameters:
+            None
+    
+        
+    purge()
+        :Description: 
+            Will erase the contents of the existing logfile, with a post-erase 
+            marker to identify that an erase has been performed. 
+
+        :Parameters:
+            None
+
+        
+    logfile(name = <str>, [migrate = <True/False>])
+        NOT YET IMPLEMENTED.
+
+        :Description: 
+            Changes the file name of the current log.
+        
+        :Parameters:
+            name: Changes the name of the current logfile to "name".
+
+            migrate: If True, the contents of the existing log are moved to the 
+            new log. DEFAULTS TO: True.
+
+            NO DEFAULT.
+         
+    level(level = <int>)
+        NOT YET IMPLEMENTED.
+
+        :Description: 
+            Changes the logger default level to "new_level".
+        
+        :Parameters:
+            level:
+               Can be passed as a number between 0 and 50.
+               
+               Can be passed as one of the following strings:
+                 critical
+                 error
+                 warning
+                 info
+                 debug
+                 
+               DEFAULTS TO: 40 (ERROR) 
+
+    name(name = <str>)
+        NOT YET IMPLEMENTED.
+
+        :Description: 
+            Changes app_name.
+        
+        :Parameters:
+            name:
+               The friendly name of the application actually instantiating a log 
+               object. This is the name used to create a python "logging.logger"
+               instance, and the name that will appear next to the data in 
+               the log file to identify what application generated the log 
+               information.               
+               Can be passed as one of the following strings:
+                 critical
+                 error
+                 warning
+                 info
+                 debug
+                 
+               NO DEFAULT 
+
+    formatter(format = <str>)
+        NOT YET IMPLEMENTED.
+
+        :Description: 
+            Changes the format of the data written to the logfile.
+        
+        :Parameters:
+            format:
+               A Python 2.x printf style formatting string accepted by the 
+               Python standard "logging" module.  
+
+               NO DEFAULT     
+
+    dump_to_screen(dumping = <True/False>)
+        NOT YET IMPLEMENTED.
+
+        :Description: 
+            Changes whether the data written to the log file are also dumped 
+            to STD_OUT. 
+        
+        :Parameters:
+            dumping: 
+            <True/False>
+
+               DEFAULTS TO: False     
+    
+    :RETURNS:
+        A standard Python "logging" module logger object. 
+    
+    :USAGE:
+    (ParentClass.py)
+    class ParentClass(object):
+        def __init__(self):
+            self.log = setLogger(app_name = "MyApp", 
+                                 logfile = "MyApp.log",
+                                 log_path = "/var/log/MyDir/", 
+                                 log_level = "INFO", 
+                                 screendump = True,
+                                 create_paths = False)
+
+        def parentMethod(self, var = None)
+            self.log.info("I will log to "MyApp.log"")
+            self.log.info("var was set to " + str(var))
+            
+    
+    (ChildClass.py)
+    class ChildClass(ParentClass):
+        def __init__(self):
+            self.log = setLogger()
+        
+        def childMethod(self, var = None):
+            self.log.info("I will log to the same file as ParentClass objects.")
+            self.log.info("var was set to " + str(var))
+            self.log.debug("I will only log if PARAM "log_level" was "DEBUG")
+
+    (script.py)
+    obj1 = ParentClass()
+    obj2 = ChildClass()
+    
+    obj1.parentMethod(1)
+    obj2.childMethod(2)
+    
+    (MyApp.log)
+    2014-12-23 15:35:42,510 - MyApp - INFO - I will log to "MyApp.log"")
+    2014-12-23 15:35:42,511 - MyApp - INFO - var was set to 1
+    2014-12-23 15:35:42,512 - MyApp - INFO - I will log to the same file 
+                                             as ParentClass objects.
+    2014-12-23 15:35:42,513 - MyApp - INFO - var was set to 2
     """    
 
     def __new__(cls, 
@@ -37,10 +250,12 @@ class setLogger(object):
                 create_paths = False 
                 ):
         """
-        This is a singletone class. The __new__ method is called prior to 
-        instantiation with __init__. If there's already an instance of the
-        class, the existing object is returned. If it doesn't exist, a new 
-        object is instantiated with the __init__.
+        This is a singleton class. 
+        
+        The __new__ method is called prior to instantiation with __init__. 
+        If there's already an instance of the class, the existing object is 
+        returned. If it doesn't exist, a new object is instantiated with 
+        the __init__.
         """
         if not hasattr(cls, 'instance'):
             cls.instance = super(setLogger, cls).__new__(cls)
@@ -90,7 +305,7 @@ class setLogger(object):
     # ________________________________________________________________________
     # LOGGING OVERRIDES
     # Using ONLY the standard logging levels as recommended by the 
-    #  logging documentation
+    # logging documentation
 
     def critical(self, *args, **kwargs):
         return self.logger.critical(*args, **kwargs)
@@ -110,26 +325,30 @@ class setLogger(object):
     # ________________________________________________________________________
     # USER METHODS
 
-    def level(self):
+    def level(self, level = 40):
         """
+        NOT YET IMPLEMENTED
         Intended to change the logging level of the existing handlers
         """
         raise NotImplementedError
 
-    def name(self):
+    def name(self, name):
         """
+        NOT YET IMPLEMENTED
         Intended to change the logger name of the existing handlers
         """
         raise NotImplementedError
 
-    def formatter(self):
+    def formatter(self, format):
         """
+        NOT YET IMPLEMENTED
         Intended to change the log formatting of the existing handlers
         """
         raise NotImplementedError
 
     def dump_to_screen(self, dumping = False):
         """
+        NOT YET IMPLEMENTED
         Intended to change the current setting for 'screendump' of the existing
         handlers (which determines if items written to the log are also 
         printed to the screen.
@@ -138,14 +357,15 @@ class setLogger(object):
 
     def screendump(self):
         """
-        Dumps the current logfile conents to std out.
+        Dumps the current logfile contents to std out.
         """
         _list = self_read()
         for line in _list:
             print line
 
-    def logfile(self, newfile = None):
+    def logfile(self, name = None, migrate = True):
         """
+        NOT YET IMPLEMENTED
         Intended to change the current logfile of the existing handler
         """
         raise NotImplementedError
@@ -165,7 +385,7 @@ class setLogger(object):
             if fileExists(self.full_log_path): 
                 os.remove(self.full_log_path)
                 with open(self.full_log_path, 'w', 0):
-                    os.utime(self.full_log_path, times)
+                    os.utime(self.full_log_path, datetime.datetime.now())
 
 
         self.logger.critical(''.join(["Attempting to purge '", 
