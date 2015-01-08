@@ -24,10 +24,10 @@ import logging
 import os
 import re
 
-class setLogger(object):
+class SetLogger(object):
     """
     :NAME:
-    setLogger( app_name, 
+    SetLogger( app_name, 
                [logfile, 
                 log_path, 
                 log_level, 
@@ -204,7 +204,7 @@ class setLogger(object):
     (ParentClass.py)
     class ParentClass(object):
         def __init__(self):
-            self.log = setLogger(app_name = "MyApp", 
+            self.log = SetLogger(app_name = "MyApp", 
                                  logfile = "MyApp.log",
                                  log_path = "/var/log/MyDir/", 
                                  log_level = "INFO", 
@@ -219,7 +219,7 @@ class setLogger(object):
     (ChildClass.py)
     class ChildClass(ParentClass):
         def __init__(self):
-            self.log = setLogger()
+            self.log = SetLogger()
         
         def childMethod(self, var = None):
             self.log.info("I will log to the same file as ParentClass objects.")
@@ -240,7 +240,8 @@ class setLogger(object):
                                              as ParentClass objects.
     2014-12-23 15:35:42,513 - MyApp - INFO - var was set to 2
     """    
-
+    __exists = False
+    
     def __new__(cls, 
                 app_name = None, 
                 logfile = "",
@@ -257,9 +258,18 @@ class setLogger(object):
         returned. If it doesn't exist, a new object is instantiated with 
         the __init__.
         """
+        # __init__ is called no matter what, so...
+        # If there is NOT an instance, just create an instance 
+        # This WILL run __init__
         if not hasattr(cls, 'instance'):
-            cls.instance = super(setLogger, cls).__new__(cls)
-        return cls.instance
+            cls.instance = super(SetLogger, cls).__new__(cls)
+            return cls.instance
+
+        # Else if an instance does exist, set a flag since
+        # __init__is called, but flag halts completion (just returns)           
+        else:
+            cls.instance.__exists = True
+            return cls.instance
         
     def __init__(self, 
                  app_name = None, 
@@ -270,6 +280,8 @@ class setLogger(object):
                  create_paths = False 
                 ):
 
+        if self.__exists: return
+        
         # Start the temp logger "loghanderStartup"
         # This logger and logfile are removed when permanent logger is set 
         self._start_templog(app_name     = "loghanderStartup", 
@@ -359,7 +371,7 @@ class setLogger(object):
         """
         Dumps the current logfile contents to std out.
         """
-        _list = self_read()
+        _list = self._read()
         for line in _list:
             print line
 
@@ -455,12 +467,14 @@ class setLogger(object):
         def _checkit(self):        
         
             # Check for text settings
+            # No need for elif since each if returns
             if "CR" in str(self.log_level).upper(): 
                 self.log_level = "CRITICAL"
                 return True
                  
             if "ER" in str(self.log_level).upper(): 
-                self.log_level = "ERROR"; return True
+                self.log_level = "ERROR"
+                return True
                 
             if "WA" in str(self.log_level).upper(): 
                 self.log_level = "WARNING"
@@ -764,7 +778,7 @@ class setLogger(object):
                       
 if __name__ == "__main__":
     
-    log = setLogger(app_name = "realAppName", 
+    log = SetLogger(app_name = "realAppName", 
                     logfile = "test.log",
                     log_path = "/shared/GitHub/Tesera/MRAT_Refactor/log", 
                     log_level = 10, 
@@ -782,7 +796,7 @@ if __name__ == "__main__":
 
     #-----------------------
     
-#     log = setLogger(app_name = "realAppName", 
+#     log = SetLogger(app_name = "realAppName", 
 #                     logfile = "test.log",
 #                     log_path = "/shared/GitHub/Tesera/MRAT_Refactor/log", 
 #                     log_level = 10, 

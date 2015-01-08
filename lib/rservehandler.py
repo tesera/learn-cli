@@ -13,17 +13,56 @@ __status__      = "Development"
 ##############################################################################
 
 from checks import fileExists
-from errorlogger import errorLogger
-from inspect import getmembers, stack
-from loghandler import set_full_logpath
-from loghandler import setLogger
-from confighandler import configHandler 
+# from errorlogger import errorLogger
+# from inspect import getmembers, stack
+# from loghandler import set_full_logpath
+from loghandler import SetLogger
+# from confighandler import configHandler 
+from errorhandler import raisetry, handlertry
 
-import errorhandler
 import os
+import re
 import sys
+
+
  
-class rserveHandler:
+class RserveHandler(object):
+    """
+    This is a factory class that will call and return a subclass.
+    It is NOT an abstract class as it is always the instantiated class. 
+        """
+    @staticmethod
+    def rserveHandler(service, *args, **kwargs):
+        # Raw rserve implementation
+        if      re.match("^rs.*$", str(service.lower())):
+                    return rserveRaw(*args, **kwargs)
+        
+        # Domino labs server
+        elif    re.match("^dom.*$", str(service.lower())):
+                    raise NotImplementedError
+
+        # Revolution analytics RWS server
+        elif    re.match("^rev.*$", str(service.lower())):
+                    raise NotImplementedError
+                
+        # Alteryx services
+        elif    re.match("^alter.*$", str(service.lower())):
+                    raise NotImplementedError
+
+        else:
+            e = ''.join(["RserveHandler.rserveHandler: ", 
+                         "'service' parameter does not resolve to ", 
+                         "any provided rserve service. Options include: ", 
+                         "\n 'rserve' for a raw rserve environment. ", 
+                         "\n 'rev' for a Revolution Analytics environment. ", 
+                         "\n 'domino' for a Domino Labs environment. ", 
+                         "\n 'alteryx' for an Alteryx environment. ", 
+                         ])
+            raise TypeError(e)
+        
+        
+class RserveHandlerRoot(object):
+class RserveHandler(object):
     """
     Creates an rserve handler for managing the [R] environment
     as well as passing objects back and forth and running the environment
@@ -44,6 +83,12 @@ class rserveHandler:
     - Convert data objects to and from forms suitable for the selected [R] environment
     
     """
+    
+            
+    
+    
+    
+class rserveRawHandler(object):    
     def __init__(self, 
                  service        = None, 
                  config_file    = "../etc/XIterativeVarSel.py.conf", 
@@ -331,6 +376,14 @@ class rserveHandler:
         pass
     
 if __name__ == "__main__":
-    o = rserveHandler(screendump = True, debug = True, log_level = 40)
+#     from RserveHandler import rserveHandler
+    
+    o = Test.test(4)
+    
+    o = RserveHandler.rserveHandler(service = "rserve",
+#                                     screendump = True, 
+#                                     debug = True, 
+#                                     log_level = 40
+                                    )
     print "object = ", o
     
