@@ -12,14 +12,12 @@ __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
 ##############################################################################
 
-from checks import checkObject as obj
-from checks import fileExists
-from ConfigParser import SafeConfigParser
-# from errorlogger import errorLogger
-# from errorhandler import errorhandler
-from errorhandler import handlertry
-from errorhandler import raisetry
-from loghandler import SetLogger 
+from checks         import checkObject as obj
+from checks         import fileExists
+from ConfigParser   import SafeConfigParser
+from errorhandler   import handlertry
+from errorhandler   import raisetry
+from loghandler     import SetLogger 
 
 import ConfigParser 
 # import Errorhandler
@@ -36,15 +34,58 @@ class ConfigHandler(object):
 
         self._initial_var_load()
 
-    @raisetry("confighandler.ConfigHandler: Failed at SetLogger()")
-    def _setlog(self):
-        self.log = SetLogger()
-        return 
+        # This is a special function of the confighandler
+        # If the full path for the logfile in the config file is different than 
+        # what's currently being used, migrate the log. 
+        self._migrate_log()
 
+    #__________________________________________________________________________
+    # PRIVATE METHODS
     def _initial_var_load(self):
+        """"""
         self.open_file()
         self.load_vars()
     
+    def _migrate_log(self):
+        """
+        This is a special migrate log method that should only be used within 
+        confighandler. It actually migrating anything is a rarity.
+        """
+        # callobj is the self for which the confighandler is setting variables
+        # 'configured_full_log_path' is the path as set by the config file
+
+        configured_full_log_path = self.log.set_full_log_path(
+                                                        self.callobj.log_path, 
+                                                        self.callobj.logfile
+                                                        )
+
+        # self.log is the logging singleton object
+        # If the full_log_path in the current logging object is NOT the same
+        # as configured_full_log_path, then migrate the log to the new 
+        if self.log.full_log_path != configured_full_log_path:
+            self.log.debug(''.join(["Logfile changed by configuration file. ", 
+                                    "Migrating..."]))
+            # loghandler's migrate method
+            # Remember, the migrate method automagically resets the handler's
+            # self.full_log_path to 'dest'
+            self.log.migrate(
+                    dest = configured_full_log_path, # the log path from config  
+                    source = self.log.full_log_path, # Current
+                    create_paths = True)
+                        
+        else:
+            self.log.debug(''.join(["Continuing with original log file : '", 
+                                    str(self.log.full_log_path), 
+                                    "' ."]))
+        
+    @raisetry("confighandler.ConfigHandler: Failed at SetLogger()")
+    def _setlog(self):
+        """"""
+        self.log = SetLogger()
+        return 
+
+    #__________________________________________________________________________
+    # PUBLIC METHODS
     @raisetry("ConfigHandler.getatttr: ")    
     def getattr(self, section = None, valuename = None, default = None):
         """"""
@@ -83,7 +124,13 @@ class ConfigHandler(object):
 #                 return default
 
     @raisetry("ConfigHandler.setatttr: ")    
-    def setattr(self, section = None, valuename = None):
+    def setattr(self, section = None, valuename = None, persist = False):
+        """
+        setattr will be used to change a config setting on the fly. 
+        By default it only makes the change in the active software
+        If persist = True, the change will also be permanently made in the 
+        config file parameter "self.config_file" 
+        """
         raise NotImplementedError
             
     def open_file(self):
@@ -128,5 +175,3 @@ if __name__ == "__main__":
 
     obj = forttest()
 
-    print; print obj.config.getattr("MRAT", "share_dir")
-    print; print obj.config.setattr("MRAT", "share_dir")

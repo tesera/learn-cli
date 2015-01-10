@@ -23,6 +23,7 @@ import datetime
 import logging
 import os
 import re
+import sys
 
 class SetLogger(object):
     """
@@ -280,37 +281,46 @@ class SetLogger(object):
                  create_paths = False 
                 ):
 
+        # If htre is an existing setlogger object, return without running the 
+        # __init__. The __new__ will send the existing object as the retrun
         if self.__exists: return
         
+        ##########################################
         # Start the temp logger "loghanderStartup"
         # This logger and logfile are removed when permanent logger is set 
-        self._start_templog(app_name     = "loghanderStartup", 
-                            logfile      = "./loghandlertmp.log", 
-                            log_level    = log_level, 
-                            formatter    = None,
-                            screendump   = screendump
-                            )
+        # No checks are made, and it should always work, so allows 
+        # the loghandler itself to be debugged.
+        self.app_name           = "loghanderStartup"
+        self.full_log_path      = "./loghandlertmp.log" 
 
+#         try:
+        self.log_level      = self.check_log_level(log_level)
+#         except Exception, e: #Don't care
+#             self.log_level      = 10
+
+        self.formatter          = self._set_formatter()
+        self.screendump         = screendump
+        
+        self.templog = self._start_log()
+        
+        ################################
+        # Begin building the perm logger        
         # Set and check params        
-        self.app_name  = app_name   ; self._check_app_name()
-        self.logfile   = logfile    ; self._check_logfile()
-        self.log_path  = log_path   ; self._check_log_path()
-        self.log_level = log_level  ; self._check_log_level()
+        self.app_name  = self.check_app_name(app_name)
+        self.logfile   = self.check_logfile(logfile)
+        self.log_path  = self.check_log_path(log_path)
+        self.log_level = self.check_log_level(log_level)
+        self.formatter = self._set_formatter()
         self.screendump = screendump
         self.create_paths = create_paths
-
         # Do the work to create the logger object
-        self._set_full_logpath()
-        self._set_formatter() 
-
-        self._start_log(app_name     = self.app_name, 
-                            logfile      = self.full_log_path, 
-                            log_level    = self.log_level, 
-                            formatter    = self.formatter,
-                            screendump   = self.screendump
-                            )
-        
-        self._migrate_templog()
+        self.full_log_path = self.set_full_log_path(self.log_path, self.logfile)
+        self.formatter = self._set_formatter()
+        # Start the perm log
+        self._start_log()
+        # Migrate the templog over        
+        self.migrate(self.full_log_path, source = "./loghandlertmp.log")
+        # Remove old handler to avoid line dup
         self._remove_handler("loghanderStartup")
 
 
@@ -334,29 +344,23 @@ class SetLogger(object):
     def debug(self, *args, **kwargs):
         return self.logger.debug(*args, **kwargs)                
 
-    # ________________________________________________________________________
-    # USER METHODS
+    #__________________________________________________________________________
+    # PUBLIC METHODS            
 
-    def level(self, level = 40):
-        """
-        NOT YET IMPLEMENTED
-        Intended to change the logging level of the existing handlers
-        """
-        raise NotImplementedError
+    def check_app_name(self, app_name):
+        """"""
+        return self._check_app_name(app_name)
+        
+    def check_logfile(self, logfile):
+        """"""
+        return self._check_logfile(logfile)
 
-    def name(self, name):
-        """
-        NOT YET IMPLEMENTED
-        Intended to change the logger name of the existing handlers
-        """
-        raise NotImplementedError
-
-    def formatter(self, format):
-        """
-        NOT YET IMPLEMENTED
-        Intended to change the log formatting of the existing handlers
-        """
-        raise NotImplementedError
+    def check_log_level(self, log_level):
+        return self._check_log_level(log_level)
+        
+    def check_log_path(self, log_path):
+        """"""
+        return self._check_log_path(log_path)
 
     def dump_to_screen(self, dumping = False):
         """
@@ -367,13 +371,19 @@ class SetLogger(object):
         """
         raise NotImplementedError
 
-    def screendump(self):
+    def formatter(self, format):
         """
-        Dumps the current logfile contents to std out.
+        NOT YET IMPLEMENTED
+        Intended to change the log formatting of the existing handlers
         """
-        _list = self._read()
-        for line in _list:
-            print line
+        raise NotImplementedError
+
+    def level(self, level = 40):
+        """
+        NOT YET IMPLEMENTED
+        Intended to change the logging level of the existing handlers
+        """
+        raise NotImplementedError
 
     def logfile(self, name = None, migrate = True):
         """
@@ -382,6 +392,71 @@ class SetLogger(object):
         """
         raise NotImplementedError
     
+    def migrate(self, dest, source = None, create_paths = False):
+        """
+        :NAME:
+            migrate(dest, [source], [create_paths = <True/False>])
+            
+        :DESCRIPTION:
+            Will verbatim copy all the contents of the source logfile into
+            the dest logfile, and then delete the source.
+            
+            If the source is not passed, it will copy from the object's current
+            logfile into the destination logfile. 
+            
+            'dest' MUST be a full pathname. If only a name is apssed, the 
+            logfile will be created in the current directory (WILL have 
+            unexpected results)
+            
+            'source' SHOULD be a full path name. If not, the local directory 
+            will be assume (WILL have unexpected results).  
+            
+            This is useful for starting temp logfiles during an child object 
+            instantiation, and then migrating the data to the permanent 
+            logfile. I.e. when starting the confighandler object, which 
+            determines the permanent log from the config file, a temp log
+            can be used to track object start, and then that temp log migrated
+            to the perm log it just learned about in the config file. 
+
+        :ATTRIBUTES:
+            dest: MANDATORY. The FULL PATH including file name of the 
+                  destination log.
+                  
+            source: The FULL PATH including filename of the source log. 
+                    This log file is deleted at the end of migration.
+                    
+                    DEFAULTS TO: The current log in the loghandler object
+            
+            create_paths: (True/False). If this flag is True, the log file PATH 
+                          AND FILENAME will be created in the event it does not 
+                          already exist.
+                           
+                          Otherwise an error is thrown if the path does not 
+                          already exist.
+                          
+                          DEFAULTS TO: False     
+
+        :RETURNS:
+            True/False
+            
+        :USAGE:
+            migrate(source = "/dir1/dir2/logfile.log"
+                    dest   = "/dir3/dir4/newlogfile.log", 
+                    create_paths = True)
+        
+        
+        """
+        self._migrate_log(dest = dest, 
+                          source = source, 
+                          create_paths = create_paths)
+
+    def name(self, name):
+        """
+        NOT YET IMPLEMENTED
+        Intended to change the logger name of the existing handlers
+        """
+        raise NotImplementedError
+
     def purge(self):
         """
         Deletes the current contents of the logfile on disk. 
@@ -407,154 +482,225 @@ class SetLogger(object):
         self.logger.critical(''.join(["Successfully purged '", 
                                       str(self.full_log_path), "'. "]))
 
-    def _check_app_name(self):
+    def set_full_log_path(self, log_path, logfile):
+        """"""
+        return self._set_full_log_path(log_path, logfile)
+
+    def screendump(self):
+        """
+        Dumps the current logfile contents to std out.
+        """
+        _list = self._read()
+        for line in _list:
+            print line
+
+    #__________________________________________________________________________
+    # PRIVATE METHODS            
+
+    @raisetry("Failure changing app_name.")
+    def _change_logfile(self, full_log_path):
+        """"""
+        raise NotImplementedError()
+    
+# #         if self._isExistingLogger(app_name):
+# #             self._remove_handler(app_name)
+# #                     
+# #             logger = logging.getLogger(app_name)
+# #             logger.setLevel(level=log_level)
+# #             if ((formatter is "") or (formatter is None)): 
+# #                 formatter = logging.Formatter(
+# #                         '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# 
+#         # create file handler which logs even debug messages
+# 
+#                                      
+#         fh = logging.FileHandler(self.full_log_path)
+#         fh.setLevel(level=self.log_level)
+#         fh.setFormatter(self.formatter)
+# 
+#         # create console handler with a higher log level
+# #         if self.screendump:
+# #             ch = logging.StreamHandler()
+# #             ch.setLevel(level=self.log_level)
+# #             ch.setFormatter(self.formatter)
+# #         else:
+# #             ch = False
+#                 
+#         # add the handlers to the logger
+#         if fh: self.logger.addHandler(fh)
+# #         if ch: logger.addHandler(ch)
+# 
+#         self.full_log_path = full_log_path
+#         
+#         return self.logger
+            
+    def _check_app_name(self, app_name):
         @raisetry(''.join(["Failure setting 'self.app_name'. ",  
                                    "Parameter passed: '",
-                                   str(self.app_name), 
+                                   str(app_name), 
                                    "'. "]))
-        def _checkit(self):
+        def _checkit(self, app_name):
 
-            self.templog.debug(''.join(["Checking parameter 'app_name'."]))
+            self.templog.debug(''.join(["Checking parameter 'app_name' (", 
+                                        str(app_name), 
+                                        "). "]))
 
             # Verify string and clean
             # This can deliver nonsense if a nonsense object is passed in as 
             # app_name, but it will be functional nonsense
-            self.app_name = (''.join(c for c in str(self.app_name) 
-                                     if re.match("[a-zA-z0-9]", c)))
+            app_name = (''.join(c for c in str(app_name) 
+                                if re.match("[a-zA-z0-9]", c)))
 
-            if ((self.app_name is None) or (self.app_name == "")):
+            if ((app_name is None) or (app_name == "")):
                 err = ''.join(["Paraneter 'app_name' must be a valid, ", 
                                           "non-zero-length string. "])
                 self.templog.debug(err)
                 raise ValueError(err)                                                          
 
-            return True
+            return app_name
 
-        _checkit(self)
-        self.templog.debug(''.join(["'app_name': ", str(self.app_name)]))
-        return True 
+        app_name = _checkit(self, app_name)
+        self.templog.debug(''.join(["'app_name': ", str(app_name)]))
+        return app_name 
 
-    def _check_logfile(self):
-        self.templog.debug(''.join(["Checking parameter 'logfile'."]))
+    def _check_logfile(self, logfile):
+        self.templog.debug(''.join(["Checking parameter 'logfile' (", 
+                                    str(logfile), 
+                                    "). "]))
 
         @raisetry(''.join(["Failure setting 'self.logfile'. ",  
-                           "Parameter passed: '",str(self.logfile), "'. "]))        
-        def _checkit(self):
-            if  (self.logfile is ""):
-                self.logfile = self.app_name
-                return True
+                           "Parameter passed: '",str(logfile), "'. "]))        
+        def _checkit(self, logfile):
+            if  (logfile is ""):
+                logfile = self.app_name
+                return logfile
     
-            elif self.logfile is None:
-                return False
+            elif logfile is None:
+                return None
              
             else:
                     # String and clean
-                    logfile = (''.join(c for c in str(self.logfile) 
-                                                if re.match("[a-zA-z0-9]", c)))
+                    logfile = (''.join(c for c in str(logfile) 
+                                                if re.match("[a-zA-z0-9.]", c)))
                     if ".log" not in (logfile[-4:]).lower():
-                        self.logfile = logfile + ".log" 
-                    return True
+                        logfile = logfile + ".log" 
+                    return logfile
 
-        self.templog.debug(''.join(["'logfile': " + str(self.logfile)]))
-        return True
+        result = _checkit(self, logfile)
+        self.templog.debug(''.join(["'logfile': " + str(result)]))
+        return result
 
-    def _check_log_level(self):
+    def _check_log_level(self, log_level):
+        try:
+            self.templog.debug(''.join(["Checking parameter 'log_level' (", 
+                                        str(log_level), 
+                                        "). "]))
+        except Exception, e:
+            pass
 
-        self.templog.debug(''.join(["Checking parameter 'log_level'."]))
-
-        @raisetry(''.join(["Failure setting 'self.log_level'. ",  
-                           "Parameter passed: '",str(self.log_level), "'. "]))
-        def _checkit(self):        
+        @raisetry(''.join(["Failure setting 'log_level'. ",  
+                           "Parameter passed: '",str(log_level), "'. "]))
+        def _checkit(self, log_level):        
         
             # Check for text settings
             # No need for elif since each if returns
-            if "CR" in str(self.log_level).upper(): 
-                self.log_level = "CRITICAL"
-                return True
+            if "CR" in str(log_level).upper(): 
+                log_level = "CRITICAL"
+                return log_level
                  
-            if "ER" in str(self.log_level).upper(): 
-                self.log_level = "ERROR"
-                return True
+            if "ER" in str(log_level).upper(): 
+                log_level = "ERROR"
+                return log_level
                 
-            if "WA" in str(self.log_level).upper(): 
-                self.log_level = "WARNING"
-                return True
+            if "WA" in str(log_level).upper(): 
+                log_level = "WARNING"
+                return log_level
 
-            if "IN" in str(self.log_level).upper(): 
-                self.log_level = "INFO"
-                return True
+            if "IN" in str(log_level).upper(): 
+                log_level = "INFO"
+                return log_level
 
-            if "DE" in str(self.log_level).upper(): 
-                self.log_level = "DEBUG"
-                return True
+            if "DE" in str(log_level).upper(): 
+                log_level = "DEBUG"
+                return log_level
             
-            if "NO" in str(self.log_level).upper(): 
-                self.log_level = "NOTSET"
-                return True 
+            if "NO" in str(log_level).upper(): 
+                log_level = "NOTSET"
+                return log_level 
 
             # If here, log_level is either numerical or invalid        
-            self.log_level = (''.join(c for c in str(self.log_level) 
+            log_level = (''.join(c for c in str(log_level) 
                                      if re.match("[0-9]", c)))
-            self.log_level = int(self.log_level)
+            log_level = int(log_level)
             
-            if ((self.log_level >= 0) and (self.log_level <= 50)): 
-                return True
+            if ((log_level >= 0) and (log_level <= 50)): 
+                return log_level
 
             else:
-                msg = (''.join(["'log_level': '", str(self.log_level),
+                msg = (''.join(["'log_level': '", str(log_level),
                                 "' is not a correct indicator"]))
                 self.templog.debug(msg)
                 raise Exception(msg)
 
-        _checkit(self)            
-        self.templog.debug("'log_level': " + str(self.log_level))
-        return True
+        result = _checkit(self, log_level)            
 
-    def _check_log_path(self):
+        try:
+            self.templog.debug("'log_level': " + str(result))
+        except Exception, e:
+            pass
+            
+        return result
 
-        self.templog.debug(''.join(["Checking parameter 'log_path'."]))
+    def _check_log_path(self, log_path):
+
+        self.templog.debug(''.join(["Checking parameter 'log_path' (", 
+                                    str(log_path), 
+                                    "). "]))
 
         @raisetry(''.join(["Failure setting 'self.log_path'. ",  
-                           "Parameter passed: '",str(self.log_path), "'. "]))
-        def _checkit(self):        
-            if   ((self.log_path is None) or 
-                  (self.log_path == "")
+                           "Parameter passed: '",
+                           str(log_path), 
+                           "'. "]))
+        def _checkit(self, log_path):        
+            if   ((log_path is None) or 
+                  (log_path == "")
                   ): 
                     # Set to the local directory
-                    self.log_path = "./"
+                    log_path = "./"
                     self.templog.debug(''.join(["'log_path' was None. ", 
                                                 "Setting to './'"]))
-                    return True
+                    return log_path
 
             # String and clean
-            self.log_path = (''.join(c for c in str(self.log_path) 
+            log_path = (''.join(c for c in str(log_path) 
                                         if re.match("[a-zA-z0-9/.\\:]", c)))
             #####################################################################
             # REPLACE THE FOLLOWING WITH THE PATHING CONVERSION MODULE
             # Which will modify the path to the current OS standards based on 
             # the directories passed in any format
-            if self.log_path[-1:] != "/": self.log_path = self.log_path + "/"
+            if log_path[-1:] != "/": log_path = log_path + "/"
             #####################################################################
 
-            if not checkPathFormat(self.log_path, endslash = True):
+            if not checkPathFormat(log_path, endslash = True):
                  msg = ("File path is not in a usable format.")
                  self.templog.debug(msg)
                  raise Exception(msg)
                 
-            if not directoryExists(self.log_path):
+            if not directoryExists(log_path):
                 if self.create_paths:
                     self.templog.debug("File path does not exist. Creating.")
-                    os.mkdir(self.log_path)
+                    os.mkdir(log_path)
                 else:
                     self.templog.debug("File path does not exist.")
                     raise Exception("File path does not exist.")                    
             
-            # If here, path seems OK, exists and has been set in self.log_path
+            # If here, path seems OK, exists and has been set in log_path
             # so just return 
-            self.templog.debug("'log_path': " + str(self.log_path))
-            return True
+            self.templog.debug("'log_path': " + str(log_path))
+            return log_path
         
-        _checkit(self)    
+        result = _checkit(self, log_path)
+        return result    
 
     def _isExistingLogger(self, app_name):
         """
@@ -564,33 +710,96 @@ class SetLogger(object):
         else:
             return False
     
-    def _migrate_templog(self):
-        @raisetry(''.join(["Failure migrating templog './loghandlertmp.log' ", 
-                           "to permanent log path '", 
-                           str(self.full_log_path), 
+    def _migrate_log(self, 
+                     dest, 
+                     source = None, 
+                     create_paths = None):
+        """
+        Private method.
+        
+        _migrate_log(self, source = None, dest = None) 
+        
+        "source" and "dest" MUST be the full log file path with file name 
+        and extension I.e. "/der12/dr2/filename.log"
+        """
+        self.logger.info(''.join(["Migrating log '", 
+                                  str(source), 
+                                  "' to '", str(dest), 
+                                  "'. "]))
+        # If source and dest are identical, just return
+        if source == dest:
+            return True
+        
+        #______________________________________________________________________
+        @raisetry(''.join(["loghandler._migrate_log: ", 
+                           "Destination path must exist and cannot be Null. ", 
+                           "Param passed: '", 
+                           str(dest), 
                            "'. "]))
-        def _setit(self):
-            with open("./loghandlertmp.log", "r", 0) as IN:
-                with open(self.full_log_path, "w", 0) as OUT:
+        def _checkParams(self, source, dest, create_paths):
+            # If create_paths is not passed, use the object's current setting 
+            if create_paths is None: create_paths = self.create_paths
+
+            #Raises error if None or ""
+            len(dest)
+            
+            # Check the dir is already there
+            if not directoryExists(dest): 
+                if create_paths:
+                    os.mkdir(os.path.dirname(dest))
+                else:
+                    raise AttributeError()
+
+            # If no source is not passed, set the source to the current
+            # logfile. Current logfile is re-set to the new log path AFTER
+            # the migration is successful            
+            if source is None: source = self.full_log_path
+            
+            return True
+        #______________________________________________________________________
+#         @raisetry(''.join(["Failure migrating templog './loghandlertmp.log' ", 
+#                            "to permanent log path '", 
+#                            str(self.full_log_path), 
+#                            "'. "]))
+
+        def _setit(self, source, dest):
+            with open(source, "r", 0) as IN:
+                with open(dest, "a+", 0) as OUT:
                     for line in IN: OUT.write(line)
             # Use perm logger not templog         
-            self.logger.debug(''.join(["templog migrated to .", 
-                                       self.full_log_path]))
+            self.logger.debug(''.join(["log migrated to ", 
+                                       dest]))
+            self.full_log_path = dest
+            self.log_path = os.path.dirname(dest)
+            self.logfile  = os.path.basename(dest)
+            self._start_log()
+            return True
 
-        @raisetry(''.join(["Failure removing templog './loghandlertmp.log'. "]))
-        def _remove_tempfile(self):
-            os.remove("./loghandlertmp.log")
+        #______________________________________________________________________
             
-        _setit(self)
-        _remove_tempfile(self)
-        # Use perm logger not templog         
-        self.logger.debug(''.join(["templog './loghandlertmp.log' purged."]))
+        _checkParams(self, source, dest, create_paths)
+        _setit(self, source, dest)
+        self._remove_file(source)
         return True
         
     def _read(self):
         """"""
         _list = open(self.full_log_path, "r", 0).read().splitlines()
         return _list
+
+    def _remove_file(self, _file):
+        @raisetry(''.join(["Failure removing log '", 
+                           str(_file),
+                           "'." ]))
+        def _removeit(self, _file):
+            os.remove(_file)
+            self.logger.debug(''.join(["File '", 
+                                   str(_file), 
+                                   "' removed."]))
+
+            return True
+
+        _removeit(self, _file)
  
     def _remove_handler(self, app_name):
 
@@ -606,12 +815,17 @@ class SetLogger(object):
             if self._isExistingLogger(app_name):
                 del logging.Logger.manager.loggerDict[app_name]
 
-            self.logger.debug(''.join(["handler '", 
-                                       str(app_name), 
-                                       "' removed. " 
-                                       ]))
-
+                self.logger.debug(''.join(["handler '", 
+                                           str(app_name), 
+                                           "' removed. " 
+                                           ]))
+            else:
+                self.logger.debug(''.join(["handler '", 
+                                           str(app_name), 
+                                           "' did not exist. Skipping. " 
+                                           ]))                
         _setit(self, app_name)
+
 
     def _set_fileHandler(self, 
                          logfile, 
@@ -639,29 +853,32 @@ class SetLogger(object):
         return True
 
     def _set_formatter(self):
-        self.templog.debug("Setting formatter.")
+#         self.templog.debug("Setting formatter.")
 
         @raisetry(''.join(["Failure setting formatter."]))
         def _setit(self):
-            self.formatter = logging.Formatter(
+            
+#             self.formatter = logging.Formatter(
+            return logging.Formatter(
                         '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
                         )
-            return True
         
         _setit(self)
         return True
 
-    def _set_full_logpath(self):
+    def _set_full_log_path(self, log_path, logfile):
 
         @raisetry(''.join(["Failure setting full log path. "]))
-        def _setit(self):
-            self.full_log_path = self.log_path + self.logfile
-            return True
+        def _setit(self, log_path, logfile):
+            logfile = self._check_logfile(logfile)
+            log_path = self._check_log_path(log_path)
+            result = (log_path + logfile)
+            return result
         
-        _setit(self)
+        result = _setit(self, log_path, logfile)
         self.templog.debug(''.join(["'full_log_path': ", 
-                                    self.full_log_path]))
-        return True
+                                    str(result)]))
+        return result
 
     def _set_screendump(self, 
                         screendump, 
@@ -695,42 +912,47 @@ class SetLogger(object):
     # by the logging documentation
 
     def _start_log(self, 
-                   app_name     = "loghanderStartup", 
-                   logfile      = "./loghandlertmp.log", 
-                   log_level    = 10, 
-                   formatter    = None,
-                   screendump   = False
+#                    app_name     = None, # "loghanderStartup", 
+#                    logfile      = None, #"./loghandlertmp.log", 
+#                    log_level    = None, #10, 
+#                    formatter    = None,
+#                    screendump   = None, #False
                    ): 
+#         if app_name   is None: app_name     = self.app_name
+#         if logfile    is None: logfile      = self.logfile
+#         if log_level  is None: log_level    = self.log_level
+#         if formatter  is None: formatter    = self.formatter
+#         if screendump is None: screendump   = self.screendump
         
         @raisetry(''.join(["Unable to open the log. "]))
         def _log(self, 
-                 app_name, 
-                 logfile, 
-                 log_level,
-                 formatter, 
-                 screendump
+#                  app_name, 
+#                  logfile, 
+#                  log_level,
+#                  formatter, 
+#                  screendump
                  ):
             
             # Remove the existing logger
-            if self._isExistingLogger(app_name):
-                self._remove_handler(app_name)
+            if self._isExistingLogger(self.app_name):
+                self._remove_handler(self.app_name)
             
-            logger = logging.getLogger(app_name)
-            logger.setLevel(level=log_level)
-            if ((formatter is "") or (formatter is None)): 
-                formatter = logging.Formatter(
+            logger = logging.getLogger(self.app_name)
+            logger.setLevel(level=self.log_level)
+#             if ((formatter is "") or (formatter is None)): 
+            self.formatter = logging.Formatter(
                         '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     
             # create file handler which logs even debug messages
-            fh = logging.FileHandler("./loghandlertmp.log")
-            fh.setLevel(level=log_level)
-            fh.setFormatter(formatter)
+            fh = logging.FileHandler(self.full_log_path)
+            fh.setLevel(level=self.log_level)
+            fh.setFormatter(self.formatter)
     
             # create console handler with a higher log level
-            if screendump:
+            if self.screendump:
                 ch = logging.StreamHandler()
-                ch.setLevel(level=log_level)
-                ch.setFormatter(formatter)
+                ch.setLevel(level=self.log_level)
+                ch.setFormatter(self.formatter)
             else:
                 ch = False
                     
@@ -740,17 +962,17 @@ class SetLogger(object):
             return logger
         
         logger = _log(self,                  
-                      app_name, 
-                      logfile, 
-                      log_level,
-                      formatter, 
-                      screendump
+#                       app_name, 
+#                       logfile, 
+#                       log_level,
+#                       formatter, 
+#                       screendump
                       )
         
         logger.info(''.join(["logger started as '", 
-                             str(app_name), 
+                             str(self.app_name), 
                              "' at '",
-                             str(logfile),
+                             str(self.full_log_path),
                              "'. " 
                              ]))
         self.logger = logger
@@ -759,18 +981,19 @@ class SetLogger(object):
     
     @raisetry(''.join(["Unable to open the startup log. "]))
     def _start_templog(self, 
-                       app_name     = "loghanderStartup", 
-                       logfile      = "./loghandlertmp.log", 
-                       log_level    = 10, 
-                       formatter    = None,
-                       screendump   = False
+#                        app_name     = "loghanderStartup", 
+#                        logfile      = "./loghandlertmp.log", 
+#                        log_level    = 10, 
+#                        formatter    = None,
+#                        screendump   = False
                        ):
         
-                self.templog = self._start_log(app_name, 
-                                               logfile, 
-                                               log_level, 
-                                               formatter,
-                                               screendump
+                self.templog = self._start_log(
+#                                                app_name, 
+#                                                logfile, 
+#                                                log_level, 
+#                                                formatter,
+#                                                screendump
                                                )
          
                 self.templog.info("Temp startup log created.")    
@@ -785,29 +1008,18 @@ if __name__ == "__main__":
                     screendump = True, 
                     )
     
-    
-    log.logger.debug("This is a log test of log.logger.debug")
-
     log.debug("This is a log test of log.debug")
     log.info("This is a log test of log.info")
     log.warning("This is a log test of log.warning")
     log.error("This is a log test of log.error")
     log.critical("This is a log test of log.critical")
 
-    #-----------------------
+    log.migrate(dest = "/shared/GitHub/Tesera/MRAT_Refactor/log/migrated.log", 
+                source = "/shared/GitHub/Tesera/MRAT_Refactor/log/test.log", 
+                create_paths = False)
+
+    log.debug("--------------------------------------")
+    log.debug("This is line one in migradted")
+    log.debug("This is line two in migradted")
     
-#     log = SetLogger(app_name = "realAppName", 
-#                     logfile = "test.log",
-#                     log_path = "/shared/GitHub/Tesera/MRAT_Refactor/log", 
-#                     log_level = 10, 
-#                     screendump = True, 
-#                     )
-#     
-#     
-#     log.logger.debug("This is a log test of log.logger.debug")
-# 
-#     log.debug("This is a log test of log.debug")
-#     log.info("This is a log test of log.info")
-#     log.warning("This is a log test of log.warning")
-#     log.error("This is a log test of log.error")
-#     log.critical("This is a log test of log.critical")
+    
