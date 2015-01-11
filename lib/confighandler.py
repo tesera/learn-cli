@@ -6,7 +6,7 @@ __author__      = "Mike Rightmire"
 __copyright__   = "BioCom Software"
 __license__     = "Tesera"
 __license_file__= "Clause1.PERPETUAL_AND_UNLIMITED_LICENSING_TO_THE_CLIENT.py"
-__version__     = "0.9.0.0"
+__version__     = "0.9.3.0"
 __maintainer__  = "Mike Rightmire"
 __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
@@ -17,34 +17,117 @@ from checks         import fileExists
 from ConfigParser   import SafeConfigParser
 from errorhandler   import handlertry
 from errorhandler   import raisetry
-from loghandler     import SetLogger 
+from loghandler     import SetLogger
 
 import ConfigParser 
 # import Errorhandler
 import sys
 
 class ConfigHandler(object):
-    def __init__(self, callobj, config_file):
+    __exists = False
+    
+    def __new__(cls,                  
+                callobj, 
+                config_file, 
+                log_level = 40,
+                screendump = False): 
+        """
+        This is a singleton class. 
+        
+        The __new__ method is called prior to instantiation with __init__. 
+        If there's already an instance of the class, the existing object is 
+        returned. If it doesn't exist, a new object is instantiated with 
+        the __init__.
+        """
+        # __init__ is called no matter what, so...
+        # If there is NOT an instance, just create an instance 
+        # This WILL run __init__
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(ConfigHandler, cls).__new__(cls)
+            return cls.instance
+
+        # Else if an instance does exist, set a flag since
+        # __init__is called, but flag halts completion (just returns)           
+        else:
+            cls.instance.__exists = True
+            return cls.instance
+
+    def __init__(self, 
+                 callobj, 
+                 config_file, 
+                 log_level = 40,
+                 screendump = False):
         """"""
-        self._setlog()
+        self.log_level = log_level
+        self.screendump = screendump
+        
+        self.log = SetLogger(
+                             app_name = "configparser", 
+                             logfile = "configparser.log",
+                             log_path = "./", 
+                             log_level = log_level, 
+                             screendump = screendump, 
+                             create_paths = False 
+                             )
+
 
         self.config_file    = config_file
         self.callobj        = callobj
         self.log.debug("ConfigHandler called with " + str(self.config_file))
 
-        self._initial_var_load()
+#         self._initial_var_load()
+        self.open_file()
+        self.load_vars("APPLICATION_LOGGING")
 
         # This is a special function of the confighandler
         # If the full path for the logfile in the config file is different than 
         # what's currently being used, migrate the log. 
-        self._migrate_log()
+
+        self._check_loaded_logging_vars()
+        print "self.callobj.app_name:", self.callobj.app_name 
+        print "self.callobj.logfile",self.callobj.logfile
+        print "self.callobj.log_path",self.callobj.log_path 
+        print "self.callobj.log_level",self.callobj.log_level 
+        print "self.callobj.screendump",self.callobj.screendump 
+        print "self.callobj.create_paths",self.callobj.create_paths 
+
+        self.log = SetLogger(
+                             app_name = self.callobj.app_name, 
+                             logfile = self.callobj.logfile,
+                             log_path = self.callobj.log_path, 
+                             log_level = self.callobj.log_level, 
+                             screendump = self.callobj.screendump, 
+                             create_paths = self.callobj.create_paths 
+                             )
 
     #__________________________________________________________________________
     # PRIVATE METHODS
-    def _initial_var_load(self):
-        """"""
-        self.open_file()
-        self.load_vars()
+
+#     def _initial_var_load(self):
+#         """"""
+#         self.open_file()
+#         self.load_vars()
+
+    def _check_loaded_logging_vars(self):
+        try:    
+            self.callobj.app_name 
+        except AttributeError, e:
+            self.callobj.app_name = "configparser" 
+
+        try:    
+            self.callobj.logfile 
+        except AttributeError, e:
+            self.callobj.logfile ="configparser.log"
+        
+        try:
+            self.callobj.log_path 
+        except AttributeError, e:
+            self.callobj.log_path = "./"
+
+        try:            
+            self.callobj.create_paths
+        except AttributeError, e:
+            self.callobj.create_paths = False 
     
     def _migrate_log(self):
         """
@@ -81,11 +164,17 @@ class ConfigHandler(object):
     @raisetry("confighandler.ConfigHandler: Failed at SetLogger()")
     def _setlog(self):
         """"""
-        self.log = SetLogger()
+        self.log = add_log(self, 
+                           app_name, 
+                           logfile = "./temp.log",
+                           log_level = 40,
+                           formatter = None, 
+                           screendump = True)
         return 
 
     #__________________________________________________________________________
     # PUBLIC METHODS
+
     @raisetry("ConfigHandler.getatttr: ")    
     def getattr(self, section = None, valuename = None, default = None):
         """"""
@@ -159,19 +248,21 @@ class ConfigHandler(object):
 
 if __name__ == "__main__":
     from loghandler import SetLogger
-    
+     
     class forttest(object):
         def __init__(self):
-            self.log = SetLogger(app_name = "myapp", 
-                                 logfile = "confighandlerTest.log",
-                                 log_path = "../log", 
-                                 log_level = 10, 
-                                 screendump = True,
-                                 create_paths = False )
+#             self.log = SetLogger(app_name = "myapp", 
+#                                  logfile = "confighandlerTest.log",
+#                                  log_path = "../log", 
+#                                  log_level = 10, 
+#                                  screendump = True,
+#                                  create_paths = False )
 
-            self.log.debug("myapp log file created.")
-
-            self.config = ConfigHandler(self, "../etc/XIterativeVarSel.py.conf")
+            self.config = ConfigHandler(self, 
+                                        log_level = 20,
+                                        screendump = True,
+                                        config_file = "../etc/MRAT.conf"
+                                        )
 
     obj = forttest()
 
