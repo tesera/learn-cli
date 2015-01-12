@@ -45,3 +45,854 @@
 2015-01-12 00:34:42,940 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
 2015-01-12 00:34:42,940 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
 2015-01-12 00:34:42,942 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 14:13:47,289 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 14:13:47,375 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 14:13:47,375 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 14:13:47,377 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 14:20:44,738 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 14:20:44,742 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 14:20:44,742 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 14:20:44,744 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 14:21:59,601 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 14:21:59,606 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 14:21:59,606 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 14:21:59,607 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 14:22:19,789 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 14:22:19,793 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 14:22:19,793 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 14:22:19,794 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 14:22:46,064 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 14:22:46,067 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 14:22:46,068 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 14:22:46,070 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:15:51,819 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:16:39,734 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:16:39,783 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:16:39,783 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 15:16:39,810 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:16:57,922 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:20:39,494 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:21:44,553 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:22:33,927 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:24:02,976 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:32:04,616 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:32:04,618 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:32:04,626 - configparser - ERROR - An unidentified exception was passed. 'errorhandler' does not know what to do. Calling fatal exception and halting. [Original error: built-in method __format__ of ConfigHandler object at 0x1774190.wrapped(line:134): StartConfigParserError: File contains no section headers.
+file: ../etc/MRAT.conf, line: 16
+'      print "This is where ", value, " is stored."\n']
+2015-01-12 15:34:56,393 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:34:56,399 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:34:56,411 - configparser - ERROR - The configuration file contains errors. Please verify the contents of the file. [Original error: built-in method __format__ of ConfigHandler object at 0x1c39190.wrapped(line:134): ConfigFileParseError: File contains no section headers.
+file: ../etc/MRAT.conf, line: 16
+'      print "This is where ", value, " is stored."\n']
+2015-01-12 15:35:26,362 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:35:26,365 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:35:26,369 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:35:26,374 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:35:26,374 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 15:35:26,375 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:36:55,893 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:36:55,896 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:36:55,901 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:36:55,904 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:36:55,904 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 15:36:55,906 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:44:39,971 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:44:39,974 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:44:39,978 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:44:39,982 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:44:39,983 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 15:44:39,984 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:53:48,130 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:53:48,132 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:53:48,137 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:53:48,140 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:53:48,140 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 15:53:48,141 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:54:59,596 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:54:59,599 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:54:59,603 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:54:59,606 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:54:59,606 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 15:54:59,607 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:55:21,353 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:55:21,356 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:55:21,360 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:55:21,363 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:55:21,364 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 15:55:21,365 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:55:21,365 - MRATrefactor - DEBUG - Loading section: LOGGING
+2015-01-12 15:55:21,366 - MRATrefactor - DEBUG - Loading section: MRAT
+2015-01-12 15:56:02,869 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:56:02,871 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:56:02,874 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:56:02,877 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:56:02,878 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 15:56:02,879 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:56:02,879 - MRATrefactor - DEBUG - Loading section: LOGGING
+2015-01-12 15:56:02,880 - MRATrefactor - DEBUG - Loading section: MRAT
+2015-01-12 15:56:23,948 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:56:23,950 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:56:23,953 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:56:23,956 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:56:23,956 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 15:56:23,957 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:56:23,958 - MRATrefactor - DEBUG - Loading section: LOGGING
+2015-01-12 15:56:23,958 - MRATrefactor - DEBUG - Loading section: MRAT
+2015-01-12 15:56:40,039 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:56:40,041 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:56:40,045 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:56:40,048 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:56:40,048 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 15:56:40,049 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:56:40,050 - MRATrefactor - DEBUG - Loading section: LOGGING
+2015-01-12 15:56:40,050 - MRATrefactor - DEBUG - Loading section: MRAT
+2015-01-12 15:57:15,011 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:57:15,014 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:57:37,188 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:57:37,191 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:57:37,202 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:57:37,205 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:57:37,206 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 15:57:37,206 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:57:37,207 - MRATrefactor - DEBUG - Loading section: LOGGING
+2015-01-12 15:57:37,208 - MRATrefactor - DEBUG - Loading section: MRAT
+2015-01-12 15:58:52,373 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:58:52,375 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:58:52,378 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:58:52,381 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:58:52,381 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 15:58:52,383 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:58:52,385 - MRATrefactor - DEBUG - Loading section: LOGGING
+2015-01-12 15:58:52,386 - MRATrefactor - DEBUG - Loading section: MRAT
+2015-01-12 15:59:28,001 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:59:28,003 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:59:28,009 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 15:59:28,012 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:59:28,013 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 15:59:28,014 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 15:59:28,015 - MRATrefactor - DEBUG - Loading section: LOGGING
+2015-01-12 15:59:28,016 - MRATrefactor - DEBUG - Loading section: MRAT
+2015-01-12 16:02:03,952 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:02:03,955 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:02:03,960 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:02:03,966 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:02:03,967 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 16:02:03,969 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:02:03,972 - MRATrefactor - DEBUG - Loading section: LOGGING
+2015-01-12 16:02:03,972 - MRATrefactor - DEBUG - Loading section: MRAT
+2015-01-12 16:53:36,279 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:53:36,280 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 16:53:36,282 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:53:36,282 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:53:36,282 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:53:36,284 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:53:36,287 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:53:36,287 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:53:36,288 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:53:36,288 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 16:53:36,291 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:53:36,292 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 16:53:36,294 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:53:59,245 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:53:59,245 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 16:53:59,248 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:53:59,248 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:53:59,249 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:53:59,251 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:53:59,255 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:53:59,255 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:53:59,256 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:53:59,257 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 16:53:59,260 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:53:59,260 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 16:53:59,262 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:54:17,374 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:54:17,374 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 16:54:17,377 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:54:17,378 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:54:17,378 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:54:17,380 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:54:17,383 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:54:17,383 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:54:17,384 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:54:17,385 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 16:54:17,388 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:54:17,388 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 16:54:17,389 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:54:17,391 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:54:17,400 - MRATrefactor - ERROR - The configuration file does not contain the specified section or option (variable). Please verify the contents of the file. [Original error: built-in method __format__ of ConfigHandler object at 0x266c090.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Failure attempting to load section:option (I.e. variable) from the config file. *args: ('log_level',); **kwargs: {}]
+2015-01-12 16:54:17,401 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:54:17,402 - MRATrefactor - ERROR - The configuration file does not contain the specified section or option (variable). Please verify the contents of the file. [Original error: built-in method __format__ of ConfigHandler object at 0x266c090.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Failure attempting to load section:option (I.e. variable) from the config file. *args: ('nadadadad',); **kwargs: {}]
+2015-01-12 16:54:41,384 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:54:41,385 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 16:54:41,386 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:54:41,387 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:54:41,387 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:54:41,389 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:54:41,391 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:54:41,392 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:54:41,392 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:54:41,393 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 16:54:41,395 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:54:41,395 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 16:54:41,396 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:54:41,398 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:54:41,408 - MRATrefactor - ERROR - The configuration file does not contain the specified section or option (variable). Please verify the contents of the file. [Original error: built-in method __format__ of ConfigHandler object at 0x2383090.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Failure attempting to load section:option (I.e. variable) from the config file. *args: ('log_level',); **kwargs: {}]
+2015-01-12 16:54:41,411 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:54:41,412 - MRATrefactor - ERROR - The configuration file does not contain the specified section or option (variable). Please verify the contents of the file. [Original error: built-in method __format__ of ConfigHandler object at 0x2383090.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Failure attempting to load section:option (I.e. variable) from the config file. *args: ('nadadadad',); **kwargs: {}]
+2015-01-12 16:55:32,498 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:55:32,499 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 16:55:32,501 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:55:32,502 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:55:32,502 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:55:32,504 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:55:32,507 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:55:32,507 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:55:32,507 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:55:32,508 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 16:55:32,511 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:55:32,511 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 16:55:32,512 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:55:32,515 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:55:32,525 - MRATrefactor - ERROR - The configuration file does not contain the specified section or option (variable). Please verify the contents of the file. [Original error: built-in method __format__ of ConfigHandler object at 0x1595090.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Failure attempting to load section:option (I.e. variable) from the config file. *args: ('log_level',); **kwargs: {}]
+2015-01-12 16:55:32,527 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:55:32,528 - MRATrefactor - ERROR - The configuration file does not contain the specified section or option (variable). Please verify the contents of the file. [Original error: built-in method __format__ of ConfigHandler object at 0x1595090.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Failure attempting to load section:option (I.e. variable) from the config file. *args: ('nadadadad',); **kwargs: {}]
+2015-01-12 16:55:56,605 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:55:56,605 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 16:55:56,607 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:55:56,608 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:55:56,608 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:55:56,610 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:55:56,614 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:55:56,614 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:55:56,615 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:55:56,616 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 16:55:56,619 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:55:56,619 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 16:55:56,621 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:55:56,623 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:55:56,632 - MRATrefactor - ERROR - The configuration file does not contain the specified section or option (variable). Please verify the contents of the file. [Original error: built-in method __format__ of ConfigHandler object at 0x1be6090.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Failure attempting to load section:option (I.e. variable) from the config file. *args: ('log_level',); **kwargs: {}]
+2015-01-12 16:55:56,635 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:55:56,636 - MRATrefactor - ERROR - The configuration file does not contain the specified section or option (variable). Please verify the contents of the file. [Original error: built-in method __format__ of ConfigHandler object at 0x1be6090.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Failure attempting to load section:option (I.e. variable) from the config file. *args: ('nadadadad',); **kwargs: {}]
+2015-01-12 16:56:51,946 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:56:51,947 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 16:56:51,950 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:56:51,950 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:56:51,950 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:56:51,956 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:56:51,956 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:56:51,957 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:56:51,958 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 16:56:51,961 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:56:51,962 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 16:56:51,964 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:57:30,556 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:57:30,556 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 16:57:30,559 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:57:30,559 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:57:30,560 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:57:30,568 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:57:30,569 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:57:30,569 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:57:30,570 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 16:57:30,573 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:57:30,573 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 16:57:30,574 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:57:43,824 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:57:43,826 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 16:57:43,829 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:57:43,829 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:57:43,830 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:57:43,841 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:57:43,841 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:57:43,842 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:57:43,843 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 16:57:43,845 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:57:43,845 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 16:57:43,846 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:59:07,819 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:59:07,820 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 16:59:07,822 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:59:07,822 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:59:07,823 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:59:07,828 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:59:07,828 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:59:07,829 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:59:07,831 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 16:59:07,834 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:59:07,834 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 16:59:07,835 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:59:26,060 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:59:26,061 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 16:59:26,065 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:59:26,065 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:59:26,066 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:59:26,076 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 16:59:26,076 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 16:59:26,077 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 16:59:26,078 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 16:59:26,081 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 16:59:26,081 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 16:59:26,083 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:06:24,251 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:06:24,251 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:06:24,254 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:06:24,254 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:06:24,254 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:06:24,259 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:06:24,259 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:06:24,260 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:06:24,261 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:06:24,263 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:06:24,264 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:06:24,265 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:06:35,832 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:06:35,832 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:06:35,835 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:06:35,835 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:06:35,836 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:06:35,840 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:06:35,840 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:06:35,840 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:06:35,841 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:06:35,844 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:06:35,844 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:06:35,845 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:07:25,679 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:07:25,679 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:07:25,681 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:07:25,682 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:07:25,682 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:07:25,685 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:07:25,688 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:07:25,689 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:07:25,689 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:07:25,690 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:07:25,694 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:07:25,695 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:07:25,696 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:07:25,698 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:07:25,701 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:07:25,710 - MRATrefactor - ERROR - The configuration file does not contain the specified section or option (variable). Please verify the contents of the file. [Original error: built-in method __format__ of ConfigHandler object at 0xf690d0.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Failure attempting to load section:option (I.e. variable) from the config file. Unable to find variable 'nadadadad' in section 'None' of config_file '../etc/MRAT.conf'. *args: ('nadadadad',); **kwargs: {}]
+2015-01-12 17:08:32,915 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:08:32,915 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:08:32,917 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:08:32,917 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:08:32,917 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:08:32,920 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:08:32,924 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:08:32,925 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:08:32,926 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:08:32,927 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:08:32,930 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:08:32,930 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:08:32,933 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:08:32,934 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:08:32,935 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:08:32,946 - MRATrefactor - ERROR - The configuration file does not contain the specified section or option (variable). Please verify the contents of the file. [Original error: built-in method __format__ of ConfigHandler object at 0x17d60d0.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Unable to find variable 'nadadadad' in section 'None' of config_file '../etc/MRAT.conf'. *args: ('nadadadad',); **kwargs: {}]
+2015-01-12 17:09:44,997 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:09:44,998 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:09:45,004 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:09:45,004 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:09:45,004 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:09:45,006 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:09:45,009 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:09:45,010 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:09:45,010 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:09:45,011 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:09:45,014 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:09:45,014 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:09:45,016 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:09:45,017 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:09:45,019 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:09:45,026 - MRATrefactor - ERROR - Unable to find the specified section or option(variable) in config file. Please verify the contents of the file. [Original error: built-in method __format__ of ConfigHandler object at 0xc790d0.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Unable to find variable 'nadadadad' in section 'None' of config_file '../etc/MRAT.conf'. *args: ('nadadadad',); **kwargs: {}]
+2015-01-12 17:10:52,504 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:10:52,505 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:10:52,510 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:10:52,511 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:10:52,511 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:10:52,513 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:10:52,515 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:10:52,516 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:10:52,516 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:10:52,517 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:10:52,520 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:10:52,521 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:10:52,522 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:10:52,524 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:10:52,526 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:10:52,534 - MRATrefactor - ERROR - [Original error: built-in method __format__ of ConfigHandler object at 0x19a60d0.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Unable to find variable 'nadadadad' in section 'None' of config_file '../etc/MRAT.conf'. *args: ('nadadadad',); **kwargs: {}]Unable to find the specified section or option(variable) in config file. Please verify the contents of the file. 
+2015-01-12 17:12:33,622 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:12:33,622 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:12:33,626 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:12:33,626 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:12:33,627 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:12:33,629 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:12:33,632 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:12:33,633 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:12:33,634 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:12:33,635 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:12:33,638 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:12:33,638 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:12:33,639 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:12:33,642 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:12:33,644 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:12:33,653 - MRATrefactor - ERROR - [built-in method __format__ of ConfigHandler object at 0x12d30d0.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Unable to find variable 'nadadadad' in section 'None' of config_file '../etc/MRAT.conf'. *args: ('nadadadad',); **kwargs: {}]Unable to find the specified section or option(variable) in config file. Please verify the contents of the file. 
+2015-01-12 17:13:46,307 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:13:46,307 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:13:46,310 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:13:46,311 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:13:46,311 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:13:46,314 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:13:46,315 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:13:46,315 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:13:46,316 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:13:46,320 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:13:46,320 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:13:46,322 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:14:39,767 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:14:39,767 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:14:39,769 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:14:39,769 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:14:39,770 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:14:39,772 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:14:39,775 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:14:39,776 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:14:39,776 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:14:39,777 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:14:39,780 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:14:39,781 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:14:39,782 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:14:39,784 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:14:39,785 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:14:39,793 - MRATrefactor - ERROR - [built-in method __format__ of ConfigHandler object at 0xb2c0d0.wrapped(line:146): ConfigFileNoOption: ConfigHandler.load_var; Unable to find variable 'nadadadad' in section 'None' of config_file '../etc/MRAT.conf'. *args: ('nadadadad',); **kwargs: {}]Unable to find the specified section or option(variable) in config file. Please verify the contents of the file. 
+2015-01-12 17:16:10,040 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:16:10,040 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:16:10,047 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:16:10,048 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:16:10,048 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:16:10,052 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:16:10,055 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:16:10,056 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:16:10,056 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:16:10,057 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:16:10,060 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:16:10,060 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:16:10,061 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:16:10,063 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:16:10,065 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:16:10,079 - MRATrefactor - ERROR - [ConfigFileNoOption: ConfigHandler.load_var; Unable to find variable 'nadadadad' in section 'None' of config_file '../etc/MRAT.conf'. *args: ('nadadadad',); **kwargs: {}]Unable to find the specified section or option(variable) in config file. Please verify the contents of the file. 
+2015-01-12 17:23:09,309 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:23:09,309 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:23:09,312 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:23:09,312 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:23:09,313 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:23:09,315 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:23:09,317 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:23:09,318 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:23:09,318 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:23:09,320 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:23:09,323 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:23:09,324 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:23:09,326 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:23:09,328 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:23:09,331 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:23:55,934 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:23:55,935 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:23:55,938 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:23:55,939 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:23:55,939 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:23:55,942 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:23:55,944 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:23:55,944 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:23:55,944 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:23:55,947 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:23:55,948 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:23:55,950 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:16,565 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:16,566 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:25:16,569 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:16,570 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:25:16,571 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:25:16,574 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:16,575 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:16,576 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:25:16,576 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:25:16,578 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:16,580 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:16,582 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:43,938 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:43,939 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:25:43,941 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:43,942 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:25:43,942 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:25:43,945 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:43,951 - configparser - ERROR - [ConfigFileNoOption: ConfigHandler.load_var; global name 'fubu' is not defined*args: (); **kwargs: {}]Unable to find the specified section or option(variable) in config file. Please verify the contents of the file. 
+2015-01-12 17:25:43,953 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:43,953 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:25:43,954 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:25:43,956 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:43,958 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:43,959 - configparser - ERROR - [ConfigFileNoOption: ConfigHandler.load_var; global name 'fubu' is not defined*args: ('log_level',); **kwargs: {}]Unable to find the specified section or option(variable) in config file. Please verify the contents of the file. 
+2015-01-12 17:25:43,961 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:25:43,962 - configparser - ERROR - [ConfigFileNoOption: ConfigHandler.load_var; global name 'fubu' is not defined*args: ('nadadadad',); **kwargs: {}]Unable to find the specified section or option(variable) in config file. Please verify the contents of the file. 
+2015-01-12 17:29:10,320 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:29:10,321 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:29:10,323 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:29:10,323 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:29:10,323 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:29:10,325 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:29:28,642 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:29:28,642 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:29:28,644 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:29:28,645 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:29:28,645 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:29:28,647 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:29:28,654 - configparser - ERROR - [ConfigHandler.load: ConfigFileNoOption: ConfigHandler.load_var; *args: (); **kwargs:  global name 'fubu' is not defined]Unable to find the specified section or option(variable) in config file. Please verify the contents of the file. 
+2015-01-12 17:29:28,655 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:29:28,656 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:29:28,656 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:29:28,658 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:29:28,659 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:29:28,660 - configparser - ERROR - [ConfigHandler.load: ConfigFileNoOption: ConfigHandler.load_var; *args: ('log_level',); **kwargs:  global name 'fubu' is not defined]Unable to find the specified section or option(variable) in config file. Please verify the contents of the file. 
+2015-01-12 17:29:28,661 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:29:28,662 - configparser - ERROR - [ConfigHandler.load: ConfigFileNoOption: ConfigHandler.load_var; *args: ('nadadadad',); **kwargs:  global name 'fubu' is not defined]Unable to find the specified section or option(variable) in config file. Please verify the contents of the file. 
+2015-01-12 17:30:08,875 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:30:08,876 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:30:08,878 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:30:08,878 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:30:08,878 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:30:08,880 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:30:08,883 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:30:08,883 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:30:08,883 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:30:08,884 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:30:08,891 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:30:08,892 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:30:08,893 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:30:08,894 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:30:08,896 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:30:08,903 - MRATrefactor - ERROR - [ConfigHandler.load: ConfigFileNoOption: ConfigHandler.load_var; *args: ('nadadadad',); **kwargs:  Unable to find variable 'nadadadad' in section 'None' of config_file '../etc/MRAT.conf'. ]Unable to find the specified section or option(variable) in config file. Please verify the contents of the file. 
+2015-01-12 17:31:36,125 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:31:36,125 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:31:36,127 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:31:36,127 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:31:36,128 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:31:36,130 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:31:36,133 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:31:36,133 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:31:36,134 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:31:36,135 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:31:36,138 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:31:36,138 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:31:36,140 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:31:36,141 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:31:36,143 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:31:36,151 - MRATrefactor - ERROR - [ConfigHandler.loadattr: ConfigFileNoOption: ConfigHandler.load_var; *args: ('nadadadad',); **kwargs:  Unable to find variable 'nadadadad' in section 'None' of config_file '../etc/MRAT.conf'. ]Unable to find the specified section or option(variable) in config file. Please verify the contents of the file. 
+2015-01-12 17:32:10,215 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:32:10,216 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:32:10,218 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:32:10,218 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:32:10,219 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:32:10,220 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:32:10,223 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:32:10,224 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:32:10,224 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:32:10,225 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:32:10,231 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:32:10,231 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:32:10,234 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:32:10,235 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:32:10,237 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:32:10,245 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 17:32:39,484 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:32:39,485 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:32:39,490 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:32:39,490 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:32:39,490 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:32:39,492 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:32:39,495 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:32:39,496 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:32:39,496 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:32:39,497 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:32:39,500 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:32:39,500 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:32:39,501 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:32:39,503 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:32:39,504 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:32:39,513 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 17:33:43,481 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:33:43,481 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:33:43,484 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:33:43,484 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:33:43,485 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:33:43,487 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:33:43,490 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:33:43,490 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:33:43,490 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:33:43,491 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:33:43,494 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:33:43,494 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:33:43,496 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:33:43,499 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:33:43,500 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:33:43,508 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 17:34:17,215 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:34:17,216 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:34:17,219 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:34:17,219 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:34:17,220 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:34:17,222 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:34:17,224 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:34:17,225 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:34:17,225 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:34:17,226 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:34:17,229 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:34:17,229 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:34:17,230 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:34:17,231 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:34:17,233 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:34:17,242 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 17:40:41,329 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:40:41,329 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:40:41,333 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:40:41,333 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:40:41,334 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:40:41,338 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:40:41,342 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:40:41,342 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:40:41,342 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:40:41,343 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:40:41,346 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:40:41,346 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:40:41,347 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:40:41,349 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:40:41,350 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:40:41,368 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 17:42:51,856 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:42:51,856 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:42:51,862 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:42:51,863 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:42:51,863 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:42:51,865 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:42:51,868 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:42:51,868 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:42:51,869 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:42:51,870 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:42:51,873 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:42:51,873 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:42:51,875 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:42:51,877 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:42:51,879 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:42:51,886 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 17:43:28,622 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:43:28,622 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:43:28,624 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:43:28,624 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:43:28,626 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:43:28,628 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:43:28,632 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:43:28,633 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:43:28,633 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:43:28,634 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:43:28,637 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:43:28,638 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:43:28,639 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:43:28,641 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:43:28,642 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:43:28,651 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 17:46:41,023 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:46:41,023 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:46:41,029 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:46:41,029 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:46:41,029 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:46:41,031 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:46:41,033 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:46:41,033 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:46:41,034 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:46:41,034 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:46:41,037 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:46:41,037 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:46:41,039 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:46:41,041 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:46:41,042 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:46:41,050 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 17:48:57,410 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:48:57,410 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:51:07,941 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:51:07,941 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:51:33,140 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:51:33,140 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:52:15,897 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:52:15,898 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:53:21,755 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:53:21,755 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:57:07,516 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:57:07,517 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:57:07,529 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:57:07,530 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:57:07,530 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:57:07,591 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:57:07,595 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:57:07,595 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:57:07,596 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:57:07,598 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:57:07,656 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:57:07,656 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:57:07,658 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:57:07,661 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:57:07,662 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:57:07,670 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 17:57:48,093 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:57:48,093 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:57:48,096 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:57:48,096 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:57:48,097 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:57:48,100 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:57:48,103 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:57:48,103 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:57:48,104 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:57:48,105 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:57:48,108 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:57:48,109 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:57:48,110 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:57:48,111 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:57:48,113 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:57:48,121 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 17:58:23,635 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:58:23,636 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:58:23,639 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:58:23,639 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:58:23,640 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:58:23,642 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:58:23,644 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:58:23,645 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:58:23,645 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:58:23,646 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:58:23,649 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:58:23,649 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:58:23,650 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:58:23,652 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:58:23,654 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:58:23,662 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 17:59:00,742 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:59:00,742 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 17:59:00,745 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:59:00,746 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:59:00,746 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:59:00,749 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:59:00,753 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:59:00,753 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 17:59:00,754 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 17:59:00,755 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 17:59:00,759 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:59:00,759 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 17:59:00,761 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:59:00,762 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:59:00,763 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 17:59:00,769 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 17:59:25,317 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 17:59:25,317 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 18:00:17,721 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:00:17,721 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 18:00:17,728 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:00:17,729 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 18:00:17,729 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 18:00:17,731 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:00:17,734 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:00:17,734 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 18:00:17,735 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 18:00:17,736 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 18:00:17,739 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:00:17,740 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 18:00:17,741 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:00:17,742 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:00:17,744 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:00:17,752 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 18:00:50,912 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:00:50,913 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 18:02:20,729 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:02:20,729 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 18:02:20,731 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:02:20,732 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 18:02:20,732 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 18:02:20,734 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:02:20,737 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:02:20,738 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 18:02:20,738 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 18:02:20,739 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 18:02:20,743 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:02:20,743 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 18:02:20,745 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:02:20,747 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:02:20,748 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:02:20,756 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 18:03:23,536 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:03:23,537 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 18:03:23,540 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:03:23,540 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 18:03:23,541 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 18:03:23,543 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:03:23,545 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:03:23,546 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 18:03:23,546 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 18:03:23,547 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 18:03:23,549 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:03:23,550 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 18:03:23,551 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:03:23,552 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:03:23,553 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:03:23,564 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 18:03:54,609 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:03:54,609 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 18:03:54,612 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:03:54,612 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 18:03:54,613 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 18:03:54,614 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:03:54,616 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:03:54,616 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 18:03:54,617 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 18:03:54,618 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 18:03:54,620 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:03:54,620 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 18:03:54,621 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:03:54,622 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:03:54,623 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:03:54,629 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 18:07:58,244 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:07:58,245 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 18:07:58,247 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:07:58,247 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 18:07:58,248 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 18:07:58,249 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:07:58,251 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:07:58,252 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 18:07:58,252 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 18:07:58,253 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 18:07:58,256 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:07:58,256 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 18:07:58,257 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:07:58,258 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:07:58,259 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:07:58,269 - MRATrefactor - ERROR - ["ConfigHandler.getattr: PassThroughException: ConfigHandler.getatttr;  *args: ('nadadadad',); **kwargs:  nadadadad"]
+2015-01-12 18:04:02,935 - configparser - ERROR - [ConfigHandler._open_file: ConfigFileParseError: *args: (); **kwargs:  ConfigFileNotFound(<__main__.main_program object at 0x1bc2b10>):]The configuration file was not found. Please verify the file exists in the appropriate path and is readable.
+2015-01-12 18:04:39,901 - configparser - ERROR - [ConfigHandler._open_file: ConfigFileParseError: *args: (); **kwargs:  ConfigFileNotFound(<__main__.main_program object at 0x1386b10>):]The configuration file was not found. Please verify the file exists in the appropriate path and is readable.
+2015-01-12 18:05:12,904 - configparser - ERROR - [ConfigHandler._open_file: ConfigFileParseError: *args: (); **kwargs:  ConfigFileNotFound(<__main__.main_program object at 0x17abb10>):]The configuration file was not found. Please verify the file exists in the appropriate path and is readable.
+2015-01-12 18:06:23,757 - configparser - ERROR - [ConfigHandler._open_file: ConfigFileParseError: *args: (); **kwargs:  ConfigFileNotFound(<__main__.main_program object at 0x25bfb10>):]The configuration file was not found. Please verify the file exists in the appropriate path and is readable.
+2015-01-12 18:08:44,381 - configparser - ERROR - [ConfigHandler.open_file: ConfigFileParseError: *args: (); **kwargs:  ConfigFileNotFound(<__main__.main_program object at 0x2408ad0>):]The configuration file was not found. Please verify the file exists in the appropriate path and is readable.
+2015-01-12 18:11:42,560 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:11:42,561 - configparser - DEBUG - ConfigHandler called with ../etc/MRAT.conf
+2015-01-12 18:11:42,568 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:11:42,569 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 18:11:42,569 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 18:11:42,572 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:11:42,575 - configparser - INFO - Logger started at  './configparser.log' with screendump: True.
+2015-01-12 18:11:42,575 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-12 18:11:42,576 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-12 18:11:42,577 - configparser - DEBUG - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-12 18:11:42,580 - configparser - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:11:42,580 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-12 18:11:42,581 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:11:42,582 - MRATrefactor - INFO - Logger started at  '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log' with screendump: True.
+2015-01-12 18:11:42,583 - MRATrefactor - DEBUG - End of MRATmain run.

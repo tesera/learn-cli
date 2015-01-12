@@ -12,14 +12,19 @@ __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
 ##############################################################################
 
-from checks         import checkObject as obj
+from checks         import checkObject
 from checks         import fileExists
+from checks         import checklist
 from ConfigParser   import SafeConfigParser
 from errorhandler   import handlertry
 from errorhandler   import raisetry
+
+# from trywrappers    import handlertry
+# from trywrappers    import raisetry
 from loghandler     import SetLogger
 
 import ConfigParser 
+import re
 # import Errorhandler
 import sys
 
@@ -27,7 +32,7 @@ class ConfigHandler(object):
     __exists = False
     
     def __new__(cls,                  
-                callobj, 
+#                 callobj, 
                 config_file, 
                 log_level = 40,
                 screendump = False): 
@@ -53,7 +58,7 @@ class ConfigHandler(object):
             return cls.instance
 
     def __init__(self, 
-                 callobj, 
+#                  callobj, 
                  config_file, 
                  log_level = 40,
                  screendump = False):
@@ -72,169 +77,158 @@ class ConfigHandler(object):
 
 
         self.config_file    = config_file
-        self.callobj        = callobj
+#         self.        = callobj
         self.log.debug("ConfigHandler called with " + str(self.config_file))
 
-#         self._initial_var_load()
+        self._load_all_vars()
         self.open_file()
-        self.load_vars("APPLICATION_LOGGING")
+#         self.loadattr("APPLICATION_LOGGING")
 
         # This is a special function of the confighandler
         # If the full path for the logfile in the config file is different than 
         # what's currently being used, migrate the log. 
 
         self._check_loaded_logging_vars()
-        print "self.callobj.app_name:", self.callobj.app_name 
-        print "self.callobj.logfile",self.callobj.logfile
-        print "self.callobj.log_path",self.callobj.log_path 
-        print "self.callobj.log_level",self.callobj.log_level 
-        print "self.callobj.screendump",self.callobj.screendump 
-        print "self.callobj.create_paths",self.callobj.create_paths 
 
         self.log = SetLogger(
-                             app_name = self.callobj.app_name, 
-                             logfile = self.callobj.logfile,
-                             log_path = self.callobj.log_path, 
-                             log_level = self.callobj.log_level, 
-                             screendump = self.callobj.screendump, 
-                             create_paths = self.callobj.create_paths 
+                             app_name = self.app_name, 
+                             logfile = self.logfile,
+                             log_path = self.log_path, 
+                             log_level = self.log_level, 
+                             screendump = self.screendump, 
+                             create_paths = self.create_paths 
                              )
 
     #__________________________________________________________________________
     # PRIVATE METHODS
 
-#     def _initial_var_load(self):
-#         """"""
-#         self.open_file()
-#         self.load_vars()
+    def _load_all_vars(self):
+        """"""
+        self.open_file()
+        self.loadattr()
 
     def _check_loaded_logging_vars(self):
         try:    
-            self.callobj.app_name 
+            self.app_name 
         except AttributeError, e:
-            self.callobj.app_name = "configparser" 
+            self.app_name = "configparser" 
 
         try:    
-            self.callobj.logfile 
+            self.logfile 
         except AttributeError, e:
-            self.callobj.logfile ="configparser.log"
+            self.logfile ="configparser.log"
         
         try:
-            self.callobj.log_path 
+            self.log_path 
         except AttributeError, e:
-            self.callobj.log_path = "./"
+            self.log_path = "./"
 
         try:            
-            self.callobj.create_paths
+            self.create_paths
         except AttributeError, e:
-            self.callobj.create_paths = False 
+            self.create_paths = False 
     
-    def _migrate_log(self):
-        """
-        This is a special migrate log method that should only be used within 
-        confighandler. It actually migrating anything is a rarity.
-        """
-        # callobj is the self for which the confighandler is setting variables
-        # 'configured_full_log_path' is the path as set by the config file
-
-        configured_full_log_path = self.log.set_full_log_path(
-                                                        self.callobj.log_path, 
-                                                        self.callobj.logfile
-                                                        )
-
-        # self.log is the logging singleton object
-        # If the full_log_path in the current logging object is NOT the same
-        # as configured_full_log_path, then migrate the log to the new 
-        if self.log.full_log_path != configured_full_log_path:
-            self.log.debug(''.join(["Logfile changed by configuration file. ", 
-                                    "Migrating..."]))
-            # loghandler's migrate method
-            # Remember, the migrate method automagically resets the handler's
-            # self.full_log_path to 'dest'
-            self.log.migrate(
-                    dest = configured_full_log_path, # the log path from config  
-                    source = self.log.full_log_path, # Current
-                    create_paths = True)
-                        
-        else:
-            self.log.debug(''.join(["Continuing with original log file : '", 
-                                    str(self.log.full_log_path), 
-                                    "' ."]))
+#     def _migrate_log(self):
+#         """
+#         This is a special migrate log method that should only be used within 
+#         confighandler. It actually migrating anything is a rarity.
+#         """
+#         # callobj is the self for which the confighandler is setting variables
+#         # 'configured_full_log_path' is the path as set by the config file
+# 
+#         configured_full_log_path = self.log.set_full_log_path(
+#                                                         self.log_path, 
+#                                                         self.logfile
+#                                                         )
+# 
+#         # self.log is the logging singleton object
+#         # If the full_log_path in the current logging object is NOT the same
+#         # as configured_full_log_path, then migrate the log to the new 
+#         if self.log.full_log_path != configured_full_log_path:
+#             self.log.debug(''.join(["Logfile changed by configuration file. ", 
+#                                     "Migrating..."]))
+#             # loghandler's migrate method
+#             # Remember, the migrate method automagically resets the handler's
+#             # self.full_log_path to 'dest'
+#             self.log.migrate(
+#                     dest = configured_full_log_path, # the log path from config  
+#                     source = self.log.full_log_path, # Current
+#                     create_paths = True)
+#                         
+#         else:
+#             self.log.debug(''.join(["Continuing with original log file : '", 
+#                                     str(self.log.full_log_path), 
+#                                     "' ."]))
         
-    @raisetry("confighandler.ConfigHandler: Failed at SetLogger()")
-    def _setlog(self):
-        """"""
-        self.log = add_log(self, 
-                           app_name, 
-                           logfile = "./temp.log",
-                           log_level = 40,
-                           formatter = None, 
-                           screendump = True)
-        return 
-
     #__________________________________________________________________________
     # PUBLIC METHODS
 
-    @raisetry("ConfigHandler.getatttr: ")    
-    def getattr(self, section = None, valuename = None, default = None):
-        """"""
-#         try:
-        # FUTURE: if section is none, search all the sctions and return 
-        #         either the first instance, or a list of all
-        if ((section is None) or (len(section) < 1)):
-            e = "Parameter 'section' cannot be empty or None."
-            raise ConfigParser.NoSectionError(e)
-        
+    @handlertry("PassThroughException: ConfigHandler.getatttr;  ")    
+    def getattr(self, varname, default = None):
+        """
+        Retrieves the attribute from ConfigHandlers "self"
+        """
+        # If the first attempt to return a self var fails, control 
+        # should pass to @handlertry where corrections can be set 
+        # For now this is just a passthrough, which will drop control
+        # to the second line, which returns the default
+        return self.__dict__[varname]
+        return default
 
-        # FUTURE: if valuename is none, return a list of all values
-        if ((valuename is None) or (len(valuename) < 1)):
-            e = "Parameter 'valuename' cannot be empty or None."
-            raise ConfigParser.NoOptionError(e)
-    
-        return self.config.get(section, valuename)
-    
-#         except ConfigParser.NoSectionError, e:
-#             e=''.join(["ConfigFileParseError(",str(self.config_file),
-#                        "):", str(section), ") Section not found."])
-# #             self.err(e, getmembers(self), stack())
-#             raise IOError(e)
-#     
-#         except ConfigParser.NoOptionError, e:
-#             e=''.join(["ConfigFileNoOption(",str(self.config_file),
-#                        ":", str(section), ":", str(valuename), 
-#                        ") option not found."])
-# #             self.err(e, getmembers(self), stack())
-#             raise IOError(e)
-#             
-#             if (("err" in str(default).lower()) or
-#                 ('rais' in str(default).lower())):
-#                 raise IOError(e)
-#             else:
-#                 return default
+    @raisetry("ConfigHandler.getatttr;  ")    
+    def setattr(self, varname, value, default = None):
+        """
+        Sets an attribute from ConfigHandlers "self"
+        """
+        self.__dict__[str(varname)] = value
+        return True
 
     @raisetry("ConfigHandler.setatttr: ")    
-    def setattr(self, section = None, valuename = None, persist = False):
+    def configattr(self, section = None, valuename = None, persist = False):
         """
-        setattr will be used to change a config setting on the fly. 
+        configattr will be used to change a config setting on the fly. 
         By default it only makes the change in the active software
         If persist = True, the change will also be permanently made in the 
         config file parameter "self.config_file" 
         """
         raise NotImplementedError
-            
+
+    @handlertry("ConfigFileParseError: ")
     def open_file(self):
         self.verify_file()
         self.log.debug(("Opening " + str(self.config_file)))
         self.config = SafeConfigParser()
         self.config.read(self.config_file)
-        
-    def load_vars(self, section = None):
+        return True
+    
+    @handlertry(''.join(["ConfigFileNoOption: ConfigHandler.load_var; "]))        
+    def loadattr(self, varname = None, section = None):
+        """
+        Retrieves a variable from the CONFIG FILE (not self)
+        """
+        _found = False
         for section_name in self.config.sections():
+
             if ((section_name.lower() == str(section).lower()) or 
                 (section is None)):
-                self.log.debug(("Loading section: " + str(section_name)))                
                 for name, value in self.config.items(section_name):
-                    self.callobj.__dict__[name] = value
+
+                    if ({"LOADALL":True, None:True, name:True}.get(varname)):
+                        value = self._convert_string_values(value)
+                        self.__dict__[name] = value
+                        _found = True
+
+                        if varname is not None: return value
+
+        if not _found: raise AttributeError(''.join(["Unable to find variable '",
+                                                    str(varname), 
+                                                    "' in section '", 
+                                                    str(section), 
+                                                    "' of config_file '", 
+                                                    str(self.config_file), 
+                                                    "'. "
+                                                    ]))
+            
     
     def verify_file(self):
         """"""
@@ -246,6 +240,27 @@ class ConfigHandler(object):
                          str(self.config_file),"):"])
             raise IOError(e) # Remove me and active self.err line
 
+    def _convert_string_values(self, value):
+        """"""
+        @raisetry(''.join(["ConfigHandler._convert_values; checking value of '", 
+                           str(value), "'."]))
+        def _convertit(self, value):
+            # Check for boolean text, return actual bool
+            if (re.match("^true$", str(value).lower())) : return True
+            if (re.match("^false$", str(value).lower())): return False
+
+            # Check for INT and float 
+            if (re.match("^[0-9]+\.[0-9]*$", value)):   return float(value)
+            if (re.match("^[0-9]+$", value)):           return int(value)
+
+            # Otherwise just return original string, no conversion            
+            return value 
+        
+        result = _convertit(self, value)
+
+        return result
+            
+        
 if __name__ == "__main__":
     from loghandler import SetLogger
      
@@ -258,11 +273,18 @@ if __name__ == "__main__":
 #                                  screendump = True,
 #                                  create_paths = False )
 
-            self.config = ConfigHandler(self, 
-                                        log_level = 20,
+            self.config = ConfigHandler(
+#                                         self, 
+                                        log_level = 10,
                                         screendump = True,
                                         config_file = "../etc/MRAT.conf"
                                         )
 
     obj = forttest()
-
+    
+#     for i in obj.config.__dict__.keys():
+#         print i,":", obj.config.__dict__[i]
+         
+    print obj.config.getattr("log_level")
+    print obj.config.getattr("nadadadad")
+    

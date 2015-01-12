@@ -12,12 +12,12 @@ __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
 ##############################################################################
 
-from checks import checkPathFormat
-from checks import directoryExists
-from checks import fileExists
-from errorhandler import handlertry
-from errorhandler import raisetry
-from inspect import stack 
+from checks         import checkPathFormat
+from checks         import directoryExists
+from checks         import fileExists
+from errorhandler   import handlertry
+from errorhandler   import raisetry
+from inspect        import stack 
 
 import datetime
 import logging
@@ -325,7 +325,6 @@ class SetLogger(object):
         self.full_log_path = self._set_full_log_path(self.log_path, self.logfile)
         self.formatter = self._set_formatter()
         # Start the perm log
-        print "Running start_log()" #3333
         self._set_logger()
 
 
@@ -408,71 +407,6 @@ class SetLogger(object):
                                   self.full_log_path, 
                                   "'. "
                                   ]))         
-
-#     def migrate(self, dest, source = None, create_paths = False):
-#         """
-#         :NAME:
-#             migrate(dest, [source], [create_paths = <True/False>])
-#             
-#         :DESCRIPTION:
-#             Will verbatim copy all the contents of the source logfile into
-#             the dest logfile, and then delete the source.
-#             
-#             If the source is not passed, it will copy from the object's current
-#             logfile into the destination logfile. 
-#             
-#             'dest' MUST be a full pathname. If only a name is apssed, the 
-#             logfile will be created in the current directory (WILL have 
-#             unexpected results)
-#             
-#             'source' SHOULD be a full path name. If not, the local directory 
-#             will be assume (WILL have unexpected results).  
-#             
-#             This is useful for starting temp logfiles during an child object 
-#             instantiation, and then migrating the data to the permanent 
-#             logfile. I.e. when starting the confighandler object, which 
-#             determines the permanent log from the config file, a temp log
-#             can be used to track object start, and then that temp log migrated
-#             to the perm log it just learned about in the config file. 
-# 
-#         :ATTRIBUTES:
-#             dest: MANDATORY. The FULL PATH including file name of the 
-#                   destination log.
-#                   
-#             source: The FULL PATH including filename of the source log. 
-#                     This log file is deleted at the end of migration.
-#                     
-#                     DEFAULTS TO: The current log in the loghandler object
-#             
-#             create_paths: (True/False). If this flag is True, the log file PATH 
-#                           AND FILENAME will be created in the event it does not 
-#                           already exist.
-#                            
-#                           Otherwise an error is thrown if the path does not 
-#                           already exist.
-#                           
-#                           DEFAULTS TO: False     
-# 
-#         :RETURNS:
-#             True/False
-#             
-#         :USAGE:
-#             migrate(source = "/dir1/dir2/logfile.log"
-#                     dest   = "/dir3/dir4/newlogfile.log", 
-#                     create_paths = True)
-#         
-#         
-#         """
-#         self._migrate_log_data(dest = dest, 
-#                           source = source, 
-#                           create_paths = create_paths)
-
-#     def name(self, name):
-#         """
-#         NOT YET IMPLEMENTED
-#         Intended to change the logger name of the existing handlers
-#         """
-#         raise NotImplementedError
 
     def purge(self):
         """
@@ -667,27 +601,27 @@ class SetLogger(object):
         
             # Check for text settings
             # No need for elif since each if returns
-            if "CR" in str(log_level).upper(): 
+            if "C" in str(log_level).upper()[:1]: 
                 log_level = "CRITICAL"
                 return log_level
                  
-            if "ER" in str(log_level).upper(): 
+            if "E" in str(log_level).upper()[:1]: 
                 log_level = "ERROR"
                 return log_level
                 
-            if "WA" in str(log_level).upper(): 
+            if "W" in str(log_level).upper()[:1]: 
                 log_level = "WARNING"
                 return log_level
 
-            if "IN" in str(log_level).upper(): 
+            if "I" in str(log_level).upper()[:1]: 
                 log_level = "INFO"
                 return log_level
 
-            if "DE" in str(log_level).upper(): 
+            if "D" in str(log_level).upper()[:1]: 
                 log_level = "DEBUG"
                 return log_level
             
-            if "NO" in str(log_level).upper(): 
+            if "NO" in str(log_level).upper()[:1]: 
                 log_level = "NOTSET"
                 return log_level 
 

@@ -15,150 +15,12 @@ __status__      = "Development"
 ##############################################################################
 
 
-# from loghandler import checkLogger
-
-# from loghandler import setLogger
+from loghandler import SetLogger
 
 import inspect
 import functools
 import sys
 
-def raisetry(msg):
-    """
-    :NAME:
-        raisetry(msg)
-        
-    :DESCRIPTION:
-        raisetry is a decorator which functions to customize the try/except
-        paradigm in Python by attaching the parameter "msg" to the raised 
-        exception.
-        
-    :ARGUMENTS:
-        msg:    A string which is added to the raised error message.
-        
-    :RETURNS:
-        Raises an exception
-        
-    :USAGE:
-        @raisetry("Class.method: Attempting to open " + str(invalidfilename))
-        FH = open("invalidfilename, "r+", 0)
-
-        ---------------------
-        The above replaces...
-        ---------------------
-        
-        msg = "Class.method: Attempting to open " + str(invalidfilename)
-        try:
-            FH = open("invalidfilename, "r+", 0)
-
-        except Exception as err:
-            if not err.args: 
-                err.args=('',)
-            
-            err.args = (
-                (cls + "." + module + ": " + msg + ". " + err.args[0],) + 
-                        err.args[1:]
-                        )
-            raise
-    """    
-    def concrete_decorator(func):
-
-        @functools.wraps(func)
-        def wrapped(self, *args, **kwargs):
-
-            cls = str(self.__class__.__name__)
-            module = func.__name__
-
-            try:
-                result = func(self, *args, **kwargs)
-                return result
-                            
-            except Exception as err:
-                if not err.args: 
-                    err.args=('',)
-                
-                err.args = (
-                    (cls + "." + module + ": " + msg + ". " + err.args[0],) + 
-                            err.args[1:]
-                            )
-                raise
-        
-        return wrapped
-
-    return concrete_decorator      
-
-def handlertry(msg):
-    """
-    :NAME:
-        handlertry(msg)
-        
-    :DESCRIPTION:
-        handlertry is a decorator which functions to customize the try/except
-        paradigm in Python. The "msg" parameter must contain a "signal phrase" 
-        which will be passed to the ErrorHandler class to determine additional 
-        processing in an attempt to correct the error. If the error cannot be 
-        corrected, the calling sofwtare can be cleanly closed in a controlled 
-        manne.
-        
-    :ARGUMENTS:
-        msg:    A string which is added to the raised error message.
-                This string shoudl contain a "trigger message" to allow  
-                handlertry to drop control to a pre-defined routin to either 
-                correct the error or prep the package for controlled shutdown 
-        
-    :RETURNS:
-        Nothing.
-        
-    :USAGE:
-        @handlertry(''.join(["InvalidFileName:", 
-                             "Error when attempting to open ", 
-                             str(invalidfilename)])
-        FH = open("invalidfilename, "r+", 0)
-
-        ------------------------
-        The above results in ...
-        ------------------------
-
-    1. Attempting to run the line of code 'FH = open("invalidfilename, "r+", 0)'
-
-    2. Upon failure, control is passed to errorhandler.ErrorHandler()
-
-    3. Based on the "InvalidFileName" in the message, control is passed to the
-       InvalidFileName handler method. 
-
-    4a.If the InvalidFileName handler can correct the issue, control is passed 
-       back to the calling script, at the line BELOW the original code that 
-       caused the error and code continues to run.
-       
-    4b.If the InvalidFileName handler CANNOT correct the issue, control is 
-       passed to closure methods OR the original error is raised. 
-    """    
-    
-    def concrete_decorator(func):
-
-        @functools.wraps(func)
-        def wrapped(self, *args, **kwargs):
-
-            import errorhandler
-            from inspect import getmembers, stack
-            self.CustomErrorHandler = errorhandler.ErrorHandler()
-            self.err = self.CustomErrorHandler.err()
-
-            cls = str(self.__class__.__name__)
-            module = func.__name__
-
-            try:
-                result = func(self, *args, **kwargs)
-                return result
-
-            except Exception, e:
-#             except Exception as err:
-                    e = str(msg) + str(e) 
-                    self.err(e, getmembers(self), stack())
-        
-        return wrapped
-
-    return concrete_decorator          
 
 class CustomError(Exception):
     """
@@ -259,22 +121,17 @@ class ErrorHandler(object):
     """
 
     def __init__(self): #, log):
-        pass
-#         self.log = setLogger(app_name = log, 
-#                              logfile = "", 
-#                              log_level = 10, 
-#                              screendump = True, 
-#                              debug = True
-#                        )
+        self.log = SetLogger()
             
     def _format_original_error(self, e):
-        return "".join(["[Original error: ", str(e), "]"])
+        return "".join(["[", str(e), "]"])
+#         return "".join(["[Original error: ", str(e), "]"])
     
     def _custom_error(self, message, e):
         # Format message
-        e = "".join([message, str(self._format_original_error(e))])
+        e = "".join([str(self._format_original_error(e)), message])
         # Send to log
-#         self.log.error(e)
+        self.log.error(e)
         return
 
     def err(self):
@@ -338,28 +195,30 @@ class ErrorHandler(object):
             _custom_error(self, message, e)
                      
         """        
-        # Source is inspect.getmembers(self)
-        # EXAMPLE SOURCE (a list of tuples):
-        #[('MAX_LENGTH', 16384), 
-        # ('TSTART', 'TWILIOSOCK'), 
-        # ('__doc__', None), 
-        # ('__implemented__', <implementedBy twisted.internet.protocol.Protocol>), 
-        # ('__init__', <bound method Handler.__init__ of <twistedlisten.Handler instance at 0x02E05EB8>>), 
-        # ('__module__', 'twistedlisten'), 
-        # ('__providedBy__', <implementedBy twistedlisten.Handler>), 
-        # ('__provides__', <implementedBy twistedlisten.Handler>), 
-        # ('_buffer', ''), 
-        # ('_busyReceiving', False), 
-        # ('_checkdata', <bound method Handler._checkdata of <twistedlisten.Handler instance at 0x02E05EB8>>), 
-        # ('_parsedata', <bound method Handler._parsedata of <twistedlisten.Handler instance at 0x02E05EB8>>), 
-        # ('<some_method>', <bound method <class>.<method> of <someinstance instance at 0x02E05EB8>>), 
-        #]
-        errorin = str(source[6][1])
-        errorin = errorin.replace("implementedBy", "")
-        errorin = "".join(c for c in errorin if c not in "<>")
-        errorin = errorin + "." + str(frame[0][3])
-        errorin = errorin + "(line:" + str(frame[0][2]) + "): "
-        e = errorin + str(e)
+###############################################################################
+# FOR NOW, LEAVE 'e' ALONE        
+#         # Source is inspect.getmembers(self)
+#         # EXAMPLE SOURCE (a list of tuples):
+#         #[('MAX_LENGTH', 16384), 
+#         # ('TSTART', 'TWILIOSOCK'), 
+#         # ('__doc__', None), 
+#         # ('__implemented__', <implementedBy twisted.internet.protocol.Protocol>), 
+#         # ('__init__', <bound method Handler.__init__ of <twistedlisten.Handler instance at 0x02E05EB8>>), 
+#         # ('__module__', 'twistedlisten'), 
+#         # ('__providedBy__', <implementedBy twistedlisten.Handler>), 
+#         # ('__provides__', <implementedBy twistedlisten.Handler>), 
+#         # ('_buffer', ''), 
+#         # ('_busyReceiving', False), 
+#         # ('_checkdata', <bound method Handler._checkdata of <twistedlisten.Handler instance at 0x02E05EB8>>), 
+#         # ('_parsedata', <bound method Handler._parsedata of <twistedlisten.Handler instance at 0x02E05EB8>>), 
+#         # ('<some_method>', <bound method <class>.<method> of <someinstance instance at 0x02E05EB8>>), 
+#         #]
+#         errorin = str(source[6][1])
+#         errorin = errorin.replace("implementedBy", "")
+#         errorin = "".join(c for c in errorin if c not in "<>")
+#         errorin = errorin + "." + str(frame[0][3])
+#         errorin = errorin + "(line:" + str(frame[0][2]) + "): "
+#         e = errorin + str(e)
                 
         #EXTERNAL ERRORS
         if   'fatal'                in str(e).lower(): self.FatalError(e)
@@ -408,11 +267,9 @@ class ErrorHandler(object):
 
     def ConfigFileNoOption(self, e):
         # Create custom message to BE SENT TO THE LOGGER
-        message = ("".join(["The configuration file does not contains the ", 
-                            "section value (option). ", 
-                            "Please verify the contents of the file. ", 
-                            "The default variable will be used unless ", 
-                            "'raise error' is passed as the default"]))    
+        message = ("".join(["Unable to find the specified section or option", 
+                            "(variable) in config file. ", 
+                            "Please verify the contents of the file. "]))    
         # Sends the message and original error to the LOGGER
         # Remove this line if you don't want an error displayed
         self._custom_error(message, e)
@@ -459,7 +316,6 @@ class ErrorHandler(object):
         raise FatalException()
         
     def ParameterNotSet(self ,e):
-        print "IN ParameterNotSet" #333
         # Custom message to BE SENT TO THE LOGGER
         message = ("A script parameter (variable) does not exist " +
                    "or is the wrong type")
@@ -473,8 +329,7 @@ class ErrorHandler(object):
         # Sends the message and original error to the LOGGER
         self._custom_error(message, e)
         ### METHOD ACTIONS
-        print "Pass through exception hit"
-                            
+
     def FatalError(self, e):
         # Custom message to BE SENT TO THE LOGGER
         message = ("")
@@ -496,10 +351,5 @@ class ErrorHandler(object):
 
 if __name__ == "__main__":
     
-    @raisetry("hello")
-    def func():
-        print no
-        
-    func()
-    
+    pass    
     

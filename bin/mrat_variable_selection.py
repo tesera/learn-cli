@@ -31,46 +31,20 @@ class mrat_variable_selection(object):
         self.log_level     = log_level
         self.screendump    = screendump
 
-        self.config = ConfigHandler(self, "../etc/MRAT.conf")
-        self.config.load_vars(self.__class__.__name__)
-
+        self.config = ConfigHandler(
+                                    log_level = 10,
+                                    screendump = True,
+                                    config_file = "../etc/MRAT.conf"
+                                    )
         self.log = SetLogger()
-#         self.log = SetLogger(app_name   = self.app_name, 
-#                              logfile    = self.logfile,
-#                              log_path   = self.log_path, 
-#                              log_level  = self.log_level, 
-#                              screendump = self.screendump, 
-#                              )
         
         self.log.debug("End of MRATmain run.")
-
+        print "End of MRATmain run."
 
 if __name__ == "__main__":
     # It is assumed that the log and 
     class main_program(object):
         def __init__(self):
-            self.config = ConfigHandler(self, "../etc/MRAT.conf")
-            self.section = "mrat_variable_selection"
-            self.config.load_vars(self.section)
-        
-            self.app_name  = self.config.getattr(self.section, "app_name")
-            self.logfile   = self.config.getattr(self.section, "logfile")
-            self.log_path  = self.config.getattr(self.section, "log_path")
-            self.log_level = self.config.getattr(self.section, "log_level")
-        
-            self.log = SetLogger(app_name       = self.app_name, 
-                                 logfile        = self.logfile,
-                                 log_path       = self.log_path, 
-                                 log_level      = self.log_level, 
-                                 screendump     = True, 
-                                 )
+            obj = mrat_variable_selection()
 
-
-    obj = main_program()
-
-#     obj = mrat_variable_selection(
-#                    log_level = 10, 
-#                    screendump = True, 
-#                     )
-
-#     obj = mrat_variable_selection({'log_level':10,'screendump':True}) 
+    o = main_program()
