@@ -1,3 +1,13 @@
-.Rproj.user
+test/
+*log
+bin/*.pyc  
+lib/*.pyc  
+share/*.pyc
+etc/*.pyc
+log/*.pyc  
+Rwd/*.pyc         
+
+lib/*.fuse*
+.Rproj.user*
 .Rhistory
-.RData
+

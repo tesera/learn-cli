@@ -19,8 +19,6 @@ from ConfigParser   import SafeConfigParser
 from errorhandler   import handlertry
 from errorhandler   import raisetry
 
-# from trywrappers    import handlertry
-# from trywrappers    import raisetry
 from loghandler     import SetLogger
 
 import ConfigParser 
@@ -33,9 +31,12 @@ class ConfigHandler(object):
     
     def __new__(cls,                  
 #                 callobj, 
-                config_file, 
-                log_level = 40,
-                screendump = False): 
+#                 config_file = None, 
+#                 log_level   = None,
+#                 screendump  = None, 
+                *args, 
+                **kwargs
+                ): 
         """
         This is a singleton class. 
         
@@ -58,37 +59,63 @@ class ConfigHandler(object):
             return cls.instance
 
     def __init__(self, 
-#                  callobj, 
-                 config_file, 
-                 log_level = 40,
-                 screendump = False):
+#                 config_file    = None, 
+#                  log_level      = None,
+#                  screendump     = None, 
+                *args, 
+                **kwargs
+                 ):
         """"""
-        self.log_level = log_level
-        self.screendump = screendump
+        # Here, we do not give the option of changing the ConfigHandler 
+        # parameters. One log file, determined by the main application
+        # This can be changed to match SetLogger...but is not recommended.
+        if self.__exists: return
+
+        try:
+            self.log_level = kwargs["log_level"]
+        except (KeyError, AttributeError), e:
+            self.log_level = 40
+
+        try:
+            self.screendump = kwargs["screendump"]
+        except (KeyError, AttributeError), e:
+            self.screendump = False
         
         self.log = SetLogger(
                              app_name = "configparser", 
                              logfile = "configparser.log",
                              log_path = "./", 
-                             log_level = log_level, 
-                             screendump = screendump, 
+                             log_level = self.log_level, 
+                             screendump = self.screendump, 
                              create_paths = False 
                              )
 
 
-        self.config_file    = config_file
-#         self.        = callobj
-        self.log.debug("ConfigHandler called with " + str(self.config_file))
+        try:
+            self.config_file    = kwargs["config_file"]
+        except (KeyError, AttributeError), e:
+            e = ''.join(["Parameter 'config_file' ", 
+                         "MUST be passed at first object instantiation.", 
+                         str(e)])
+            raise ValueError(e)
+
+        self.log.info("ConfigHandler called with " + str(self.config_file))
 
         self._load_all_vars()
-        self.open_file()
-#         self.loadattr("APPLICATION_LOGGING")
 
-        # This is a special function of the confighandler
-        # If the full path for the logfile in the config file is different than 
-        # what's currently being used, migrate the log. 
+#         # Override config file vars. This needs to come AFTER loding the config 
+#         # file but BEFORE the final SetLogger to allow for config file vars 
+#         # to be manually overidden  
+#         if log_level    is not None: self.log_level = log_level
+#         if screendump   is not None: self.screendump = screendump
 
-        self._check_loaded_logging_vars()
+        self._override_with_kw_vars(kwargs)
+
+        self._set_mandatory_defaults({"app_name":"configparser", 
+                                      "logfile":"configparser.log", 
+                                      "log_path":"./", 
+                                      "create_paths":False} 
+                                     )
 
         self.log = SetLogger(
                              app_name = self.app_name, 
@@ -98,35 +125,33 @@ class ConfigHandler(object):
                              screendump = self.screendump, 
                              create_paths = self.create_paths 
                              )
+        
 
     #__________________________________________________________________________
     # PRIVATE METHODS
+
+    @handlertry("PassThroughException: rhandler._set_mandatory_defaults")
+    def _set_mandatory_defaults(self, _dict):
+        """
+        """
+        for key in _dict.keys():
+            if key not in self.__dict__.keys():
+                self.__dict__[key] = _dict[key]
+        return
 
     def _load_all_vars(self):
         """"""
         self.open_file()
         self.loadattr()
 
-    def _check_loaded_logging_vars(self):
-        try:    
-            self.app_name 
-        except AttributeError, e:
-            self.app_name = "configparser" 
-
-        try:    
-            self.logfile 
-        except AttributeError, e:
-            self.logfile ="configparser.log"
+    @handlertry("FATAL: rhandler._override_with_kw_vars")
+    def _override_with_kw_vars(self, kwargs):
+        for key in kwargs.keys():
+            self.__dict__[key] =  kwargs[key]
+        return True
         
-        try:
-            self.log_path 
-        except AttributeError, e:
-            self.log_path = "./"
+#     @handlertry("PassThroughException: rhandler._set_mandatory_defaults")
 
-        try:            
-            self.create_paths
-        except AttributeError, e:
-            self.create_paths = False 
     
 #     def _migrate_log(self):
 #         """
@@ -198,6 +223,7 @@ class ConfigHandler(object):
         self.verify_file()
         self.log.debug(("Opening " + str(self.config_file)))
         self.config = SafeConfigParser()
+        self.config.optionxform = str
         self.config.read(self.config_file)
         return True
     
@@ -211,11 +237,14 @@ class ConfigHandler(object):
 
             if ((section_name.lower() == str(section).lower()) or 
                 (section is None)):
+                
                 for name, value in self.config.items(section_name):
-
                     if ({"LOADALL":True, None:True, name:True}.get(varname)):
                         value = self._convert_string_values(value)
                         self.__dict__[name] = value
+#                         self.log.debug(''.join(["set '", str(name), 
+#                                                 "' to '", str(value),
+#                                                 "'."]))
                         _found = True
 
                         if varname is not None: return value

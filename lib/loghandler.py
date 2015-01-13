@@ -378,7 +378,7 @@ class SetLogger(object):
         Intended to change the current logfile of the existing handler
         """
         try:
-            self.logger.debug(''.join(["Attempting to change logfile from '", 
+            self.logger.info(''.join(["Attempting to change logfile from '", 
                                       self.full_log_path, 
                                       "' to '", 
                                       str(log_path), "/",
@@ -915,12 +915,12 @@ class SetLogger(object):
         
         self.logger = logger
 
-        self.logger.info(''.join(["Logger started at  '", 
-                                  self.full_log_path, 
-                                  "' with screendump: ", 
-                                  str(self.screendump), 
-                                  "."
-                                  ]))        
+#         self.logger.info(''.join(["Logger started at  '", 
+#                                   self.full_log_path, 
+#                                   "' with screendump: ", 
+#                                   str(self.screendump), 
+#                                   "."
+#                                   ]))        
         return logger
     
 #         logger.info(''.join(["logger started as '", 

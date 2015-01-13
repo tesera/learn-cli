@@ -12,8 +12,9 @@ __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
 ##############################################################################
 
-from loghandler import SetLogger
 from confighandler import ConfigHandler
+from loghandler import SetLogger
+from rhandler import RHandler
 
 class mrat_variable_selection(object):
     def __init__(self, 
@@ -37,7 +38,9 @@ class mrat_variable_selection(object):
                                     config_file = "../etc/MRAT.conf"
                                     )
         self.log = SetLogger()
-        
+
+        self.R = RHandler.rHandler(service = "rserve")
+                 
         self.log.debug("End of MRATmain run.")
         print "End of MRATmain run."
 

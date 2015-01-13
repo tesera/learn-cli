@@ -18,7 +18,8 @@ from checks import fileExists
 # from loghandler import set_full_logpath
 from loghandler import SetLogger
 from confighandler import ConfigHandler 
-from errorhandler import raisetry, handlertry
+from errorhandler   import handlertry
+from errorhandler   import raisetry
 
 import abc
 import os
@@ -199,6 +200,7 @@ class RHandlerAbstract(object): # ABSTRACT CLASS ------------------------------
         """
         pass
 
+
 class RHandler(object): # FACTORY ---------------------------------------------
     """
     This is a factory class that will call and return a subclass.
@@ -238,65 +240,65 @@ class RHandler(object): # FACTORY ---------------------------------------------
             raise TypeError(e)
         
     
-class rserveHandler(object): # Handler object for a raw Rserve environment    
-    def __init__(self,
-                 config_file = "../etc/rserveHandler.conf", 
-                 host        = 'localhost', 
-                 port        = 6311, # Rserve default
-                 atomicArray = True, 
-                 arrayOrder  = 'C', 
-                 defaultVoid = False, 
-                 oobCallback = None
-                 *args, 
-                 **kwargs): # **kw MUST COME LAST WITHOUT COMMA    
-        """"""        
-        self.log = SetLogger() # this should have been set by calling script        
-        self.log.debug("rserveHandler object instantiated.")
+# class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env    
+class rserveHandler(object): # Handler object for a raw Rserve env    
+    def __init__(self, *args, **kwargs): # **kw MUST COME LAST WITHOUT COMMA    
+        """
+        Optional params:
+        host        = None, 
+        port        = None, 
+        atomicArray = None, 
+        arrayOrder  = None, 
+        defaultVoid = None, 
+        oobCallback = None,
         
-        # These MUST come after parsing the config , to allow for overrides. 
-        self.app_name       = self._set_app_name()
-        self.service        = "rserve"
-        self.config_file    = config_file
-        self.logfile        = logfile
-        self.screendump     = screendump
-        self.debug          = debug
-    
-    #         self.errorlog = errorLogger("rservehandler", 
-#                                     screendump = screendump, 
-#                                     debug = debug)
+        """        
+        self.log = SetLogger() # this should have been set by calling script        
+        
+        # ConfigHandler is a singleton. This should return an existing obj
+        self.config = ConfigHandler()
 
-        self._load_config_file()        
+        # These MUST come after parsing the config , to allow for overrides
+        # but BEFORE the final SetLogger. 
+        self._override_with_kw_vars(kwargs)
 
+        self._set_mandatory_defaults({"port":6311,
+                                      "atomicArray":True, 
+                                      "arrayOrder":"C", 
+                                      "defaultVoid":False, 
+                                      "oobCallback":None,
+#                                       "boogerhead":1
+                                      })
 
-        # Override any self.vars passed into class
-        print "loading keyword overrides..." #333
-        self._override_with_kw_vars(kw)
-        print "Done."
-
-        for i in self.__dict__.keys(): #333
-            print i, self.__dict__[i] #3333
+        self.log.debug("rserveHandler object instantiated.")
 
         sys.exit() #333
-
-        # Errorhandler
-        print "Setting error handler..." #333
-        self._set_errorhandler()
-        print "Done."
-
-        # Errorhandler
-        print "Setting errorhandler..." #333
-        self._set_errorhandler()
-        print "Done." #333
-
-        
-#         # Set errorhandler ----------------------------------------------------
-#         self.CustomErrorHandler = errorhandler.errorhandler(self.log)
-#         self.err = self.CustomErrorHandler.err()
-                        
 
 # ___________________________________________________________________________
 # PRIVATE METHODS 
 
+    @handlertry("FATAL: rhandler._override_with_kw_vars")
+    def _override_with_kw_vars(self, kwargs):
+        for key in kwargs.keys():
+            self.config.__dict__[key] =  kwargs[key]
+        return True
+        
+#     @handlertry("PassThroughException: rhandler._set_mandatory_defaults")
+
+    @handlertry("PassThroughException: rhandler._set_mandatory_defaults")
+    def _set_mandatory_defaults(self, _dict):
+        """
+        In the event the config file does not have the mandatory variables, 
+        and they are not passed in as __init__ variables, they can be set here.
+        These defaults can be modified. The order of setting defaults should be:
+        1. config file
+        2. __init__ parameters
+        3. Here (_set_mandatory_defaults) 
+        """
+        for key in _dict.keys():
+            if key not in self.config.__dict__.keys():
+                self.config.__dict__[key] = _dict[key]
+        return
 
     def _get_app_name(self):
         app_name = os.path.basename(__file__)
@@ -410,7 +412,7 @@ class rserveHandler(object): # Handler object for a raw Rserve environment
             return _data
         except TypeError, e: # Not a list
             return False
-         finally:
+        finally:
              raise
          
     def connect(self,        # Override abstract connect  
@@ -471,10 +473,6 @@ class rserveHandler(object): # Handler object for a raw Rserve environment
 # ____________________________________________________________________________
 # Public methods                
 
-    def connect(self, *args, **kwargs):
-        """"""
-        pass 
-            
     def open(self):
         """
         NAME:
