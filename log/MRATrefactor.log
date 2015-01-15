@@ -9916,3 +9916,13 @@ file: ../etc/MRAT.conf, line: 16
 2015-01-15 19:24:44,959 - MRATrefactor - ERROR - rserveHandler.connect: PassThroughException:*args: None; **kwargs: None; 'NoneType' object is not iterable. 
 2015-01-15 19:24:44,961 - MRATrefactor - DEBUG - Cleaning up Rhandler...
 2015-01-15 19:24:44,987 - MRATrefactor - ERROR - rserveHandler.close: PassThroughException:*args: None; **kwargs: None; 'rserveHandler' object has no attribute 'conn'. 
+2015-01-15 19:28:39,444 - configparser - INFO - ConfigHandler called with ../etc/MRAT.conf
+2015-01-15 19:28:39,505 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-01-15 19:28:39,505 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-01-15 19:28:39,510 - configparser - INFO - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-01-15 19:28:39,513 - configparser - INFO - Logfile migrated to '/shared/GitHub/Tesera/MRAT_Refactor/log/MRATrefactor.log'. 
+2015-01-15 19:28:39,518 - MRATrefactor - DEBUG - rserveHandler object instantiated.
+2015-01-15 19:28:39,540 - MRATrefactor - ERROR - rserveHandler._connect: PassThroughException: *args: None; **kwargs: None; Connection denied, server not reachable or not accepting connections. 
+2015-01-15 19:28:39,541 - MRATrefactor - ERROR - rserveHandler.connect: PassThroughException:*args: None; **kwargs: None; 'NoneType' object is not iterable. 
+2015-01-15 19:28:39,541 - MRATrefactor - DEBUG - Cleaning up Rhandler...
+2015-01-15 19:28:39,543 - MRATrefactor - ERROR - rserveHandler.close: PassThroughException:*args: None; **kwargs: None; 'rserveHandler' object has no attribute 'conn'. 
