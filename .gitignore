@@ -1,6 +1,6 @@
 .gitignore
 test/
-*log
+*.log
 *.pyc  
 *.fuse*
 .Rproj.user*
