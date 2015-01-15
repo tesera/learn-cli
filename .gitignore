@@ -11,3 +11,4 @@ lib/*.fuse*
 .Rproj.user*
 .Rhistory
 
+.Rproj.user

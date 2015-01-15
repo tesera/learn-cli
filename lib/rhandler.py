@@ -12,17 +12,19 @@ __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
 ##############################################################################
 
-from checks import fileExists
-# from errorlogger import errorLogger
-# from inspect import getmembers, stack
-# from loghandler import set_full_logpath
-from loghandler import SetLogger
-from confighandler import ConfigHandler 
+from confighandler  import ConfigHandler 
 from errorhandler   import handlertry
 from errorhandler   import raisetry
+from functions      import override_kw_vars
+from functions      import set_mandatory_defaults
+from functions      import fileExists
+from functions      import pathExists
+from loghandler     import SetLogger
 
 import abc
+import atexit
 import os
+import pyRserve as R
 import re
 import sys
 
@@ -172,22 +174,7 @@ class RHandlerAbstract(object): # ABSTRACT CLASS ------------------------------
         pass
     
     @abc.abstractmethod
-    def _cleanup(self):
-        """
-        :NAME:
-        :DESCRIPTION:
-            Cleans up the [R] environment
-            Intended to be called by close()
-        :ARGUMENTS:
-        :VARIABLES:
-        :METHODS:
-        :RETURNS:
-        :USAGE:
-        """
-        pass
-
-    @abc.abstractmethod
-    def prep_command(self, _data):
+    def cmd(self, _data):
         """"""
         """
         :NAME:
@@ -240,8 +227,7 @@ class RHandler(object): # FACTORY ---------------------------------------------
             raise TypeError(e)
         
     
-# class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env    
-class rserveHandler(object): # Handler object for a raw Rserve env    
+class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env    
     def __init__(self, *args, **kwargs): # **kw MUST COME LAST WITHOUT COMMA    
         """
         Optional params:
@@ -253,6 +239,8 @@ class rserveHandler(object): # Handler object for a raw Rserve env
         oobCallback = None,
         
         """        
+        atexit.register(self._cleanup)
+
         self.log = SetLogger() # this should have been set by calling script        
         
         # ConfigHandler is a singleton. This should return an existing obj
@@ -260,50 +248,42 @@ class rserveHandler(object): # Handler object for a raw Rserve env
 
         # These MUST come after parsing the config , to allow for overrides
         # but BEFORE the final SetLogger. 
-        self._override_with_kw_vars(kwargs)
-
-        self._set_mandatory_defaults({"port":6311,
-                                      "atomicArray":True, 
-                                      "arrayOrder":"C", 
-                                      "defaultVoid":False, 
-                                      "oobCallback":None,
-#                                       "boogerhead":1
-                                      })
-
+        override_kw_vars(self, kwargs) # set in both self and self.config objs
+        override_kw_vars(self.config, kwargs) # set in both self and self.config
+        set_mandatory_defaults(self.config, 
+                               {"port"        :6311,
+                                "atomicArray" :True, 
+                                "arrayOrder"  :"C", 
+                                "defaultVoid" :False, 
+                                "oobCallback" :None,
+#                               "boogerhead":1
+                                })
+        
         self.log.debug("rserveHandler object instantiated.")
 
-        sys.exit() #333
+        self.connect()
+        
 
 # ___________________________________________________________________________
 # PRIVATE METHODS 
 
-    @handlertry("FATAL: rhandler._override_with_kw_vars")
-    def _override_with_kw_vars(self, kwargs):
-        for key in kwargs.keys():
-            self.config.__dict__[key] =  kwargs[key]
-        return True
-        
-#     @handlertry("PassThroughException: rhandler._set_mandatory_defaults")
-
-    @handlertry("PassThroughException: rhandler._set_mandatory_defaults")
-    def _set_mandatory_defaults(self, _dict):
+    def _cleanup(self):
         """
-        In the event the config file does not have the mandatory variables, 
-        and they are not passed in as __init__ variables, they can be set here.
-        These defaults can be modified. The order of setting defaults should be:
-        1. config file
-        2. __init__ parameters
-        3. Here (_set_mandatory_defaults) 
+        :NAME:
+        :DESCRIPTION:
+            Cleans up the [R] environment
+            Intended to be called by close()
+        :ARGUMENTS:
+        :VARIABLES:
+        :METHODS:
+        :RETURNS:
+        :USAGE:
         """
-        for key in _dict.keys():
-            if key not in self.config.__dict__.keys():
-                self.config.__dict__[key] = _dict[key]
+        self.log.debug("Cleaning up Rhandler...")
+        # do stuff
+        self.close()
+        # other stuff
         return
-
-    def _get_app_name(self):
-        app_name = os.path.basename(__file__)
-        app_name = app_name.rsplit(".", 1)
-        return app_name[0]
 
     def _load_config_file(self):
         """
@@ -391,7 +371,6 @@ class rserveHandler(object): # Handler object for a raw Rserve env
         else:
               return "RAW"
               
-
     def _prep_string_command(self, _data):
         try:
             _data + "STRINGTEST" # no error = Already a string
@@ -415,20 +394,210 @@ class rserveHandler(object): # Handler object for a raw Rserve env
         finally:
              raise
          
-    def connect(self,        # Override abstract connect  
-                host        = 'localhost', 
-                port        = 6311, # Rserve default
-                atomicArray = True, 
-                arrayOrder  = 'C', 
-                defaultVoid = False, 
-                oobCallback = None
-                ):
+
+
+#______________________________________________________________________________
+# PUBLIC METHODS (OVERIDDEN FROM ABSTRACT)
+
+    @handlertry("PassThroughException:")
+    def close(self):
         """
         :NAME:
-            _connect_raw_rserve
+        :DESCRIPTION:
+            Closes the [R] environment
+        :ARGUMENTS:
+        :VARIABLES:
+        :METHODS:
+        :RETURNS:
+        :USAGE:
+        """
+        self.conn.close()
+        # other stuff
+        return
+    
+    @handlertry("PassThroughException:")
+    def code(self, _cmd):
+        """
+        :NAME:
+        :DESCRIPTION:
+            Passes command line code to the [R] environment
+        :ARGUMENTS:
+            _code = String or list where each item is a command lines
+        :VARIABLES:
+        :METHODS:
+        :RETURNS:
+        :USAGE:
+        """
+        _cmd = self.cmd(_cmd)
+        return self.conn.eval(_cmd)
+        
+    @handlertry("PassThroughException:")
+    def delenv(self, _env):
+        """
+        :NAME:
+        :DESCRIPTION:
+            Deletes variables within the [R] environment
+        :ARGUMENTS:
+            _env = a string containing a single R-variable to delete
+                   Or a list of R-variables to delete
+    
+        :VARIABLES:
+        :METHODS:
+        :RETURNS:
+        :USAGE:
+        """
+        raise NotImplementedError
+    
+    @handlertry("PassThroughException:")
+    def env(self):
+        """
+        :NAME:
+        :DESCRIPTION:
+            User interface for managing the [R] environment.
+        :ARGUMENTS:
+        :VARIABLES:
+        :METHODS:
+        :RETURNS:
+        :USAGE:
+        """
+        raise NotImplementedError
+    
+    @handlertry("PassThroughException:")
+    def getenv(self, _env):
+        """
+        :NAME:
+        :DESCRIPTION:
+            _env = a string containing a single R-variable to retrieve 
+                   Or a list of R-variables to retrieve 
+        :ARGUMENTS:
+        :VARIABLES:
+        :METHODS:
+        :RETURNS:
+        :USAGE:
+        """
+        raise NotImplementedError
+
+    @handlertry("", tries = 2)
+    def script(self, *args, **kwargs):
+        """
+        :NAME:
+        :DESCRIPTION:
+            Calls an [R] script within the the [R] environment
+        :ARGUMENTS:
+            _script = String
+        :VARIABLES:
+        :METHODS:
+        :RETURNS:
+        :USAGE:
+        """
+        # Two ways to do this:
+        # 1. Call a source command within the R environ
+        # 2. Copy the text of the script file into  Python var, and eval that
+        # Need to determine which is faster and less troublesome
+        # Assuming number 1
+        # Format: source(paste(HOME_CONF,"XIterativeVarSel.R.conf", sep = ""))
+        try:#____________________________________________________
+            # If kwargs["fullpath"] is not set, will trigger the exception
+            # which goes on to check for path and filename separately
+            if not fileExists(kwargs["fullpath"]):
+                # kwargs["fullpath"] set, but invalid
+                raise Exception("FullPathDoesNotExist") 
+            
+        except (NameError, AttributeError), e:
+            try:#____________________________________________________
+                if not pathExists(kwargs["path"]): 
+                    raise Exception("PathDoesNotExist")
+    
+            except (NameError, AttributeError), e:
+                raise Exception("PathDoesNotExist")
+            
+    
+            try:#____________________________________________________
+                if not fileExists(kwargs["filename"]): 
+                    raise Exception("FileDoesNotExist") 
+    
+            except (NameError, AttributeError), e:
+                    raise Exception("FileDoesNotExist") 
+
+            ##########################################################
+            # REPLACE THIS WITH THE PATH HANDLER
+            # For now just add a "/"
+            kwargs["path"] = kwargs["path"] + "/"
+            ##########################################################
+
+            kwargs["fullpath"] = kwargs["path"] + kwargs["filename"]
+                
+    
+        _cmd =  ''.join(["source(paste(", 
+                         str(kwargs["fullpath"]), 
+                         ', sep = ""'])
+            
+
+        _cmd = self.cmd(_cmd)
+        
+        print "_cmd = ", _cmd #3333
+        
+        self.conn.eval(_cmd)
+         
+    @handlertry("PassThroughException:")
+    def setenv(self, _env):
+        """
+        :NAME:
+        :DESCRIPTION:
+            Sets variables within the [R] environment
+        :ARGUMENTS:
+            _env = a string containing a single R-variable to set 
+                   Or a list of R-variables to set 
+        :VARIABLES:
+        :METHODS:
+        :RETURNS:
+        :USAGE:
+        """
+        raise NotImplementedError
+    
+    @handlertry("PassThroughException:")
+    def cmd(self, _cmd):
+        """
+
+        FOR NOW, we're just going to return the command, under the assumption 
+        that the coder knows what s/he is doing. Eventually, this should run a 
+        series of sanity checks on the command to prevent breakage.
+        
+        Proper procedure will be that all commands be checked through here
+        before being passed onto the R environment, so we need something in 
+        place...
+        
+        :NAME:
+        :DESCRIPTION:
+            Preps a command before being sent to code
+        :ARGUMENTS:
+        :VARIABLES:
+        :METHODS:
+        :RETURNS:
+        :USAGE:
+        """
+        return _cmd
+        
+        # FUTURE
+        # if string: return self._prep_string_command(_cmd)
+        # elif list: return self._prep_list_command(_cmd)
+        # elif something else: return something else
+        # else: ups
+
+    @handlertry("PassThroughException:")
+    def connect(self): # No defaults at this level. Always use config vars
+        """
+        :NAME:
+            connect([host        = 'localhost', 
+                    port        = 6311, # Rserve default
+                    atomicArray = True, # Sets R to return arrays
+                    arrayOrder  = 'C', 
+                    defaultVoid = False, 
+                    oobCallback = None
+                    ])
         
         :DESCRIPTION:
-            Crates the rserve service connection as a raw connection to an 
+            Creates the rserve service connection as a raw connection to an 
             Rserve instance.
         
         :ARGS:
@@ -443,12 +612,25 @@ class rserveHandler(object): # Handler object for a raw Rserve env
                     If True: when a result from an Rserve call is an array with 
                     a single element that single element is returned. Otherwise 
                     the array is returned unmodified.
+                    
+                    In other words, if the [R] interpreter environment creates
+                    an array, you get a Python array back. 
+                     
                     Default: True
-            
-            arrayOrder:
+ 
+            arrayOrder: DEPRICATED
                     The order in which data in multi-dimensional arrays is 
                     returned. Provide 'C' for c-order, F for fortran. 
+
                     Default: 'C'
+                    
+                    --- DEPRICATED --------------------------------------------
+                    arrayOrder HAS BEEN REMOVED FROM pyRserve...ALTHOUGH IT 
+                    STILL APPEARS IN A help(pyRserve). Apparently other bugfixes 
+                    made it redundant.
+                    
+                    Attempts to use it will raise an error.  
+                    --- DEPRICATED --------------------------------------------
             
             defaultVoid:
                     If True then calls to conn.r('..') don't return a result by 
@@ -467,41 +649,60 @@ class rserveHandler(object): # Handler object for a raw Rserve env
         :METHODS:
         
         """
-                     
+        @handlertry("PassThroughException: ")
+        def _connect(self):
+            self.conn = R.connect(host          = self.config.host, 
+                                  port          = self.config.port, 
+                                  atomicArray   = self.config.atomicArray, 
+                                    #arrayOrder was removed. See __doc__ 
+    #                               arrayOrder    = self.config.arrayOrder, 
+                                  defaultVoid   = self.config.defaultVoid, 
+                                  oobCallback   = self.config.oobCallback)
+            # Cheap check
+            try:
+                if ( int(self.conn.eval("3*3")) == 9):
+                    self.log.debug(''.join(["Established connection to Rserve with ", 
+                                           "host:", 
+                                           str(self.config.host), ", ",  
+                                           "port:", 
+                                           str(self.config.port), ", ", 
+                                           "atomicArray: DEPRICATED/UNUSED, ",
+                                           "defaultVoid:", 
+                                           str(self.config.defaultVoid), ", ", 
+                                           "oobCallback:", 
+                                           str(self.config.defaultVoid), "."
+                                           ]))
+                else:
+                    raise ValueError()
+                    print "self.testvar inside _connect", self.testvar #3333
+    
+            except ValueError, e:
+                e = ''.join(["[R] environment connection returning garbage ", 
+                             "to attempted eval of (3*3). Please troubleshoot. ", 
+                             str(e)])
+                raise ValueError(e)
+
+        #connect MAIN
+        _connect(self)
+        return self.conn
+
         
   
 # ____________________________________________________________________________
 # Public methods                
-
-    def open(self):
-        """
-        NAME:
-            rserveHandler.open()
-            
-        DESCRIPTION:
-            Creates the [R] namespace within the rserve environment.
-            
-        ARGS:
-            None
-            
-        RETURNS:
-            None
-            
-        RAISES:
-            None
-        """
-        pass
+        
     
 if __name__ == "__main__":
-#     from RserveHandler import rserveHandler
-    o = RHandler()    
-    o = Test.test(4)
+    print "must be called from mrat_variable_selection.py"
+    from mrat_variable_selection import mrat_variable_selection
+    o = mrat_variable_selection()
+    print o.R.script(
+                    path = "/bs/path", 
+                    filename = "bsfilename", 
+#                     fullpath = "/shared/GitHub/Tesera/MRAT_Refactor/bin/XIterativeVarSelCorVarElimination.R"
+                     )
     
-    o = RserveHandler.rserveHandler(service = "rserve",
-#                                     screendump = True, 
-#                                     debug = True, 
-#                                     log_level = 40
-                                    )
-    print "object = ", o
-
     
+    
+    
+#     print o.R.script("/bs/path", "bsfilename")

@@ -41,13 +41,22 @@ class mrat_variable_selection(object):
 
         self.R = RHandler.rHandler(service = "rserve")
                  
-        self.log.debug("End of MRATmain run.")
-        print "End of MRATmain run."
 
 if __name__ == "__main__":
     # It is assumed that the log and 
-    class main_program(object):
-        def __init__(self):
-            obj = mrat_variable_selection()
+#     class main_program(object):
+#         def __init__(self):
+#             obj = mrat_variable_selection()
+#             
+#             print obj.R #.code("3+3") 
+# 
+#             obj.log.debug("End of MRATmain run.")
 
-    o = main_program()
+#     o = main_program()
+
+    o = mrat_variable_selection()
+#     print o
+#     print o.R.code("3+3")
+#     
+#     
+#     o.log.debug("End of MRATmain run.")    

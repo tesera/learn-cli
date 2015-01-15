@@ -4,7 +4,8 @@
 
 ################################################################################
 # Source environment
-source(paste("/shared/GitHub/Tesera/MRAT_Refactor/etc/","XIterativeVarSel.conf", sep = ""))
+source(paste(HOME_CONF,"XIterativeVarSel.R.conf", sep = ""))
+#source(paste("/shared/GitHub/Tesera/MRAT_Refactor/etc/","XIterativeVarSel.conf", sep = ""))
 #333 BETTER TO USE pwd TO SET THIS, BUT RStudio is REPORTING THE ORIGINAL DIR NOT THE CURRENT
 #333 FIGURE THAT OUT
 

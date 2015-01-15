@@ -78,6 +78,12 @@ def checkPathFormat(_path, endslash = False):
     else: return False
     
 def pathExists(_path):
+    """
+    Check that a full path exists when ONLY the full path is _path
+    
+    This differs from directoryExists, which checks (ONLY) that the full path 
+    exists when _path is the full path PLUS THE FILENAME. 
+    """
     if os.path.exists(_path): return True
     else: return False
         
@@ -88,10 +94,16 @@ def directoryExists(_path):
 
     :DESCRIPTION:
         Intended to check the existence of ONLY the path assuming a full path
-        with filename included is passed. 
+        with filename included is passed.
+        
+        This differs from pathExists, which checks that the full path 
+        exists when _path is the full path WITHOUT THE FILENAME.
+        
+        directoryExists ONLY checks that the path exists. NOT the filename.
+ 
 
     :ARGUMENTS:
-        path:    The fuull path WITH FILNEMAE I.e "/dir1/dir2/filename.ext"
+        path:    The full path WITH FILNEMAE I.e "/dir1/dir2/filename.ext"
 
     :USAGE:
         if directoryExists("/dir1/dir2/filename.ext"):

@@ -1,3 +1,18 @@
+##############################################################################
+# Removal of the "__license__" line or content from  "__license__", or removal 
+# of "__author__" in this or any constituent # component or file constitutes a 
+# violation of the licensing and copyright agreement. 
+__author__      = "Mike Rightmire"
+__copyright__   = "BioCom Software"
+__license__     = "Tesera"
+__license_file__= "Clause1.PERPETUAL_AND_UNLIMITED_LICENSING_TO_THE_CLIENT.py"
+__version__     = "0.9.0.0"
+__maintainer__  = "Mike Rightmire"
+__email__       = "Mike.Rightmire@BiocomSoftware.com"
+__status__      = "Development"
+##############################################################################
+
+
 import functools
 
 def raisetry(msg):
@@ -51,29 +66,14 @@ def raisetry(msg):
                 return result
                             
             except Exception as err:
-                if not err.args: 
-                    err.args=('',)
-
-                kw = ""
-                for key in kwargs.keys():
-                    kw = kw + "'" + str(key) + ":" + str(kwargs[key]) + "', "
-                kw = kw[:len(kw)-2]
-                
-                err.args = (
-                            (cls + "." + module + ": " + msg + 
-                             "*args: " + str(args) + 
-                             "; **kwargs: " + kw + " " + 
-                             err.args[0],
-                             ) + 
-                            err.args[1:]
-                            )
+                err = _dress_msg(cls, module, msg, err, args, kwargs)
                 raise
         
         return wrapped
 
     return concrete_decorator      
 
-def handlertry(msg):
+def handlertry(msg, tries = 1):
     """
     :NAME:
         handlertry(msg)
@@ -125,42 +125,70 @@ def handlertry(msg):
         @functools.wraps(func)
         def wrapped(self, *args, **kwargs):
 
+            #----------------------------------------------------------------
+            # In this def, 'self' refers to the object that called handlertry
+            #----------------------------------------------------------------
+            
             import errorhandler
             from inspect import getmembers, stack
-            self.CustomErrorHandler = errorhandler.ErrorHandler()
-            self.err = self.CustomErrorHandler.err()
+            CustomErrorHandler = errorhandler.ErrorHandler()
+            handler = CustomErrorHandler.err()
 
             cls = str(self.__class__.__name__)
             module = func.__name__
 
-            try:
-                result = func(self, *args, **kwargs)
-                return result
+            success = False
+            tally = 1
+            while ((success is False) and (tally <= tries)): 
+#                 print args #333
+#                 print kwargs #333
 
-            except Exception as err:
-                if not err.args: 
-                    err.args=('',)
 
-                kw = ""
-                for key in kwargs.keys():
-                    kw = kw + "'" + str(key) + ":" + str(kwargs[key]) + "', "
-                kw = kw[:len(kw)-2]
-                
-                err.args = (
-                            (cls + "." + module + ": " + msg + 
-                             "*args: " + str(args) + 
-                             "; **kwargs: " + kw + " " + 
-                             err.args[0],
-                             ) + 
-                            err.args[1:]
-                            )
-                self.err(err, getmembers(self), stack())
-        
+                try:
+                    result = func(self, *args, **kwargs)
+                    success = True
+    
+                except Exception as err:
+                    err = _dress_msg(cls, module, msg, err, args, kwargs)
+                    args, kwargs, result = handler(self, 
+                                     args, 
+                                     kwargs, 
+                                     err, 
+                                     getmembers(self), 
+                                     stack())
+                    tally += 1
+                    
+            return result
+            
         return wrapped
 
     return concrete_decorator          
 
+def _dress_msg(cls, module, msg, err, args, kwargs):
+   if not err.args: 
+       err.args=('',)
+   
+   if len(args) == 0:      
+       args = None
+
+   if len(kwargs) == 0:    
+       kw = None
+   else:
+       kw = ""
+       for key in kwargs.keys():
+           kw = kw + "'" + str(key) + ":" + str(kwargs[key]) + "', "
+       kw = kw[:len(kw)-2]
+                    
+   err.args = (
+               (cls + "." + module + ": " + msg + 
+                "*args: " + str(args) + 
+                "; **kwargs: " + str(kw) + "; " + 
+                err.args[0],
+                ) + 
+               err.args[1:]
+               )
+   return err
+
+
 if __name__ == "__main__":
-    from tries import raisetry
-    from tries import handlertry
-    print "done"
+    print "no test"
