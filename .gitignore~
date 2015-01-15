@@ -1,0 +1,7 @@
+test/
+*log
+*pyc
+lib/*.fuse*
+.Rproj.user*
+.Rhistory
+.gitignore*
