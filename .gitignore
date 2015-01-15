@@ -1,8 +1,0 @@
-.gitignore
-test/
-*.log
-*.pyc  
-*.fuse*
-.Rproj.user*
-.Rhistory
-.Rproj.user
