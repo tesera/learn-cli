@@ -1,4 +1,0 @@
-2015-06-04 12:50:20,229 - configparser - INFO - ConfigHandler called with ../etc/MRAT.conf
-2015-06-04 12:50:20,231 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
-2015-06-04 12:50:20,231 - configparser - DEBUG - Opening ../etc/MRAT.conf
-2015-06-04 12:50:20,234 - configparser - INFO - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 

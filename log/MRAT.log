@@ -1,0 +1,115 @@
+2015-06-04 12:50:20,229 - configparser - INFO - ConfigHandler called with ../etc/MRAT.conf
+2015-06-04 12:50:20,231 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-06-04 12:50:20,231 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-06-04 12:50:20,234 - configparser - INFO - Attempting to change logfile from './configparser.log' to '/shared/GitHub/Tesera/MRAT_Refactor/log//MRATrefactor.log'. 
+2015-06-04 13:38:03,934 - configparser - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:38:03,934 - configparser - DEBUG - Initiating logger with app_name:configparser, logfile: ./configparser.log, log_level: 10, screendump: True, create_paths: True.
+2015-06-04 13:38:03,934 - configparser - INFO - ConfigHandler called with ../etc/MRAT.conf
+2015-06-04 13:38:03,934 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-06-04 13:38:03,934 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-06-04 13:38:03,936 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:38:03,936 - MRAT - INFO - Parameter 'app_name' changed from 'configparser' to 'MRAT'.
+2015-06-04 13:38:03,936 - MRAT - INFO - Parameter 'create_paths' changed from 'True' to 'False'.
+2015-06-04 13:38:03,936 - MRAT - INFO - Attempting to change logfile from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:38:03,936 - MRAT - INFO - Moving '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:38:03,937 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'.
+2015-06-04 13:38:03,937 - MRAT - INFO - Logfile migrated from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:38:03,937 - MRAT - DEBUG - Setting logger's permanent configuration
+2015-06-04 13:38:47,240 - configparser - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:38:47,240 - configparser - DEBUG - Initiating logger with app_name:configparser, logfile: ./configparser.log, log_level: 10, screendump: True, create_paths: True.
+2015-06-04 13:38:47,240 - configparser - INFO - ConfigHandler called with ../etc/MRAT.conf
+2015-06-04 13:38:47,240 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-06-04 13:38:47,240 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-06-04 13:38:47,242 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:38:47,242 - MRAT - INFO - Parameter 'app_name' changed from 'configparser' to 'MRAT'.
+2015-06-04 13:38:47,242 - MRAT - INFO - Parameter 'create_paths' changed from 'True' to 'False'.
+2015-06-04 13:38:47,242 - MRAT - INFO - Attempting to change logfile from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:38:47,242 - MRAT - INFO - Moving '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:38:47,243 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'.
+2015-06-04 13:38:47,243 - MRAT - INFO - Logfile migrated from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:38:47,243 - MRAT - DEBUG - Setting logger's permanent configuration
+2015-06-04 13:41:22,328 - configparser - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:41:22,328 - configparser - DEBUG - Initiating logger with app_name:configparser, logfile: ./configparser.log, log_level: 10, screendump: True, create_paths: True.
+2015-06-04 13:41:22,328 - configparser - INFO - ConfigHandler called with ../etc/MRAT.conf
+2015-06-04 13:41:22,328 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-06-04 13:41:22,328 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-06-04 13:41:22,329 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:41:22,330 - MRAT - INFO - Parameter 'app_name' changed from 'configparser' to 'MRAT'.
+2015-06-04 13:41:22,330 - MRAT - INFO - Parameter 'create_paths' changed from 'True' to 'False'.
+2015-06-04 13:41:22,330 - MRAT - INFO - Attempting to change logfile from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:41:22,330 - MRAT - INFO - Moving '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:41:22,330 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'.
+2015-06-04 13:41:22,331 - MRAT - INFO - Logfile migrated from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:41:22,331 - MRAT - DEBUG - Setting logger's permanent configuration
+2015-06-04 13:41:22,331 - MRAT - INFO - Starting '__main__' in mrat_variable_selection.py
+2015-06-04 13:43:44,513 - configparser - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:43:44,513 - configparser - DEBUG - Initiating logger with app_name:configparser, logfile: ./configparser.log, log_level: 10, screendump: True, create_paths: True.
+2015-06-04 13:43:44,513 - configparser - INFO - ConfigHandler called with ../etc/MRAT.conf
+2015-06-04 13:43:44,513 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-06-04 13:43:44,514 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-06-04 13:43:44,515 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:43:44,515 - MRAT - INFO - Parameter 'app_name' changed from 'configparser' to 'MRAT'.
+2015-06-04 13:43:44,515 - MRAT - INFO - Parameter 'create_paths' changed from 'True' to 'False'.
+2015-06-04 13:43:44,515 - MRAT - INFO - Attempting to change logfile from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:43:44,515 - MRAT - INFO - Moving '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:43:44,516 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'.
+2015-06-04 13:43:44,516 - MRAT - INFO - Logfile migrated from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:43:44,516 - MRAT - DEBUG - Setting logger's permanent configuration
+2015-06-04 13:43:44,516 - MRAT - INFO - Starting '__main__' in mrat_variable_selection.py
+2015-06-04 13:46:07,956 - configparser - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:46:07,956 - configparser - DEBUG - Initiating logger with app_name:configparser, logfile: ./configparser.log, log_level: 10, screendump: True, create_paths: True.
+2015-06-04 13:46:07,956 - configparser - INFO - ConfigHandler called with ../etc/MRAT.conf
+2015-06-04 13:46:07,956 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-06-04 13:46:07,956 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-06-04 13:46:07,958 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:46:07,958 - MRAT - INFO - Parameter 'app_name' changed from 'configparser' to 'MRAT'.
+2015-06-04 13:46:07,958 - MRAT - INFO - Parameter 'create_paths' changed from 'True' to 'False'.
+2015-06-04 13:46:07,958 - MRAT - INFO - Attempting to change logfile from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:46:07,958 - MRAT - INFO - Moving '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:46:07,959 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'.
+2015-06-04 13:46:07,959 - MRAT - INFO - Logfile migrated from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:46:07,959 - MRAT - DEBUG - Setting logger's permanent configuration
+2015-06-04 13:46:07,959 - MRAT - INFO - Starting '__main__' in mrat_variable_selection.py
+2015-06-04 13:46:56,379 - configparser - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:46:56,379 - configparser - DEBUG - Initiating logger with app_name:configparser, logfile: ./configparser.log, log_level: 10, screendump: True, create_paths: True.
+2015-06-04 13:46:56,379 - configparser - INFO - ConfigHandler called with ../etc/MRAT.conf
+2015-06-04 13:46:56,379 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-06-04 13:46:56,379 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-06-04 13:46:56,381 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:46:56,381 - MRAT - INFO - Parameter 'app_name' changed from 'configparser' to 'MRAT'.
+2015-06-04 13:46:56,381 - MRAT - INFO - Parameter 'create_paths' changed from 'True' to 'False'.
+2015-06-04 13:46:56,381 - MRAT - INFO - Attempting to change logfile from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:46:56,381 - MRAT - INFO - Moving '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:46:56,382 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'.
+2015-06-04 13:46:56,382 - MRAT - INFO - Logfile migrated from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:46:56,382 - MRAT - DEBUG - Setting logger's permanent configuration
+2015-06-04 13:46:56,382 - MRAT - INFO - Starting '__main__' in mrat_variable_selection.py
+2015-06-04 13:48:23,655 - configparser - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:48:23,655 - configparser - DEBUG - Initiating logger with app_name:configparser, logfile: ./configparser.log, log_level: 10, screendump: True, create_paths: True.
+2015-06-04 13:48:23,655 - configparser - INFO - ConfigHandler called with ../etc/MRAT.conf
+2015-06-04 13:48:23,655 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-06-04 13:48:23,655 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-06-04 13:48:23,657 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:48:23,657 - MRAT - INFO - Parameter 'app_name' changed from 'configparser' to 'MRAT'.
+2015-06-04 13:48:23,657 - MRAT - INFO - Parameter 'create_paths' changed from 'True' to 'False'.
+2015-06-04 13:48:23,657 - MRAT - INFO - Attempting to change logfile from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:48:23,657 - MRAT - INFO - Moving '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:48:23,658 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'.
+2015-06-04 13:48:23,658 - MRAT - INFO - Logfile migrated from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:48:23,658 - MRAT - DEBUG - Setting logger's permanent configuration
+2015-06-04 13:48:23,658 - MRAT - INFO - Starting '__main__' in mrat_variable_selection.py
+2015-06-04 13:50:20,578 - configparser - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:50:20,578 - configparser - DEBUG - Initiating logger with app_name:configparser, logfile: ./configparser.log, log_level: 10, screendump: True, create_paths: True.
+2015-06-04 13:50:20,578 - configparser - INFO - ConfigHandler called with ../etc/MRAT.conf
+2015-06-04 13:50:20,578 - configparser - DEBUG - Verfiying ../etc/MRAT.conf
+2015-06-04 13:50:20,578 - configparser - DEBUG - Opening ../etc/MRAT.conf
+2015-06-04 13:50:20,579 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log'.
+2015-06-04 13:50:20,579 - MRAT - INFO - Parameter 'app_name' changed from 'configparser' to 'MRAT'.
+2015-06-04 13:50:20,580 - MRAT - INFO - Parameter 'create_paths' changed from 'True' to 'False'.
+2015-06-04 13:50:20,580 - MRAT - INFO - Attempting to change logfile from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:50:20,580 - MRAT - INFO - Moving '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:50:20,580 - MRAT - INFO - Added filehandler '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'.
+2015-06-04 13:50:20,580 - MRAT - INFO - Logfile migrated from '/Users/mikes/GitHub/Tesera/MRAT_Refactor/bin/configparser.log' to '/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log'. 
+2015-06-04 13:50:20,581 - MRAT - DEBUG - Setting logger's permanent configuration
+2015-06-04 13:50:20,581 - MRAT - INFO - Starting '__main__' in mrat_variable_selection.py
+2015-06-04 13:50:20,581 - MRAT - INFO - Completing '__main__' in mrat_variable_selection.py

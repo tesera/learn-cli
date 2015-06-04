@@ -6,7 +6,7 @@ __author__      = "Mike Rightmire"
 __copyright__   = "BioCom Software"
 __license__     = "Tesera"
 __license_file__= "Clause1.PERPETUAL_AND_UNLIMITED_LICENSING_TO_THE_CLIENT.py"
-__version__     = "0.9.0.5"
+__version__     = "0.9.0.4"
 __maintainer__  = "Mike Rightmire"
 __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
@@ -16,24 +16,6 @@ import os.path
 import re
 import sys
 
-def check(type, line, *args, **kwargs):
-     
-    if re.match("^.*path.*$", str(line).lower()):
-        fullPathCheck(line) 
-
-def fullPathCheck(line, *args, **kwargs):
-    """
-    INCOMPLETE
-    """
-    line = str(line)
-
-    if ((line.endwith("\\")) or
-        (line.endswith("/"))): 
-        endslash = True
-        
-    if (not checkPathFormat(line, endslash = endslash)): return False
-    
-        
 def checkDict(_dict):
     try:
         _dict.keys()
@@ -104,63 +86,8 @@ def pathExists(_path):
     """
     if os.path.exists(_path): return True
     else: return False
-
-def fullPathExists(_path, create = False):
-    """
-    :NAME:
-        fullPathExists(path)
-
-    :DESCRIPTION:
-        Intended to check the existence of ONLY the path assuming a full path
-        with filename included is passed.
         
-        This differs from pathExists, which checks that the full path 
-        exists when _path is the full path WITHOUT THE FILENAME.
-        
-        fullPathExists ONLY checks that the path exists. NOT the filename.
- 
-
-    :ARGUMENTS:
-        path:    The full path WITH FILNEMAE I.e "/dir1/dir2/filename.ext"
-        create:  (True/False) If path does NOT exist, but create is True,
-                 path will be created and True returned. 
-    :USAGE:
-        if fullPathExists("/dir1/dir2/filename.ext"):
-            print "The directory is there. I haven't check for the filename".
-        else:
-            print "'/dir1/dir2' does not exist."
-    """
-    _path = str(_path)
-    _path = os.path.dirname(_path)
-    
-    if pathExists(_path):
-        return True
-    
-    else:
-        if create == True:
-            try:
-                os.makedirs(_path)
-                return True
-
-            except Exception as e:
-                return False
-#                 e.message = ''.join(["From 'checks.fullPathExists()': ", 
-#                                      "Directory '", 
-#                                      str(_path), 
-#                                      "' does not exist and an error occurred ", 
-#                                      "trying to create it. ", 
-#                                      e.message])
-#                 raise type(e)(e.message)                
-            
-        else:
-            return False
-        
-#     return pathExists(_path)    
-            
-#=============================================================================
-#=============================================================================
-# DEPRICATED. USE fullPathExists            
-def directoryExists(_path, create = False): # This name needs to be depricated
+def directoryExists(_path):
     """
     :NAME:
         directoryExists(path)
@@ -177,8 +104,7 @@ def directoryExists(_path, create = False): # This name needs to be depricated
 
     :ARGUMENTS:
         path:    The full path WITH FILNEMAE I.e "/dir1/dir2/filename.ext"
-        create:  (True/False) If path does NOT exist, but create is True,
-                 path will be created and True returned. 
+
     :USAGE:
         if directoryExists("/dir1/dir2/filename.ext"):
             print "The directory is there. I haven't check for the filename".
@@ -187,32 +113,7 @@ def directoryExists(_path, create = False): # This name needs to be depricated
     """
     _path = str(_path)
     _path = os.path.dirname(_path)
-    
-    if pathExists(_path):
-        return True
-    
-    else:
-        if create == True:
-            try:
-                os.makedirs(_path)
-                return True
-
-            except Exception as e:
-                return False
-#                 e.message = ''.join(["From 'checks.directoryExists()': ", 
-#                                      "Directory '", 
-#                                      str(_path), 
-#                                      "' does not exist and an error occurred ", 
-#                                      "trying to create it. ", 
-#                                      e.message])
-#                 raise type(e)(e.message)                
-            
-        else:
-            return False
-        
-#     return pathExists(_path)
-#=============================================================================
-#=============================================================================
+    return pathExists(_path)
 
 def fileExists(_file):
     _file = str(_file)

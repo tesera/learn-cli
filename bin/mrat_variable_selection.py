@@ -13,50 +13,73 @@ __status__      = "Development"
 ##############################################################################
 
 from confighandler import ConfigHandler
-from loghandler import SetLogger
+from loghandler import log
 from rhandler import RHandler
+from signal         import *
+
+import atexit
+import os
 
 class mrat_variable_selection(object):
     def __init__(self, 
-                 app_name   = "MRAT", 
-                 logfile    = "MRAT.log",
-                 log_path   = "/shared/GitHub/Tesera/MRAT_Refactor/log", 
-                 log_level  = 40,
-                 screendump = False,
+                 config_file, # MANDATORY 
+                 app_name    = None, 
+                 logfile     = None,
+                 log_level   = None,
+                 screendump  = None,
+                 *args, 
+                 **kwargs # Must come last
                  ):
 
-        # Explicit is better than implicit, and more tedious
-        self.app_name      = app_name 
-        self.logfile       = logfile
-        self.log_path      = log_path 
-        self.log_level     = log_level
-        self.screendump    = screendump
+        # Set exit and cleanup        
+        for sig in (SIGABRT,SIGINT,SIGTERM,SIGQUIT):
+            signal(sig, self._cleanup)
+        atexit.register(self._cleanup)        
 
+        # NOTE: ConfigHandler will override some of the self.variables 
+        # kwargs passed to the __init__ will override the config file. 
+        # Configuration loading goes in the following order:
+        # 1. Config file parameters
+        # 2. keyword args passed into this __init__
+        # 3. Mandatory defaults on a package by package basis if they ere not
+        #    included in the config file or the kwargs
         self.config = ConfigHandler(
-                                    log_level = 10,
-                                    screendump = True,
-                                    config_file = "../etc/MRAT.conf"
+                        self, 
+                        app_name    = app_name, # Shown for reference only 
+                        logfile     = logfile, # Shown for reference only
+                        log_level   = log_level, # Shown for reference only
+                        screendump  = screendump, # Shown for reference only
+                        config_file = config_file, # Shown for reference only
+                        *args,  
+                        **kwargs # Must come last
                                     )
-        self.log = SetLogger()
+        
+        # The first call to log will create a log instance if it does not exist. 
+        # The "kwargs.pop('app_name'      , None)," lines will override the 
+        #  logger parameters obtained from the config file, if any have been 
+        #  passed to __init__
+        self.local_filename = str(os.path.basename(__file__))
+        log.info(   
+                 "Starting '__main__' in " + self.local_filename, 
+                 app_name     = kwargs.pop('app_name'      , None), 
+                 logfile      = kwargs.pop('logfile'       , None),
+                 screendump   = kwargs.pop('screendump'    , None),
+                 formatter    = kwargs.pop('formatter'     , None),
+                 create_paths = kwargs.pop('create_paths'  , None),
+                 )
 
-        self.R = RHandler.rHandler(service = "rserve")
+#         self.R = RHandler.rHandler(service = "rserve")
                  
-
+    def _cleanup(self):
+        """"""
+        log.info("Completing '__main__' in " + self.local_filename)
+        
+                 
 if __name__ == "__main__":
-    # It is assumed that the log and 
-#     class main_program(object):
-#         def __init__(self):
-#             obj = mrat_variable_selection()
-#             
-#             print obj.R #.code("3+3") 
-# 
-#             obj.log.debug("End of MRATmain run.")
-
-#     o = main_program()
-
-    o = mrat_variable_selection()
-#     print o
-#     print o.R.code("3+3")
-#     
-#     
-#     o.log.debug("End of MRATmain run.")    
+    o = mrat_variable_selection(
+         config_file = '../etc/MRAT.conf',
+         app_name   = "MRAT", 
+         logfile    = "/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log",
+         log_level  = 10,
+         screendump = True
+         )
