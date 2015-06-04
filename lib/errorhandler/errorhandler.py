@@ -8,101 +8,47 @@ __author__      = "Mike Rightmire"
 __copyright__   = "BioCom Software"
 __license__     = "Tesera"
 __license_file__= "Clause1.PERPETUAL_AND_UNLIMITED_LICENSING_TO_THE_CLIENT.py"
-__version__     = "0.9.1.0"
+__version__     = "0.9.3.0"
 __maintainer__  = "Mike Rightmire"
 __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
 ##############################################################################
 
 
-from loghandler import SetLogger
-
+from loghandler import log
+from handlers import Handlers
 import inspect
-import functools
+# import functools
+# import handlers 
+import re
+import subprocess
 import sys
+import types
 
-
-class CustomError(Exception):
-    """
-    Base user extensible exception class
-    Baseclass for dealing with unhandled errors
-    Extends class Exception
-    """
-    def __init__(self, message):
-        self.message = message
-    def __str__(self):
-        return repr(self.message)
-
-### Specific classes for dealing with unhandled exceptions
-#   Extends class CustomError    
-
-
-class FatalException(CustomError):
-    """
-    raise FatalSocketError
-    Returns default error + the attached string message
-    "Socket encountered a fatal condition. "
-    """
-    def __init__(self, message = None):
-        self.message = ("")
-        CustomError.__init__(self, self.message)
         
-######
-# MAIN
-
-# # The error handler MUST have a log file. 
-# # If 'None' is passed, a logger to /dev/null equivalent is created.
-# #If anything else is passed, log to a local file "error.log"
-
-# --- HOW TO INSTANTIATE IN SCRIPT ---
-# import errorhandler
-# from inspect import getmembers, stack
-# self.CustomErrorHandler = errorhandler.ErrorHandler(self.log)
-# self.err = self.CustomErrorHandler.err()
-
-# --- HOW TO USE THE ERROR HANDLER ---
-# try:
-#     i = int("notnum") # this will error
-# except Exception, e:
-#     e = ''.join(["NameOfCatchMethod:", str(e)])
-#     self.err(e, getmembers(self), stack())
-
-# IMPORTABLE FUNCTIONS --------------------------------------------------------
-
-
 class ErrorHandler(object):
     """
     class_obj = ErrorHandler()
     
     DESCRIPTION:
-        errorhandler is a class to control exceptions generated in scripts. 
+        errorhandler is a class to control, and attempt to fix, exceptions 
+        generated in scripts. 
     
-        When called within a try:except idiom, the error can be passed here 
-        where information can be passed to the logger, custom code can be 
-        entered to handle the error, and/or it can be raised as a fatal 
-        exception. 
+        ErrorHandler should NEVER be called or included within a user script. 
+        This class is called ESXCLUSIVELY by the trywrappers.handlertry
+        decorator.  
     
     USAGE:
-        --- HOW TO INSTANTIATE THE ERROR HANDLER IN AN EXTERNAL SCRIPT ---
-        import errorhandler
-        from inspect import getmembers, stack
-        self.CustomErrorHandler = errorhandler.ErrorHandler(self.log)
-        self.err = self.CustomErrorHandler.err()
-
-        --- HOW TO USE THE ERROR HANDLER IN AN EXTERNAL SCRIPT---
-        try:
-            i = int("notnum") # this will error
-        except Exception, e:
-            e = ''.join(["MyErrorHandlingMethod:", str(e)])
-            self.err(e, getmembers(self), stack())
-    
-        --- EDITING THE SCRIPT TO ADD ERROR HANDLING METHODS ---
-            if   'fatal'                in str(e).lower(): self.FatalError(e)
-            elif 'PassThroughException' in str(e): self.PassThroughException(e)
-            elif 'MyErrorHandlingMethod' in str(e): self.MyErrorHandlingMethod(e)
+        <myclass>
+            @handlertry("TriggerMessage: ", tries = 2)
+            def myMethod(self, args, kwargs):
+                FH = open(filename, "w+", 0)
+                return FH
             
-            After adding the elif statement, use the TEMPLATE method to create
-            a matching handling method. 
+            Some code here
+            Some more code here
+            FH = self.myMethod("Non_Existent_Filename")
+            After ErrorHandler attempts fix, control returns here regardless 
 
     METHODS:
         customErr(e, source, frame)
@@ -117,29 +63,18 @@ class ErrorHandler(object):
         err(e, source, frame)
             Simply a smaller pointer to customErr()
             
-        No other methods are intended or recommended to be user callable.  
+        None of these methods are intended or recommended to be user callable.  
     """
 
     def __init__(self): #, log):
-        self.log = SetLogger()
-            
-    def _format_original_error(self, e):
-        return "".join([str(e), ". "])
-#         return "".join(["[Original error: ", str(e), "]"])
-    
-    def _custom_error(self, message, e):
-        # Format message
-        e = "".join([str(self._format_original_error(e)), message])
-        # Send to log
-        self.log.error(e)
-        return
+        pass
 
     def err(self):
-        def _err(sourceobj, args, kwargs, e, source, frame):
-            return self.customErr(sourceobj, args, kwargs, e, source, frame)
+        def _err(callobj, args, kwargs, e, source, frame):
+            return self.customErr(callobj, args, kwargs, e, source, frame)
         return _err
             
-    def customErr(self, sourceobj, args, kwargs, e, source, frame):
+    def customErr(self, callobj, args, kwargs, e, source, frame):
         """
         NAME
             errorhandler
@@ -192,7 +127,7 @@ class ErrorHandler(object):
     
         HIDDEN METHODS
             _format_original_error(e)
-            _custom_error(self, message, e)
+            _log_error(self, message, e)
                      
         """        
 ###############################################################################
@@ -219,179 +154,21 @@ class ErrorHandler(object):
 #         errorin = errorin + "." + str(frame[0][3])
 #         errorin = errorin + "(line:" + str(frame[0][2]) + "): "
 #         e = errorin + str(e)
+#         import handlers 
+        #333
 
-                        
-        #EXTERNAL ERRORS
-        if   'fatal'                in str(e).lower(): self.FatalError(sourceobj, args, kwargs, e)
-        elif 'PassThroughException' in str(e): self.PassThroughException(sourceobj, args, kwargs, e)
-        elif 'InvalidPath'          in str(e): self.InvalidPath(sourceobj, args, kwargs, e)
-        elif 'ConfigFileNotFound'   in str(e): self.ConfigFileNotFound(sourceobj, args, kwargs, e)
-        elif 'ConfigFileParseError' in str(e): self.ConfigFileParseError(sourceobj, args, kwargs, e)
-        elif 'ConfigFileNoOption'   in str(e): self.ConfigFileNoOption(sourceobj, args, kwargs, e)
-        elif 'ParameterNotSet'      in str(e): self.ParameterNotSet(sourceobj, args, kwargs, e)
-        elif 'FullPathDoesNotExist'      in str(e): self.FullPathDoesNotExist(sourceobj, args, kwargs, e)
-
-        elif 'PathDoesNotExist'     in str(e): 
-            return self.PathDoesNotExist(sourceobj, args, kwargs, e)
+        # This calls the proper handler method from 'handlers'
+        # NOTE: The error keyword MUST MATCH THE METHOD NAME
+        # NOTE: A string search is used to match the method name to contents 
+        #       of the error string passed in.
+        #       THIS MEANS if you have two methods, 'ERR1' AND 'ERR10', 'ERR1'
+        #       will always be the one found...SO IT IS RECOMMENDED YOU NAME
+        #       THE METHODS VERY UNIQUELY AND CAREFULLY.
+        #       I.e. 'StringNotFoundInLogError' 
+        for key in Handlers.__dict__.keys():
+            if (str(key).lower() in str(e).lower()):
+                return Handlers.__dict__[key](callobj, args, kwargs, e)
+        return Handlers.UnknownException(callobj, args, kwargs, e)
         
-        # elif: # More error checks here
-    
-#         else: self.UnknownException(sourceobj, args, kwargs, e)
-        else: return self.PathDoesNotExist(sourceobj, args, kwargs, e)    
-            
-    ### SPECIFIC ERROR HANDLERS 
-    # These functions perform specific actions on the 'self' object These are used 
-    # to handle errors and return to the lone below the error call, UNLESS the 
-    # a new fatal exception is raised, which will halt all scripts. 
-    # The keyword 'fatal' in the error message passed to errorhandler will raise a 
-    # fatal exception and halt the scripts. 
-    
-    def TEMPLATE(self, sourceobj, args, kwargs, e):
-        # Create custom message to BE SENT TO THE LOGGER
-        message = ("".join(["Template message part 1 is a list item. ", 
-                            "Template message part 2 is a list item."]))    
-        # Sends the message and original error to the LOGGER
-        # Remove this line if you don't want an error displayed
-        self._custom_error(message, e)
-        ### METHOD ACTIONS
-        # CODE BELOW TO CORRECT ISSUE
-        # All code acts on the self object
-        return str(sys._getframe().f_code.co_name)
-
-    def ConfigFileNotFound(self, sourceobj, args, kwargs, e):
-        # Create custom message to BE SENT TO THE LOGGER
-        message = ("".join(["The configuration file was not found. ", 
-                            "Please verify the file exists in the ", 
-                            "appropriate path and is readable."]))    
-        # Sends the message and original error to the LOGGER
-        # Remove this line if you don't want an error displayed
-        self._custom_error(message, e)
-        ### METHOD ACTIONS
-        # CODE BELOW TO CORRECT ISSUE
-        # All code acts on the self object
-        raise FatalException()
-
-    def ConfigFileNoOption(self, sourceobj, args, kwargs, e):
-        # Create custom message to BE SENT TO THE LOGGER
-        message = ("".join(["Unable to find the specified section or option", 
-                            "(variable) in config file. ", 
-                            "Please verify the contents of the file. "]))    
-        # Sends the message and original error to the LOGGER
-        # Remove this line if you don't want an error displayed
-        self._custom_error(message, e)
-        ### METHOD ACTIONS
-        # CODE BELOW TO CORRECT ISSUE
-        # All code acts on the self object
-        return # To line following calling error
         
-    def ConfigFileParseError(self, sourceobj, args, kwargs, e):
-        # Create custom message to BE SENT TO THE LOGGER
-        message = ("".join(["The configuration file contains errors. ", 
-                            "Please verify the contents of the file. "]))    
-        # Sends the message and original error to the LOGGER
-        # Remove this line if you don't want an error displayed
-        self._custom_error(message, e)
-        ### METHOD ACTIONS
-        # CODE BELOW TO CORRECT ISSUE
-        # All code acts on the self object
-        raise FatalException()
-    
-    def FullPathDoesNotExist(self, sourceobj, args, kwargs, e):
-        # Custom message to BE SENT TO THE LOGGER
-        message = ''.join(["Either the path passed does not exist, ", 
-                           "or the end file  does not exist."])
-
-        # Sends the message and original error to the LOGGER
-        self._custom_error(message, e)
-
-        ### METHOD ACTIONS
-        result = False
-        kwargs["path"] = raw_input("enter a correct path...")
-    
-        return args, kwargs, result
-
-    def InitFailure(self, sourceobj, args, kwargs, e):
-        # Create custom message to BE SENT TO THE LOGGER
-        message = ("")
-        # Sends the message and original error to the LOGGER
-        # Remove this line if you don't want an error displayed
-        self._custom_error(message, e)
-        ### METHOD ACTIONS
-        # CODE HERE TO CORRECT ISSUE
-        raise FatalException()
-
-    def InvalidPath(self, sourceobj, args, kwargs, e):
-        # Create custom message to BE SENT TO THE LOGGER
-        message = ''.join([e, 
-                           "Path does not appear to be a valid format of ", 
-                           "'<drive>:\path\path\\' in Windows or '/path/path/' ", 
-                           "for Linux/OSX. ", 
-                           "NOTE: There MAY be a required ending slash."
-                           ])
-        # Sends the message and original error to the LOGGER
-        # Remove this line if you don't want an error displayed
-        self._custom_error(message, e)
-        ### METHOD ACTIONS
-        # CODE HERE TO CORRECT ISSUE IF DESIRED
-        raise FatalException()
         
-    def ParameterNotSet(self, sourceobj, args, kwargs, e):
-        # Custom message to BE SENT TO THE LOGGER
-        message = ("A script parameter (variable) does not exist " +
-                   "or is the wrong type")
-        # Sends the message and original error to the LOGGER
-        self._custom_error(message, e)
-        ### METHOD ACTIONS
-
-    def PassThroughException(self, sourceobj, args, kwargs, e):
-        # Custom message to BE SENT TO THE LOGGER
-        message = ("")
-        # Sends the message and original error to the LOGGER
-        self._custom_error(message, e)
-        ### METHOD ACTIONS
-        
-    def PathDoesNotExist(self, sourceobj, args, kwargs, e):
-        # Custom message to BE SENT TO THE LOGGER
-        message = ''.join(["The path passed does not exist, ", 
-                           "or 'path = <value>' was not set ", 
-                           "when calling method. "])
-
-        # Sends the message and original error to the LOGGER
-        self._custom_error(message, e)
-
-        ### METHOD ACTIONS
-        result = False
-        kwargs["path"] = raw_input("enter a correct path...")
-    
-        return args, kwargs, result
-        
-    def FileDoesNotExist(self, sourceobj, args, kwargs, e):
-        # Custom message to BE SENT TO THE LOGGER
-        message = ("The file passed does not exist. ")
-        # Sends the message and original error to the LOGGER
-        self._custom_error(message, e)
-        ### METHOD ACTIONS
-        
-    def FatalError(self, sourceobj, args, kwargs, e):
-        # Custom message to BE SENT TO THE LOGGER
-        message = ("")
-        # Sends the message and original error to the LOGGER
-        self._custom_error(message, e)
-        ### METHOD ACTIONS
-        raise FatalException(e)
-    
-    def UnknownException(self, sourceobj, args, kwargs, e):
-        # Custom message to BE SENT TO THE LOGGER
-        message = ("".join(["An unidentified exception was passed. ", 
-                            "'errorhandler' does not know what to do. ", 
-                            "Calling fatal exception and halting. "]))
-        # Sends the message and original error to the LOGGER
-        self._custom_error(message, e)
-        ### METHOD ACTIONS
-        raise FatalException(e)    
-
-
-if __name__ == "__main__":
-    
-    pass    
-    
