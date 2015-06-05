@@ -19,18 +19,11 @@ from signal         import *
 
 import atexit
 import os
+import sys
 
 class mrat_variable_selection(object):
-    def __init__(self, 
-                 config_file, # MANDATORY 
-                 app_name    = None, 
-                 logfile     = None,
-                 log_level   = None,
-                 screendump  = None,
-                 *args, 
-                 **kwargs # Must come last
-                 ):
-
+    def __init__(self,*args, **kwargs):
+        
         # Set exit and cleanup        
         for sig in (SIGABRT,SIGINT,SIGTERM,SIGQUIT):
             signal(sig, self._cleanup)
@@ -43,43 +36,49 @@ class mrat_variable_selection(object):
         # 2. keyword args passed into this __init__
         # 3. Mandatory defaults on a package by package basis if they ere not
         #    included in the config file or the kwargs
+        # ConfigHandler sets the log file parameters: so app_name, logfile, 
+        # screendump, formatter, create_paths arguments should be included.
+        # If included here, they will override whats in the config file. If 
+        # they a None, the config file will be used. If they are None here, and 
+        # not set in the config file...the default loghandler settings will be 
+        # used
         self.config = ConfigHandler(
-                        self, 
-                        app_name    = app_name, # Shown for reference only 
-                        logfile     = logfile, # Shown for reference only
-                        log_level   = log_level, # Shown for reference only
-                        screendump  = screendump, # Shown for reference only
-                        config_file = config_file, # Shown for reference only
+                        config_file = kwargs.pop('config_file', None),
                         *args,  
-                        **kwargs # Must come last
-                                    )
+                        **kwargs 
+                        )
         
         # The first call to log will create a log instance if it does not exist. 
         # The "kwargs.pop('app_name'      , None)," lines will override the 
         #  logger parameters obtained from the config file, if any have been 
         #  passed to __init__
         self.local_filename = str(os.path.basename(__file__))
-        log.info(   
-                 "Starting '__main__' in " + self.local_filename, 
-                 app_name     = kwargs.pop('app_name'      , None), 
-                 logfile      = kwargs.pop('logfile'       , None),
-                 screendump   = kwargs.pop('screendump'    , None),
-                 formatter    = kwargs.pop('formatter'     , None),
-                 create_paths = kwargs.pop('create_paths'  , None),
-                 )
+        log.info("Starting '__main__' in " + self.local_filename)
 
-#         self.R = RHandler.rHandler(service = "rserve")
+        sys.exit(0)
+        
+        self.R = RHandler.rHandler(
+                    rhandler_service     = self.rhandler_service, 
+                    rhandler_host        = self.rhandler_host,  
+                    rhandler_port        = self.rhandler_port,
+                    rhandler_atomicArray = self.rhandler_atomicArray,  
+                    rhandler_arrayOrder  = self.rhandler_arrayOrder,  
+                    rhandler_defaultVoid = self.rhandler_defaultVoid,  
+                    rhandler_oobCallback = self.rhandler_oobCallback,
+                                   )
                  
     def _cleanup(self):
         """"""
         log.info("Completing '__main__' in " + self.local_filename)
+        log.info('Ending process. Clean exit.')
+        sys.exit(0)
         
                  
 if __name__ == "__main__":
     o = mrat_variable_selection(
-         config_file = '../etc/MRAT.conf',
-         app_name   = "MRAT", 
-         logfile    = "/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log",
+        config_file = "../etc/MRAT.conf",
+#         app_name   = "MRAT", 
+#         logfile    = "/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log",
          log_level  = 10,
          screendump = True
          )

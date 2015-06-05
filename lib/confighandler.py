@@ -6,7 +6,7 @@ __author__      = "Mike Rightmire"
 __copyright__   = "BioCom Software"
 __license__     = "Tesera"
 __license_file__= "Clause1.PERPETUAL_AND_UNLIMITED_LICENSING_TO_THE_CLIENT.py"
-__version__     = "0.9.4.0"
+__version__     = "0.9.5.0"
 __maintainer__  = "Mike Rightmire"
 __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
@@ -14,6 +14,7 @@ __status__      = "Development"
 
 from checks         import checkObject
 from checks         import fileExists
+from checks         import directoryExists
 from checks         import checklist
 from ConfigParser   import SafeConfigParser
 # from errorhandler   import handlertry
@@ -23,6 +24,7 @@ from loghandler     import log
 
 import ConfigParser 
 import inspect
+import os
 import re
 import types
 import sys
@@ -46,7 +48,6 @@ class GettattrWrapper(object):
         self.wrapped = wrapped
         
     def __getattr__(self, name):
-        print "GettattrWrapper...searching ", name #333
         try:
             return self._config.__dict__[name]
         except (AttributeError, NameError), e:
@@ -303,95 +304,108 @@ class ConfigHandler(object):
 
     def __init__(self, *args, **kwargs):
         """"""
+
         # This grabs the calling object, so var can be loaded into it
         self.callobj = inspect.stack()[1][0].f_locals['self']
 
-        # Forgot what this does ;-)
-        sys.modules[self.callobj.__class__.__module__] = GettattrWrapper(sys.modules[self.callobj.__class__.__module__])
+        # get the filename of the calling module
+        self.caller_name = sys._current_frames().values()[0]
+        self.caller_name = self.caller_name.f_back.f_globals['__file__']
+        self.caller_name = os.path.basename(self.caller_name)
+        self.caller_name = self.caller_name.lower().replace('.py','')
+
+        # Forgot why I did this  ;-)
+#         sys.modules[self.callobj.__class__.__module__] = GettattrWrapper(sys.modules[self.callobj.__class__.__module__])
 #         sys.modules[__name__] = ModuleWrapper(sys.modules[__name__])
 
         # Singleton. If confighandler object exists, do not re-run __init__, 
         # just return         
         if self.__exists:
+            # Always send dict(kwargs) not kwargs
+            if self._check_reload(dict(kwargs)): 
+                # Re-run the config file
+                # for now do nothing
+                pass # NOT return
+            # if (check here for changes parameters)
             return
-        
-        # MANDATORY DEFAULTS dict
-        # The following mandatory parameters must exist. If they do not exist 
-        # in the config file AND have not been passed to the __init__, 
-        # these will be used. 
-        self.MANDATORY_DEFAUTS = {
-                             "app_name":"configparser", 
-                             "logfile":"configparser.log", 
-                             "log_path":"./", 
-                             "create_paths":True
-                             }
-        
-        ### These params check for loghandler object params
-        # Get log_level from kwargs or set to default 40
-        self.log_level  = kwargs.pop("log_level", 40)
-        # Get screendump from kwargs or set default False
-        self.screendump = kwargs.pop("screendump", False)
-        # Get global from kwargs or set default True
-        self.GLOBAL = kwargs.pop("global", True)
-
-        # Set temp logger to monitor confighandler
-        app_name = "configparser"
-        logfile = "./configparser.log"
-        log_level = self.log_level 
-        screendump = self.screendump 
-        create_paths = True 
-
-        msg = ''.join(['Initiating logger with ',
-                       'app_name:', str(app_name), 
-                       ', logfile: ', str(logfile), 
-                       ', log_level: ', str(log_level), 
-                       ', screendump: ', str(screendump), 
-                       ', create_paths: ', str(create_paths), 
-                       '.'])
+                
+        # DEFAULT PARAMETERS ARE SET HERE
+        # Always send dict(kwargs)
+        self._set_parameters(dict(kwargs))
         
         # Actually creates the loghandler object.
-        log.debug(  msg,
-                    app_name = app_name, 
-                    logfile = logfile,
-                    log_level = self.log_level, 
-                    screendump = self.screendump, 
-                    create_paths = create_paths 
-                    )
+        msg = ''.join([
+                       'Initiating logger with ',
+                       'app_name:',         str(self.app_name), 
+                       ', logfile: ',       str(self.logfile), 
+                       ', log_level: ',     str(self.log_level), 
+                       ', screendump: ',    str(self.screendump), 
+                       ', create_paths: ',  str(self.create_paths), 
+                       '.'
+                       ])
+        log.debug(  
+                  msg,
+                  app_name      = self.app_name, 
+                  logfile       = self.logfile,
+                  log_level     = self.log_level, 
+                  screendump    = self.screendump, 
+                  create_paths  = self.create_paths 
+                  )
 
         # Check for the config file param. Absence of config_file raises err
         # Defaults to None if KW does not exist
-        self.config_file  = kwargs.pop("config_file", None)
-        # Checks validity of config_file param. None raises error. 
-        self._check_config_file(self.config_file)
+        # Always send dict(kwargs)
+        self.config_file = self._check_config_file(dict(kwargs))
+
         log.info("ConfigHandler called with " + str(self.config_file))
 
         # Load the config file avriables into self and self._config
-        self._load_all_vars(*args, **kwargs)
+        # Always send dict(kwargs)
+        self._load_all_vars(dict(kwargs))
 
         # Set the perm logger config based on settings in the config file
+        # As the ocnfig file may have changed the logging parameters, always 
+        # call this with all the options again. 
         log.debug("Setting logger's permanent configuration",
-                             app_name = self.app_name, 
-                             logfile = self.logfile,
-#                              log_path = self.log_path, 
-                             log_level = self.log_level, 
-                             screendump = self.screendump, 
-                             create_paths = self.create_paths 
-                             )
+                   app_name      = self.app_name, 
+                   logfile       = self.logfile,
+                   log_level     = self.log_level, 
+                   screendump    = self.screendump, 
+                   create_paths  = self.create_paths 
+                   )
         
     
-    #__________________________________________________________________________
+    #==========================================================================
     # PRIVATE METHODS
     #@handlertry("InvalidConfigurationFile:")    
-    def _check_config_file(self, conf):
+    def _check_reload(self, kwargs):
+        result = kwargs.pop('reload', False)
+        if type(result) is bool:
+            return result
+        else:
+            return False
+        
+    def _check_config_file(self, kwargs):
         """"""
+        conf = kwargs.pop('config_file', None)
+        # conf = self._check_config_path(conf) # FUTURE
+        
         err = ''.join(["Invalid 'config_file' parameter set as '",
-              str(conf),
-              "'. "  
-              "Configuration file name MUST be passed at object ", 
-              "instantiation as a string."]) 
-
-        if (conf is None):              raise ValueError(err)
-        if (not fileExists(str(conf))): raise ValueError(err)
+              str(conf),"'. "  
+              "Configuration file name MUST be a fully qualified path passed "
+              "as a string."]) 
+                
+        # Eventually use self.caller_name to search  for config file automaticly
+        if (conf is None):
+            log.error("Cannot find config file " + str(conf))
+            raise ValueError(err)
+        
+        elif (not fileExists(str(conf))): 
+            log.error("Config file at '" + str(conf) + "Cannot be opened.")
+            raise ValueError(err)
+        
+        else:
+            return conf
                 
     #@handlertry("PassThroughException:")    
     def _convert_string_values(self, value):
@@ -415,7 +429,7 @@ class ConfigHandler(object):
         return result
             
     #@handlertry("")    
-    def _load_all_vars(self, *args, **kwargs):
+    def _load_all_vars(self, kwargs):
         """"""
         self.open_file()
         self.loadattr()
@@ -426,12 +440,14 @@ class ConfigHandler(object):
         # This needs to come AFTER loding the config 
         # file but BEFORE the final SetLogger to allow for config file vars 
         # to be manually overidden  
-        self._override_with_kw_vars(kwargs)
+
+        # Always send dict(kwargs)
+        self._override_with_kw_vars(dict(kwargs))
 
         # Should th following mandatory parameters not exist in the config 
         # file AND not have been passed to the __init__, create them here 
         # using set defauls
-        self._set_mandatory_defaults(self.MANDATORY_DEFAUTS)
+#         self._set_mandatory_defaults(self.MANDATORY_DEFAUTS)
 
         # All the configuration is first set into the ConfigHandler 
         # object (self). THEN, if GLOBAL is true, they are passed into the 
@@ -439,7 +455,192 @@ class ConfigHandler(object):
         # self.GLOBAL defaults to True
         if self.GLOBAL: self.callobj.__dict__.update(self.__dict__) 
 
-    #@handlertry("FATAL:")
+    def _check_app_name(self, app_name):
+        """"""
+        # Verify string and clean
+        # This can deliver nonsense if a nonsense object is passed in as 
+        # app_name, but it will be functional nonsense
+
+        if ((app_name is None) or (len(str(app_name)) < 1)):
+            return 'ConfigHandler'
+    
+        app_name = (''.join(c for c in str(app_name) 
+                            if re.match("[a-zA-z0-9]", c)))
+
+        try: 
+            if app_name != self.app_name:
+                # FUTURE: Make changes to the config object
+                pass
+        except (NameError, AttributeError):
+            pass                
+
+        return app_name
+
+    def _check_create_paths(self, create_paths):
+        if type(create_paths) is not bool:
+            try:
+                return self.create_paths
+            except (NameError, AttributeError):
+                return self.create_paths_default
+        else:
+            return create_paths
+
+    def _check_formatter(self, format = None):
+        if format is None:
+            return logging.Formatter(self.formatter_default)
+        
+        else:
+            return str(format) # Put check in place???
+
+#     def _check_boolean(self, screendump):
+#         if screendump is None:
+#             try:
+#                 return self.screendump
+#             except AttributeError, e:
+#                 return False
+#  
+#         # Check for strings instead of proper bool            
+#         if (("t" in str(screendump).lower())): 
+#             return True
+#  
+#         if (("f" in str(screendump).lower())): 
+#             return False
+#  
+#         # Check for numbers instead of proper bool                        
+#         try:
+#             if int(screendump) == 1: return True
+#             if int(screendump) == 0: return False
+#         except ValueError, e:
+#             return False
+#  
+#         # Check for proper bool
+#         if isinstance(screendump, bool):
+#             return screendump
+#         else:
+#             e = "Parameter 'screendump' must be boolean (True/False)"
+#             raise TypeError(e)
+
+                        
+    def _check_logfile(self, logfile):
+        """"""
+        self.logfile_default = './ConfigHandler.log'
+        
+        if ((logfile is None) or (len(str(logfile)) < 1)):
+            try:
+                return self.logfile
+            except (NameError, AttributeError):
+                return self.logfile_default
+                       
+        # Keyword 'None', 'No', or 'void' (spelled out as text, 
+        # not the Python keyword None) means
+        # No logging. 
+        if (('none' in str(logfile).lower()) or
+            ('void' in str(logfile).lower())):
+#             return 'void' # FUTURE
+            return self.logfile_default
+
+        # If key word 'syslog' obtain and use the systems syslog
+        if 'syslog' in logfile.lower():
+#             return self._getSyslog()
+            return self.logfile_default
+        
+        # If here, the logfile passed is a path and/or filename
+        # Strip illegal characters
+        # This automatically converts what was passed into a string
+        logfile = (''.join(c for c in str(logfile) if re.match("[a-zA-z0-9 -_./\\ ]", c)))
+
+        # logfile must start with either '/' or './'
+        # If it has neither, we assume local directory
+        if not re.match('^\s*[./|/].*$', logfile): 
+            logfile = './' + logfile
+         
+        # If logfile ends with '/', then its just a path
+        # Use the path, and add the default logfilename     
+        if logfile.endswith('/'):
+            logfile = logfile + self.logfile_default
+        
+        # logfile is a full path, including filename, and must end in .log    
+        if not logfile.lower().endswith('.log'):
+            logfile = logfile + '.log'
+        
+        # Check that directory exists and, if not, create it
+        if not directoryExists(logfile, create = self.create_paths):
+            err = ''.join([
+                           "The logfile directory '", 
+                           str(logfile), 
+                           "' does not exist and creating it either ", 
+                           "failed or is prohibited by the 'create_paths' ", 
+                           " parameter (currently set as '", 
+                           str(self.create_paths),
+                           "')."
+                           ])
+            raise AttributeError(err)
+        
+        return os.path.abspath(logfile)
+                        
+            
+    def _check_log_level(self, log_level = None):
+        #Level
+        if log_level is None: 
+            try:
+                return self.log_level
+            except (NameError, AttributeError):
+                return self.log_level_default
+
+        # IS NOT NONE
+        # Check for text settings
+        # No need for elif since each if returns
+        if "C" in str(log_level).upper()[:1]: 
+            log_level = "CRITICAL"
+            return log_level
+             
+        if "E" in str(log_level).upper()[:1]: 
+            log_level = "ERROR"
+            return log_level
+            
+        if "W" in str(log_level).upper()[:1]: 
+            log_level = "WARNING"
+            return log_level
+
+        if "I" in str(log_level).upper()[:1]: 
+            log_level = "INFO"
+            return log_level
+
+        if "D" in str(log_level).upper()[:1]: 
+            log_level = "DEBUG"
+            return log_level
+        
+        if "NO" in str(log_level).upper()[:1]: 
+            log_level = "NOTSET"
+            return log_level 
+
+        # If here, log_level is either numerical or invalid        
+        log_level = (''.join(c for c in str(log_level) 
+                                 if re.match("[0-9]", c)))
+        try:
+            log_level = int(log_level)
+        except ValueError, e:
+            log_level = 40
+            return log_level
+        
+        if ((log_level >= 0) and (log_level <= 50)): 
+            return log_level
+        else:
+            msg = (''.join(["'log_level': '", str(log_level),
+                            "' is not a correct integer ", 
+                            "(0 <= log_level <=50)."]))
+            raise Exception(msg)
+
+    def _check_screendump(self, screendump):
+        if type(screendump) is not bool:
+            try:
+                return self.screendump
+            except (NameError, AttributeError):
+                return self.screendump_default
+            return False
+        else:
+            return screendump
+
     def _override_with_kw_vars(self, kwargs):
         for key in kwargs.keys():
             self.__dict__[key] =  kwargs[key]
@@ -459,6 +660,31 @@ class ConfigHandler(object):
         return
 
     #@handlertry("PassThroughException:")    
+    
+    
+    #@handlertry("")
+    def _set_parameters(self, kwargs):
+        ### These params check for loghandler object params
+        # Get params from kwargs or set to default
+        # self.paramname  = kwargs.pop("paramname", default_value) 
+        # These should all set 'self' parameters
+        create_paths    = kwargs.pop("create_paths", True) 
+        self.create_paths = self._check_create_paths(create_paths)
+
+        log_level       = kwargs.pop("log_level", 40)
+        self.log_level = self._check_log_level(log_level)
+
+        screendump      = kwargs.pop("screendump", False)
+        self.screendump = self._check_screendump(screendump)
+        
+        self.GLOBAL          = kwargs.pop("global", True)
+
+        app_name        = kwargs.pop("app_name", "configparser")
+        self.app_name = self._check_app_name(app_name)
+
+        logfile         = kwargs.pop("logfile", "./configparser.log")
+        self.logfile = self._check_logfile(logfile)
+        
     def get(self, varname, default = None):
         """
         Retrieves the attribute from ConfigHandlers "self"
@@ -506,7 +732,6 @@ class ConfigHandler(object):
         """
         _found = False
         for section_name in self.config.sections():
-#             print "confighandler: loading section name: " + section_name #333
 
             if ((section_name.lower() == str(section).lower()) or 
                 (section is None)):
@@ -514,7 +739,6 @@ class ConfigHandler(object):
                 # ConfigParser.InterpolationMissingOptionError as handlertry error message
                 for name, value in self.config.items(section_name):
                     if ({"LOADALL":True, None:True, name:True}.get(varname)):
-#                         print "adding var '" + str(name) + "' with value '" + 
                         value = self._convert_string_values(value)
                         self.__dict__[name] = value
 #                         self.log.debug(''.join(["set '", str(name), 

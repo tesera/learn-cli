@@ -19,7 +19,9 @@ from functions      import override_kw_vars
 from functions      import set_mandatory_defaults
 from functions      import fileExists
 from functions      import pathExists
-from loghandler     import SetLogger
+# from loghandler     import SetLogger
+from loghandler     import log
+from signal         import *
 
 import abc
 import atexit
@@ -239,27 +241,45 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         oobCallback = None,
         
         """        
-        atexit.register(self._cleanup)
+        # Set exit and cleanup        
+        for sig in (SIGABRT,SIGINT,SIGTERM,SIGQUIT):
+            signal(sig, self._cleanup)
+        atexit.register(self._cleanup)  
 
-        self.log = SetLogger() # this should have been set by calling script        
+        log.debug("Instantiating rserveHandler object.")
         
-        # ConfigHandler is a singleton. This should return an existing obj
-        self.config = ConfigHandler()
+#         self.log = SetLogger() # this should have been set by calling script        
+        
+#         # ConfigHandler is a singleton. This should return an existing obj
+#         self.config = ConfigHandler()
 
-        # These MUST come after parsing the config , to allow for overrides
-        # but BEFORE the final SetLogger. 
-        override_kw_vars(self, kwargs) # set in both self and self.config objs
-        override_kw_vars(self.config, kwargs) # set in both self and self.config
-        set_mandatory_defaults(self.config, 
-                               {"port"        :6311,
-                                "atomicArray" :True, 
-                                "arrayOrder"  :"C", 
-                                "defaultVoid" :False, 
-                                "oobCallback" :None,
-#                               "boogerhead":1
-                                })
+#         # These MUST come after parsing the config , to allow for overrides
+#         # but BEFORE the final SetLogger. 
+#         override_kw_vars(self, kwargs) # set in both self and self.config objs
+#         override_kw_vars(self.config, kwargs) # set in both self and self.config
         
-        self.log.debug("rserveHandler object instantiated.")
+#         set_mandatory_defaults(self.config, 
+#                                {"port"        :6311,
+#                                 "atomicArray" :True, 
+#                                 "arrayOrder"  :"C", 
+#                                 "defaultVoid" :False, 
+#                                 "oobCallback" :None,
+# #                               "boogerhead":1
+#                                 })
+
+        self.rhandler_host  = kwargs.pop("rhandler_host"       ,"localhost")
+        self.rhandler_port           = kwargs.pop("port"         ,"6311")
+        self.rhandler_atomicArray    = kwargs.pop("atomicArray"  , True)
+        self.rhandler_arrayOrder     = kwargs.pop("arrayOrder"   , "C")
+        self.rhandler_defaultVoid    = kwargs.pop("defaultVoid"  , False)
+        self.rhandler_oobCallback    = kwargs.pop("oobCallback"  , None)
+
+        print 'self.rhandler_host  =', self.rhandler_host # kwargs.pop("rhandler_host"       ,"localhost")
+        print 'self.rhandler_port           =', self.rhandler_port # kwargs.pop("port"         ,"6311")
+        print 'self.rhandler_atomicArray    =', self.rhandler_atomicArray # kwargs.pop("atomicArray"  , True)
+        print 'self.rhandler_arrayOrder     =', self.rhandler_arrayOrder# kwargs.pop("arrayOrder"   , "C")
+        print 'self.rhandler_defaultVoid    =', self.rhandler_defaultVoid# kwargs.pop("defaultVoid"  , False)
+        print 'self.rhandler_oobCallback    =', self.rhandler_oobCallback # kwargs.pop("oobCallback"  , None)
 
         self.connect()
         
@@ -279,28 +299,28 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         :RETURNS:
         :USAGE:
         """
-        self.log.debug("Cleaning up Rhandler...")
+        log.debug("Cleaning up Rhandler...")
         # do stuff
         self.close()
         # other stuff
         return
 
-    def _load_config_file(self):
-        """
-        """
-        self.log.debug(("Loading config file" + str(self.config_file)))
-        
-        if ((self.config_file is None) or
-            (self.config_file == "")
-            ): return
-
-        self.config = configHandler(config_file = self.config_file,
-                                    screendump = True, 
-                                    debug = True 
-                                    )
-        self.config.load_vars(self)
-        
-        return
+#     def _load_config_file(self):
+#         """
+#         """
+#         log.debug(("Loading config file" + str(self.config_file)))
+#         
+#         if ((self.config_file is None) or
+#             (self.config_file == "")
+#             ): return
+# 
+#         self.config = configHandler(config_file = self.config_file,
+#                                     screendump = True, 
+#                                     debug = True 
+#                                     )
+#         self.config.load_vars(self)
+#         
+#         return
 
     def _set_app_name(self):
         return self._get_app_name()
@@ -342,7 +362,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
 #                                 log_level = self.log_level, 
 #                                 screen = self.log_to_screen)
 #  
-#         self.log.info(''.join([str(self.__class__.__name__), 
+#         log.info(''.join([str(self.__class__.__name__), 
 #                                " logger started."
 #                                ]))
 
@@ -399,7 +419,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
 #______________________________________________________________________________
 # PUBLIC METHODS (OVERIDDEN FROM ABSTRACT)
 
-    @handlertry("PassThroughException:")
+    #@handlertry("PassThroughException:")
     def close(self):
         """
         :NAME:
@@ -415,7 +435,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         # other stuff
         return
     
-    @handlertry("PassThroughException:")
+    #@handlertry("PassThroughException:")
     def code(self, _cmd):
         """
         :NAME:
@@ -431,7 +451,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         _cmd = self.cmd(_cmd)
         return self.conn.eval(_cmd)
         
-    @handlertry("PassThroughException:")
+    #@handlertry("PassThroughException:")
     def delenv(self, _env):
         """
         :NAME:
@@ -448,7 +468,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         """
         raise NotImplementedError
     
-    @handlertry("PassThroughException:")
+    #@handlertry("PassThroughException:")
     def env(self):
         """
         :NAME:
@@ -462,7 +482,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         """
         raise NotImplementedError
     
-    @handlertry("PassThroughException:")
+    #@handlertry("PassThroughException:")
     def getenv(self, _env):
         """
         :NAME:
@@ -477,7 +497,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         """
         raise NotImplementedError
 
-    @handlertry("", tries = 2)
+    #@handlertry("", tries = 2)
     def script(self, *args, **kwargs):
         """
         :NAME:
@@ -539,7 +559,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         
         self.conn.eval(_cmd)
          
-    @handlertry("PassThroughException:")
+    #@handlertry("PassThroughException:")
     def setenv(self, _env):
         """
         :NAME:
@@ -555,7 +575,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         """
         raise NotImplementedError
     
-    @handlertry("PassThroughException:")
+    #@handlertry("PassThroughException:")
     def cmd(self, _cmd):
         """
 
@@ -584,7 +604,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         # elif something else: return something else
         # else: ups
 
-    @handlertry("PassThroughException:")
+#     #@handlertry("PassThroughException:")
     def connect(self): # No defaults at this level. Always use config vars
         """
         :NAME:
@@ -649,41 +669,45 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         :METHODS:
         
         """
-        @handlertry("PassThroughException: ")
-        def _connect(self):
-            self.conn = R.connect(host          = self.config.host, 
-                                  port          = self.config.port, 
-                                  atomicArray   = self.config.atomicArray, 
-                                    #arrayOrder was removed. See __doc__ 
-    #                               arrayOrder    = self.config.arrayOrder, 
-                                  defaultVoid   = self.config.defaultVoid, 
-                                  oobCallback   = self.config.oobCallback)
-            # Cheap check
-            try:
-                if ( int(self.conn.eval("3*3")) == 9):
-                    self.log.debug(''.join(["Established connection to Rserve with ", 
-                                           "host:", 
-                                           str(self.config.host), ", ",  
-                                           "port:", 
-                                           str(self.config.port), ", ", 
-                                           "atomicArray: DEPRICATED/UNUSED, ",
-                                           "defaultVoid:", 
-                                           str(self.config.defaultVoid), ", ", 
-                                           "oobCallback:", 
-                                           str(self.config.defaultVoid), "."
-                                           ]))
-                else:
-                    raise ValueError()
-                    print "self.testvar inside _connect", self.testvar #3333
-    
-            except ValueError, e:
-                e = ''.join(["[R] environment connection returning garbage ", 
-                             "to attempted eval of (3*3). Please troubleshoot. ", 
-                             str(e)])
-                raise ValueError(e)
+        print 'self.server=', self.rhandler_host#333
+        print 'port          =', self.rhandler_port#333 
+        print 'atomicArray   =',  self.rhandler_atomicArray,#333 
+        #arrayOrder was removed. See __doc__ 
+        #                               arrayOrder    = self.arrayOrder, 
+        print 'defaultVoid   = ', self.rhandler_defaultVoid,#333 
+        print 'oobCallback   = ', self.rhandler_oobCallback#333
+                
+        self.conn = R.connect(host          = self.rhandler_host, 
+                              port          = self.rhandler_port, 
+                              atomicArray   = self.rhandler_atomicArray, 
+                                #arrayOrder was removed. See __doc__ 
+#                               arrayOrder    = self.arrayOrder, 
+                              defaultVoid   = self.rhandler_defaultVoid, 
+                              oobCallback   = self.rhandler_oobCallback)
+        # Cheap check
+        try:
+            if ( int(self.conn.eval("3*3")) == 9):
+                log.debug(''.join(["Established connection to Rserve with ", 
+                                       "host:", 
+                                       str(self.server), ", ",  
+                                       "port:", 
+                                       str(self.port), ", ", 
+                                       "atomicArray: DEPRICATED/UNUSED, ",
+                                       "defaultVoid:", 
+                                       str(self.defaultVoid), ", ", 
+                                       "oobCallback:", 
+                                       str(self.defaultVoid), "."
+                                       ]))
+            else:
+                raise ValueError()
+                print "self.testvar inside _connect", self.testvar #3333
 
-        #connect MAIN
-        _connect(self)
+        except ValueError, e:
+            e = ''.join(["[R] environment connection returning garbage ", 
+                         "to attempted eval of (3*3). Please troubleshoot. ", 
+                         str(e)])
+            raise ValueError(e)
+
         return self.conn
 
         
