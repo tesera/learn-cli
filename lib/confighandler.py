@@ -314,6 +314,9 @@ class ConfigHandler(object):
         self.caller_name = os.path.basename(self.caller_name)
         self.caller_name = self.caller_name.lower().replace('.py','')
 
+        # This dict will store the actual configuration vars
+        self.configuration = {}
+        
         # Forgot why I did this  ;-)
 #         sys.modules[self.callobj.__class__.__module__] = GettattrWrapper(sys.modules[self.callobj.__class__.__module__])
 #         sys.modules[__name__] = ModuleWrapper(sys.modules[__name__])
@@ -355,6 +358,7 @@ class ConfigHandler(object):
         # Check for the config file param. Absence of config_file raises err
         # Defaults to None if KW does not exist
         # Always send dict(kwargs)
+        # REQUIRES: kwargs, self.caller_name
         self.config_file = self._check_config_file(dict(kwargs))
 
         log.info("ConfigHandler called with " + str(self.config_file))
@@ -378,6 +382,7 @@ class ConfigHandler(object):
     #==========================================================================
     # PRIVATE METHODS
     #@handlertry("InvalidConfigurationFile:")    
+    """@handlertry()"""
     def _check_reload(self, kwargs):
         result = kwargs.pop('reload', False)
         if type(result) is bool:
@@ -385,29 +390,96 @@ class ConfigHandler(object):
         else:
             return False
         
-    def _check_config_file(self, kwargs):
+    """@handlertry()"""
+    def _check_config_file(self, 
+                           kwargs, 
+    #                        caller_name = 'ConfigHandler'
+                           ):
         """"""
         conf = kwargs.pop('config_file', None)
-        # conf = self._check_config_path(conf) # FUTURE
+                    
+        # First, just see if the file exists...
+        if fileExists(conf): return conf # Done
+    
+        # If here, there's a problem with the passed file, try to resolve. 
+        # If the passed 
+        err = ''.join([
+                     "'config_file' of '", 
+                     str(conf), 
+                     "' not found. Attempting to resolve. "
+                     ])
+        log.error(err)    
         
-        err = ''.join(["Invalid 'config_file' parameter set as '",
-              str(conf),"'. "  
-              "Configuration file name MUST be a fully qualified path passed "
-              "as a string."]) 
+        # This gets the filename root
+        if ((conf is None) or (len(str(conf)) < 1)):
+            conf = self.caller_name
+            err = ''.join(["'None' is not valid for parameter 'config_file'. ", 
+                   "Setting to default of '", str(conf), "' and searching." ])
+            log.error(err)
+        
+        # Clean the name, this may return a path or just a name 
+        conf = (''.join(c for c in str(conf) if re.match("[a-zA-z0-9 -_./\\ ]", c)))
+        
+        # This gets just the filename, if a full path
+        conf_filename = os.path.basename(conf)
+        
+        # Extensions to check for
+        conf_extensions = ['conf', 'cnf']
+    
+        # This removes any extension (.py, .conf, etc) if one exists
+        _list = conf_filename.split('.')
+        if len(_list) == 1: # There was no 'dot' in the name (no extension)
+            conf_basename = _list[0] 
+        else: # Strip off only last .<text>
+            conf_basename = _list[0:(len(_list)-1)]
+        
+        # Search the filesystem for reasonable possibilities
+        # Start two dir back, since <root>/lib/confighandler/confighandler.py 
+        for root, dirs, files in os.walk("../../"): 
+            
+            for file in files:
+                # First original filename, corrected for case problems
+                if str(file).lower() == conf_filename.lower():
+                    # FUTURE: GUI confirm change dialogue
+                    # FUTURE: _verify_config_file(file)
+                    return os.path.abspath(root + '/' + file)
                 
-        # Eventually use self.caller_name to search  for config file automaticly
-        if (conf is None):
-            log.error("Cannot find config file " + str(conf))
-            raise ValueError(err)
-        
-        elif (not fileExists(str(conf))): 
-            log.error("Config file at '" + str(conf) + "Cannot be opened.")
-            raise ValueError(err)
-        
-        else:
-            return conf
+                # Next, basename with extensions
+                for extension in conf_extensions:
+                    if str(file).lower() == str(conf_basename + '.' + extension).lower():
+                        # FUTURE: GUI confirm change dialogue
+                    # FUTURE: _verify_config_file(file)
+                        return os.path.abspath(root + '/' + file)
+                     
+        # if here, no config file was found
+        err = ''.join(['Unable to find config file. Halting. '])
+        raise ValueError(err)
+
+#     def _check_config_file(self, kwargs):
+#         """"""
+#         conf = kwargs.pop('config_file', None)
+#         # conf = self._check_config_path(conf) # FUTURE
+#         
+#         err = ''.join(["Invalid 'config_file' parameter set as '",
+#               str(conf),"'. "  
+#               "Configuration file name MUST be a fully qualified path passed "
+#               "as a string."]) 
+#                 
+#         # Eventually use self.caller_name to search  for config file automaticly
+#         if (conf is None):
+#             log.error("Cannot find config file " + str(conf))
+#             raise ValueError(err)
+#         
+#         elif (not fileExists(str(conf))): 
+#             log.error("Config file at '" + str(conf) + "Cannot be opened.")
+#             raise ValueError(err)
+#         
+#         else:
+#             return conf
                 
     #@handlertry("PassThroughException:")    
+
+    """@handlertry()"""
     def _convert_string_values(self, value):
         """"""
         #@raisetry(''.join(["ConfigHandler._convert_values; checking value of '", 
@@ -429,6 +501,8 @@ class ConfigHandler(object):
         return result
             
     #@handlertry("")    
+
+    """@handlertry()"""
     def _load_all_vars(self, kwargs):
         """"""
         self.open_file()
@@ -447,22 +521,28 @@ class ConfigHandler(object):
         # Should th following mandatory parameters not exist in the config 
         # file AND not have been passed to the __init__, create them here 
         # using set defauls
-#         self._set_mandatory_defaults(self.MANDATORY_DEFAUTS)
+#         self._set_mandatory_defaults(self.MANDATORY_DEFAUTS) # Now handled by the _check_<whatever>()
 
         # All the configuration is first set into the ConfigHandler 
         # object (self). THEN, if GLOBAL is true, they are passed into the 
         # calling object as well
         # self.GLOBAL defaults to True
-        if self.GLOBAL: self.callobj.__dict__.update(self.__dict__) 
+#         if self.GLOBAL: self.callobj.__dict__.update(self.__dict__) 
 
-    def _check_app_name(self, app_name):
+    """@handlertry()"""
+    def _check_app_name(self, kwargs):
         """"""
+        # Must come first
+        app_name_default = kwargs.pop('app_name_default', 'ConfigHandler')
+        # Must come second
+        app_name = kwargs.pop('app_name', app_name_default)
+
         # Verify string and clean
         # This can deliver nonsense if a nonsense object is passed in as 
         # app_name, but it will be functional nonsense
 
         if ((app_name is None) or (len(str(app_name)) < 1)):
-            return 'ConfigHandler'
+            return app_name_default
     
         app_name = (''.join(c for c in str(app_name) 
                             if re.match("[a-zA-z0-9]", c)))
@@ -471,12 +551,20 @@ class ConfigHandler(object):
             if app_name != self.app_name:
                 # FUTURE: Make changes to the config object
                 pass
+            
         except (NameError, AttributeError):
             pass                
 
         return app_name
 
-    def _check_create_paths(self, create_paths):
+    """@handlertry()"""
+    def _check_create_paths(self, kwargs):
+
+        # Must come first 
+        create_paths_default = kwargs.pop('create_paths_default', True)
+        # Must come second
+        create_paths = kwargs.pop('create_paths', create_paths_default)
+            
         if type(create_paths) is not bool:
             try:
                 return self.create_paths
@@ -485,12 +573,18 @@ class ConfigHandler(object):
         else:
             return create_paths
 
+    """@handlertry()"""
     def _check_formatter(self, format = None):
-        if format is None:
-            return logging.Formatter(self.formatter_default)
+        # MUST COME FIRST 
+        formatter_default = kwargs.pop('formatter_default', "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        # Must come second
+        formatter = kwargs.pop('formatter', formatter_default)
+    
+        if ((formatter is None) or (len(str(formatter)) < 1)):
+            return str(formatter_default)
         
         else:
-            return str(format) # Put check in place???
+            return str(formatter) # Put check in place???
 
 #     def _check_boolean(self, screendump):
 #         if screendump is None:
@@ -521,9 +615,13 @@ class ConfigHandler(object):
 #             raise TypeError(e)
 
                         
+    """@handlertry()"""
     def _check_logfile(self, logfile):
         """"""
-        self.logfile_default = './ConfigHandler.log'
+        # Must come first 
+        logfile_default = kwargs.pop('logfile_default', './ConfigHandler.log')
+        # Must come second
+        logfile = kwargs.pop('logfile', logfile_default)
         
         if ((logfile is None) or (len(str(logfile)) < 1)):
             try:
@@ -578,8 +676,13 @@ class ConfigHandler(object):
         
         return os.path.abspath(logfile)
                         
-            
-    def _check_log_level(self, log_level = None):
+    """@handlertry()"""
+    def _check_log_level(self, kwargs):
+        # Must come first
+        log_level_default = kwargs.pop('log_level_default', 40)
+        # Must come second
+        log_level = kwargs.pop('log_level', log_level_default)
+
         #Level
         if log_level is None: 
             try:
@@ -590,19 +693,19 @@ class ConfigHandler(object):
         # IS NOT NONE
         # Check for text settings
         # No need for elif since each if returns
-        if "C" in str(log_level).upper()[:1]: 
+        if "CRI" in str(log_level).upper()[:1]: 
             log_level = "CRITICAL"
             return log_level
              
-        if "E" in str(log_level).upper()[:1]: 
+        if "ERR" in str(log_level).upper()[:1]: 
             log_level = "ERROR"
             return log_level
             
-        if "W" in str(log_level).upper()[:1]: 
+        if "WARN" in str(log_level).upper()[:1]: 
             log_level = "WARNING"
             return log_level
 
-        if "I" in str(log_level).upper()[:1]: 
+        if "INF" in str(log_level).upper()[:1]: 
             log_level = "INFO"
             return log_level
 
@@ -620,8 +723,10 @@ class ConfigHandler(object):
         try:
             log_level = int(log_level)
         except ValueError, e:
-            log_level = 40
-            return log_level
+            try:
+                log_level = int(log_level_default)
+            except ValueError, e:
+                log_level = 40
         
         if ((log_level >= 0) and (log_level <= 50)): 
             return log_level
@@ -631,19 +736,35 @@ class ConfigHandler(object):
                             "(0 <= log_level <=50)."]))
             raise Exception(msg)
 
-    def _check_screendump(self, screendump):
+    """@handlertry()"""
+    def _check_screendump(self, kwargs):
+        # Must come first
+        screendump_default = kwargs.pop('screendump_default', False)
+        # Must come second
+        screendump = kwargs.pop('screendump', screendump_default)
+        
         if type(screendump) is not bool:
             try:
                 return self.screendump
+
             except (NameError, AttributeError):
-                return self.screendump_default
-            return False
+                try:
+                    return self.screendump_default
+
+                except (NameError, AttributeError):
+                    return False
         else:
             return screendump
 
+    """@handlertry()"""
     def _override_with_kw_vars(self, kwargs):
         for key in kwargs.keys():
-            self.__dict__[key] =  kwargs[key]
+            self.configuration[key] = kwargs[key]
+            
+            if self.GLOBAL:
+                self.callobj.__dict__[key] = kwargs[key]
+#             self.__dict__[key] =  kwargs[key]
+
         return True
         
         
@@ -663,6 +784,8 @@ class ConfigHandler(object):
     
     
     #@handlertry("")
+
+    """@handlertry()"""
     def _set_parameters(self, kwargs):
         ### These params check for loghandler object params
         # Get params from kwargs or set to default
@@ -677,6 +800,9 @@ class ConfigHandler(object):
         screendump      = kwargs.pop("screendump", False)
         self.screendump = self._check_screendump(screendump)
         
+        # Determines if configuration variables are loaded directly into the 
+        # calling object (True), or accessed only from self.configuration as a 
+        # returned object or via ConfigHandlerObject.get/set (False)
         self.GLOBAL          = kwargs.pop("global", True)
 
         app_name        = kwargs.pop("app_name", "configparser")
@@ -685,25 +811,40 @@ class ConfigHandler(object):
         logfile         = kwargs.pop("logfile", "./configparser.log")
         self.logfile = self._check_logfile(logfile)
         
-    def get(self, varname, default = None):
+    """@handlertry()"""
+    def cnf(
+            self, 
+            name, 
+            value = 'sbh%&bjkUnlikelyNonsenseMeansCanBeSetToNonesi&%wztghvli'
+            ):
+        # The large, unlikely to be accidentally duplicated 'value' means we
+        # can accept anything - including Python None and string 'None'
+        # and trust it is on purpose. We do not value check as we don't know 
+        # literal type it should be.  
+        if value !='sbhbjkUnlikelyNonsenseMeansCanBeSetToNonesi&%wztghvli':
+            self.configuration[name] = value
+            return True
+        
+        else:
+            try:
+                return self.configuration[name]
+            except (NameError, AttributeError) as e:
+                return None
+         
+    """@handlertry()"""
+    def get(self, name):
         """
         Retrieves the attribute from ConfigHandlers "self"
         """
-        # If the first attempt to return a self var fails, control 
-        # should pass to @handlertry where corrections can be set 
-        # For now this is just a passthrough, which will drop control
-        # to the second line, which returns the default
-        return self.__dict__[varname]
-        return default
-
-    #@handlertry("PassThroughException:")    
-    def set(self, varname, value, default = None):
+        return self.cnf(name)
+    
+    """@handlertry()"""
+    def set(self, name, value):
         """
         Sets an attribute from ConfigHandlers "self"
         """
-        self.__dict__[str(varname)] = value
-        return True
-
+        return self.cnf(name, value)
+    
     #@handlertry("PassThroughException:")    
     def getconfig(self, section = None, valuename = None, persist = False):
         """
@@ -717,8 +858,10 @@ class ConfigHandler(object):
         raise NotImplementedError
     
     #@handlertry("ConfigFileParseError: ")
+
+    """@handlertry()"""
     def open_file(self):
-        self.verify_file()
+#         self.verify_file() # This is now done through _check_config_file()
         log.debug(("Opening " + str(self.config_file)))
         self.config = SafeConfigParser()
         self.config.optionxform = str
@@ -726,6 +869,8 @@ class ConfigHandler(object):
         return True
     
     #@handlertry(''.join(["ConfigFileNoOption:"]))        
+
+    """@handlertry()"""
     def loadattr(self, varname = None, section = None):
         """
         Retrieves a variable from the CONFIG FILE (not self)
@@ -740,15 +885,17 @@ class ConfigHandler(object):
                 for name, value in self.config.items(section_name):
                     if ({"LOADALL":True, None:True, name:True}.get(varname)):
                         value = self._convert_string_values(value)
-                        self.__dict__[name] = value
+#                         self.__dict__[name] = value # No longer loading to ConfigHandler object
+                        self.configuration[name] = value
+                        if self.GLOBAL:
+                            self.callobj.__dict__[name] = value
+
 #                         self.log.debug(''.join(["set '", str(name), 
 #                                                 "' to '", str(value),
 #                                                 "'."]))
                         _found = True
 
                         if varname is not None: return value
-
-                    
 
         if not _found: raise AttributeError(''.join(["Unable to find variable '",
                                                     str(varname), 
@@ -759,16 +906,16 @@ class ConfigHandler(object):
                                                     "'. "
                                                     ]))
             
-    #@handlertry("PassThroughException:")    
-    def verify_file(self):
-        """"""
-        log.debug(("Verfiying " + str(self.config_file)))
-        # Check config file exists since parser will not error if you 
-        # attempt to open a non-existent file
-        if not fileExists(self.config_file):
-            e = ''.join(["ConfigFileNotFound(", 
-                         str(self.config_file),"):"])
-            raise IOError(e) # Remove me and active self.err line
+#     """@handlertry("PassThroughException:")"""
+#     def verify_file(self):
+#         """"""
+#         log.debug(("Verfiying " + str(self.config_file)))
+#         # Check config file exists since parser will not error if you 
+#         # attempt to open a non-existent file
+#         if not fileExists(self.config_file):
+#             e = ''.join(["ConfigFileNotFound(", 
+#                          str(self.config_file),"):"])
+#             raise IOError(e) # Remove me and active self.err line
 
         
 if __name__ == "__main__":
@@ -776,13 +923,12 @@ if __name__ == "__main__":
         def __init__(self):
 
             self.config = ConfigHandler(
-                                        self, 
+                                        config_file = 'MRAT', 
+                                        screendump = True,                                        
                                         log_level = 10,
-                                        screendump = True,
-                                        config_file = "../etc/QRNote.conf"
                                         )
+    o = forttest()
+    print 'o.rhandler_host=', o.rhandler_host    
+    print 'o.cnf(rhandler_host)=', o.cnf(rhandler_host)    
 
-    obj = forttest()
-    print obj.instantiate_default
-    print obj._config.instantiate_default
-    
+

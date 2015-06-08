@@ -6,7 +6,7 @@ __author__      = "Mike Rightmire"
 __copyright__   = "BioCom Software"
 __license__     = "Tesera"
 __license_file__= "Clause1.PERPETUAL_AND_UNLIMITED_LICENSING_TO_THE_CLIENT.py"
-__version__     = "0.9.0.5"
+__version__     = "0.9.0.6"
 __maintainer__  = "Mike Rightmire"
 __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
@@ -234,8 +234,8 @@ def checkURL(URL):
     URL = URL.lstrip()
     URL = URL.rstrip()
     
-    pattern = ("^https?"        +               # http/https (mandatory)
-                "://"            +               # :// (mandatory)
+    pattern = ("^(https?){0,1}"        +               # http/https
+                "(://){0,1}"            +               # ://
                 "(\w+\.){0,}" +                  # Prefix [I.e. www.] (Optional)
                 "((\w+)(\.\w\w+)"    +   # Server.xx (mandatory)
                 "|" +                            # servername OR IP

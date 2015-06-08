@@ -13,8 +13,8 @@ __status__      = "Development"
 ##############################################################################
 
 from confighandler import ConfigHandler
-from loghandler import log
-from rhandler import RHandler
+from loghandler     import log
+from rhandler       import RHandler
 from signal         import *
 
 import atexit
@@ -22,6 +22,7 @@ import os
 import sys
 
 class mrat_variable_selection(object):
+    """"""
     def __init__(self,*args, **kwargs):
         
         # Set exit and cleanup        
@@ -42,7 +43,8 @@ class mrat_variable_selection(object):
         # they a None, the config file will be used. If they are None here, and 
         # not set in the config file...the default loghandler settings will be 
         # used
-        self.config = ConfigHandler(
+#         self.config = ConfigHandler(
+        ConfigHandler.load(
                         config_file = kwargs.pop('config_file', None),
                         *args,  
                         **kwargs 
@@ -54,11 +56,9 @@ class mrat_variable_selection(object):
         #  passed to __init__
         self.local_filename = str(os.path.basename(__file__))
         log.info("Starting '__main__' in " + self.local_filename)
-
-        sys.exit(0)
         
         self.R = RHandler.rHandler(
-                    rhandler_service     = self.rhandler_service, 
+                    service     = self.rhandler_service, 
                     rhandler_host        = self.rhandler_host,  
                     rhandler_port        = self.rhandler_port,
                     rhandler_atomicArray = self.rhandler_atomicArray,  
@@ -66,11 +66,15 @@ class mrat_variable_selection(object):
                     rhandler_defaultVoid = self.rhandler_defaultVoid,  
                     rhandler_oobCallback = self.rhandler_oobCallback,
                                    )
+        
+        print self.R.code('3 + 3') #333 TESTING ONLY
+        print self.R.code(None) #333 TESTING ONLY
+        
                  
     def _cleanup(self):
         """"""
         log.info("Completing '__main__' in " + self.local_filename)
-        log.info('Ending process. Clean exit.')
+        log.info('Clean exit.')
         sys.exit(0)
         
                  

@@ -1288,7 +1288,6 @@ if __name__ == "__main__":
                     screendump = True,
                     )
     
-    print 'main.log=', log 
 #     log.debug("This is a log test of log.debug")
 #     log.info("This is a log test of log.info")
 #     log.warning("This is a log test of log.warning")

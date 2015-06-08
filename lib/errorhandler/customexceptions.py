@@ -31,6 +31,9 @@ class FatalException(CustomError):
     raise FatalSocketError
     Returns default error + the attached string message
     "Socket encountered a fatal condition. "
+    
+    EVENTUALLY this needs to cleanly close out the current processes, and 
+    return the user to the start GUI. For now, it creates program halt.   
     """
     def __init__(self, message = None):
         self.message = ("")

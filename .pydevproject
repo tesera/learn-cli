@@ -11,5 +11,6 @@
 <path>/${PROJECT_DIR_NAME}/Rwd</path>
 <path>/${PROJECT_DIR_NAME}/Rwd/Python</path>
 <path>/${PROJECT_DIR_NAME}/Rwd/RScript</path>
+<path>/${PROJECT_DIR_NAME}/lib/confighandler</path>
 </pydev_pathproperty>
 </pydev_project>

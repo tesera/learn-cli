@@ -2,6 +2,7 @@
 # Removal of the "__license__" line or content from  "__license__", or removal 
 # of "__author__" in this or any constituent # component or file constitutes a 
 # violation of the licensing and copyright agreement. 
+from distutils.cmd import Command
 __author__      = "Mike Rightmire"
 __copyright__   = "BioCom Software"
 __license__     = "Tesera"
@@ -156,7 +157,7 @@ class Handlers(object):
             elif 'TriggerPhrase' in str(e): 
                 return self.TriggerPhrase(callobj, args, kwargs, e)
             
-            def TriggerPhrase(self, callobj, args, kwargs, e):
+            def TriggerPhrase(callobj, args, kwargs, e):
                 # Messages and corrective code placed in appropriate places here
                 return args, kwargs, result
         """
@@ -186,21 +187,160 @@ class Handlers(object):
 #         return args, kwargs, True
         return args, kwargs, str(sys._getframe().f_code.co_name)
 
-    def QRNoteTestError(callobj, args, kwargs, e):
-        # Custom message to BE SENT TO THE LOGGER
-        message = ''.join(["Unable to create Rserve connection. "])
+    def ConfigFileNotFound(callobj, args, kwargs, e):
+        # Create custom message to BE SENT TO THE LOGGER
+        message = ("".join(["The configuration file was not found. ", 
+                            "Please verify the file exists in the ", 
+                            "appropriate path and is readable."]))    
+        # Sends the message and original error to the LOGGER
+        # Remove this line if you don't want an error displayed
+        _log_error(message, e)
+        ### METHOD ACTIONS
+        # CODE BELOW TO CORRECT ISSUE
+        # All code acts on the self object
+        raise FatalException()
+
+    def ConfigFileNoOption(callobj, args, kwargs, e):
+        # Create custom message to BE SENT TO THE LOGGER
+        message = ("".join(["Unable to find the specified section or option", 
+                            "(variable) in config file. ", 
+                            "Please verify the contents of the file. "]))    
+        # Sends the message and original error to the LOGGER
+        # Remove this line if you don't want an error displayed
+        _log_error(message, e)
+        ### METHOD ACTIONS
+        # CODE BELOW TO CORRECT ISSUE
+        # All code acts on the self object
+        return args, kwargs, None
         
+    def ConfigFileParseError(callobj, args, kwargs, e):
+        # Create custom message to BE SENT TO THE LOGGER
+        message = ("".join(["The configuration file contains errors. ", 
+                            "Please verify the contents of the file. "]))    
+        # Sends the message and original error to the LOGGER
+        # Remove this line if you don't want an error displayed
+        _log_error(message, e)
+        ### METHOD ACTIONS
+        # CODE BELOW TO CORRECT ISSUE
+        # All code acts on the self object
+        raise FatalException()
+    
+    def PassThroughException(callobj, args, kwargs, e):
+        # Custom message to BE SENT TO THE LOGGER
+        message = ("")
         # Sends the message and original error to the LOGGER
         _log_error(message, e)
-    
         ### METHOD ACTIONS
-        log.info("This is being called from method actions")
-        return args, kwargs, True
+        return args, kwargs, None
         
-    # THIS IS THE DEFAULT ERROR if no matching error handler can be found. 
-    # DO NOT REMOVE OR RENAME
+    def PathDoesNotExist(callobj, args, kwargs, e):
+        # Custom message to BE SENT TO THE LOGGER
+        message = ''.join(["The path passed does not exist, ", 
+                           "or 'path = <value>' was not set ", 
+                           "when calling method. "])
+
+        # Sends the message and original error to the LOGGER
+        _log_error(message, e)
+
+        ### METHOD ACTIONS
+        result = False
+        
+        # Here a dialogue box could be raised to get the corrected path
+        # The return gor to the tryhandler, which will try and run the original
+        # calling method again with the original variable names...so it's 
+        # important the callobj.variable is changed before returning.The 
+        # callobj does not have to be returned. It is modified in place. 
+        # Just the modified kwargs needs to be changed. 
+#         kwargs["path"] = raw_input("enter a correct path...")
+#         if <successful>: result = True
+    
+        return args, kwargs, result
+
+    def RserveReturningGarbage(callobj, args, kwargs, e):
+        # Custom message to BE SENT TO THE LOGGER
+        message = ''.join(["The path passed does not exist, ", 
+                           "or 'path = <value>' was not set ", 
+                           "when calling method. "])
+
+        # Sends the message and original error to the LOGGER
+        _log_error(message, e)
+
+        ### METHOD ACTIONS
+        return args, kwargs, None
+    
+    def RScriptFileDoesNotExist(callobj, args, kwargs, e):
+        # Custom message to BE SENT TO THE LOGGER
+        message = ''.join([
+                           "The file name passed does not exist, ", 
+                           "or was otherwise invalid. "
+                           ])
+
+        # Sends the message and original error to the LOGGER
+        _log_error(message, e)
+
+        ### METHOD ACTIONS
+        # Eventually, place a popup here asking to clarify the filepath name
+        # and location. However, for now, returning anything else would lead
+        # to corrupted mathematical data...so this is a fatal error. 
+        raise FatalException(e)
+    
+    def RserveNotRunning(callobj, args, kwargs, e):
+        """"""
+        # Custom message to BE SENT TO THE LOGGER
+        message = ''.join(["Rserve may not be running."])
+        # Sends the message and original error to the LOGGER
+        _log_error(message, e)
+
+        ### METHOD ACTIONS
+        log.error('Attempting to restart Rserve environment...')
+        PEM  = "/Users/mikes/Documents/Work/BioComSoftware/Jobs/2014-10-10-Tesera/Tesera.pem"
+        USER = "ec2-user"
+        PORT = '22'
+        SERVER = str(callobj.rhandler_host)
+        command = ['/sbin/service', 'Rserve', 'restart']
+#         command = ['R', 'CMD', 'Rserve', '--vanilla']
+#         command = ['ls']
+        
+        ssh = ['ssh', '-i', PEM, '-p', PORT, USER + '@' + SERVER]
+        run = ssh + command
+        
+        proc = subprocess.Popen(run, shell=False, 
+#                                 stdout=subprocess.PIPE) 
+        stdin=None, stdout=None, stderr=None, close_fds=True)
+
+        result = proc.communicate()[0]
+        
+        return args, kwargs, None
+         
+    def FileDoesNotExist(callobj, args, kwargs, e):
+        # Custom message to BE SENT TO THE LOGGER
+        message = ("The file passed does not exist. ")
+        # Sends the message and original error to the LOGGER
+        _log_error(message, e)
+        ### METHOD ACTIONS
+        result = False
+        
+        # Here a dialogue box could be raised to get the corrected path
+        # The return gor to the tryhandler, which will try and run the original
+        # calling method again with the original variable names...so it's 
+        # important the callobj.variable is changed before returning.The 
+        # callobj does not have to be returned. It is modified in place. 
+        # Just the modified kwargs needs to be changed. 
+#         kwargs["file"] = raw_input("enter a correct path...")
+#         if <successful>: result = True
+    
+        return args, kwargs, result
+        
+    def FatalError(callobj, args, kwargs, e):
+        # Custom message to BE SENT TO THE LOGGER
+        message = ("")
+        # Sends the message and original error to the LOGGER
+        _log_error(message, e)
+        ### METHOD ACTIONS
+        raise FatalException(e)
+    
     @classmethod
-    def UnknownException(self, callobj, args, kwargs, e):
+    def UnknownException(callobj, args, kwargs, e):
         # Custom message to BE SENT TO THE LOGGER
         message = ("".join(["An unidentified exception was passed. ", 
                             "'errorhandler' does not know what to do. ", 
