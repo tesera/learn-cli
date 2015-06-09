@@ -229,7 +229,6 @@ def checkURL(URL):
              "' does not match expected format.")        
         raise NameError(e)
     
-    print URL ##333
     URL = str(URL)
     URL = URL.lstrip()
     URL = URL.rstrip()

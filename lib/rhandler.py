@@ -31,6 +31,7 @@ import atexit
 import os
 import pyRserve as R
 import re
+import subprocess
 import sys
 
 
@@ -279,8 +280,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
 
         log.debug("Instantiating rserveHandler object.")
 
-#         self.config = ConfigHandler()
-        ConfigHandler.load()
+        self.config = ConfigHandler()
 
         self._load_vars(dict(kwargs))
         
@@ -289,37 +289,21 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
 # ___________________________________________________________________________
 # PRIVATE METHODS 
 
-    def _load_vars(self, kwargs):
-        rhandler_host             = kwargs.pop("rhandler_host","localhost")
-        self.rhandler_host        = self._check_host(rhandler_host)
-        
-        rhandler_port             = kwargs.pop("port"         ,"6311")
-        self.rhandler_port        = self._check_port(rhandler_port)
-        
-        rhandler_atomicArray      = kwargs.pop("atomicArray"  , True)
-        self.rhandler_atomicArray = self._check_atomicArray(rhandler_atomicArray)
-        
-        rhandler_arrayOrder       = kwargs.pop("arrayOrder"   , "C")
-        self.rhandler_arrayOrder  = self._check_arrayOrder(rhandler_arrayOrder)
-        
-        rhandler_defaultVoid      = kwargs.pop("defaultVoid"  , False)
-        self.rhandler_defaultVoid = self._check_defaultVoid(rhandler_defaultVoid)
-                
-        rhandler_oobCallback      = kwargs.pop("oobCallback"  , None)
-        self.rhandler_oobCallback = self._check_oobCallback(rhandler_oobCallback)
+    """ ===================================================================="""
+    """ === PRIVATE METHODS ================================================"""
 
-    @handlertry()
+    """@handlertry()"""
     def _check_oobCallback(self, oobCallback):
         # Acceptable parameters need to be determined
-        log.debug("oobCallback '" + str(oobCallback) + "'...OK")
+#         log.debug("oobCallback '" + str(oobCallback) + "'...OK")
         return oobCallback
     
-    @handlertry()
+    """@handlertry()"""
     def _check_arrayOrder(self, arrayOrder):
         allowable = ["C"] # Add other allowed values here
         for allowed in allowable:
             if str(arrayOrder) == str(allowed): 
-                log.debug("arrayOrder '" + str(arrayOrder) + "'...OK")
+#                 log.debug("arrayOrder '" + str(arrayOrder) + "'...OK")
                 return arrayOrder 
         
         err = ''.join(["arrayOrder '", str(arrayOrder), 
@@ -328,11 +312,11 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         log.debug(err)
         raise AttributeError('InvalidRservearrayOrder: ' + err)
         
-    @handlertry()
+    """@handlertry()"""
     def _check_defaultVoid(self, defaultVoid):
         """"""
         if type(defaultVoid) is bool:
-           log.debug("defaultVoid '" + str(defaultVoid) + "'...OK")
+#            log.debug("defaultVoid '" + str(defaultVoid) + "'...OK")
            return defaultVoid
 
         else:
@@ -341,11 +325,11 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
            log.debug(err)
            raise type(e), type(e)('InvalidRservedefaultVoid: '+err+e.message)
 
-    @handlertry()
+    """@handlertry()"""
     def _check_atomicArray(self, atomicArray):
         """"""
         if type(atomicArray) is bool:
-           log.debug("atomicArray '" + str(atomicArray) + "'...OK")
+#            log.debug("atomicArray '" + str(atomicArray) + "'...OK")
            return atomicArray
 
         else:
@@ -354,10 +338,10 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
            log.debug(err)
            raise type(e), type(e)('InvalidRserveatomicArray: '+err+e.message)
  
-    @handlertry()
+    """@handlertry()"""
     def _check_host(self, host):
         if checkURL(host):
-            log.debug("Host '" + str(host) + "'...OK")
+#             log.debug("Host '" + str(host) + "'...OK")
             return host 
         else:
             
@@ -366,11 +350,11 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
             log.debug(err)
             raise AttributeError('InvalidRserveServer: ' +err)
         
-    @handlertry()
+    """@handlertry()"""
     def _check_port(self, port):
         try:
             port = int(port)
-            log.debug("Port '" + str(port) + "'...OK")
+#             log.debug("Port '" + str(port) + "'...OK")
             return port
 
         except (ValueError) as e:
@@ -379,8 +363,12 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
             log.debug(err)
             raise type(e), type(e)('InvalidRservePort: ' + err + e.message)
 
+    """@handlertry()"""
     def _check_file_path(self, filepath = None, host = 'localhost'):
-        """"""
+        """
+        This only veifies that the path is in the correct format, 
+        not that it exists, is readable, or contains good [R] data
+        """
         err = ''.join(["File path '", str(filepath), 
                        "' appears invalid. "])
 
@@ -400,22 +388,27 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         # filepath cannot end with '/'     
         if filepath.endswith('/'):
             err = err + "'filepath' cannot end with a '/'."
-            raise ValueError(err + "'filepath' cannot be 'None'.")
-        
-        # Check that directory exists and, if not, create it
-        #THIS ONLY WORKS IF FILE IS ON THE LOCALHOST
-        if 'local' in str(host).lower():
-            if not fileExists(filepath):
-                err = ''.join([
-                               "'filepath' of '", 
-                               str(filepath), 
-                               "' does not exist."
-                               ])
-                raise ValueError(err)
-        
+            raise ValueError(err)
+
+### Kind of redundant. Better to just catch the failure to open error ========        
+#         # Check that directory exists and, if not, create it
+#         #THIS ONLY WORKS IF FILE IS ON THE LOCALHOST
+#         if 'local' in str(host).lower():
+#             if not fileExists(filepath):
+#                 err = ''.join([
+#                                "'filepath' of '", 
+#                                str(filepath), 
+#                                "' does not exist."
+#                                ])
+#                 raise ValueError(err)
+# 
+#         else:
+# #             raise NotImplementedError('havent yet coded getting file from non local machine.')
+# =============================================================================
+                    
         return os.path.abspath(filepath)
             
-    @handlertry('RhandlerCleanupError')
+    """@handlertry('RhandlerCleanupError')"""
     def _cleanup(self):
         """
         :NAME:
@@ -451,7 +444,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
 #         
 #         return
 
-    @handlertry("RCommandSanityFail:")
+    """@handlertry("RCommandSanityFail:")"""
     def _cmd(self, _command):
         """
         =======================================================================
@@ -506,60 +499,49 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
                         # popup message here?
                         return False
         """
+        if _command is not None: 
         # ==============================================
         # RUN SANITY CHECKS HERE or additional checks in 
         # errorhandler.handlers.RCommandSanityFail
         # If code is bad/unsafe and cannot be corrected, 
         # set _command = None
         # ==============================================
-
-        if _command is not None: 
             return _command
+
         else:
             err = ''.join(["[R] command '", 
                            str(_command), 
                            "' failed sanity check. ", 
                            "Refusing to send to [R] environment."])
             log.error(err)
-            return _command # _command = 'None' if here
+            _command = None
+            return None # _command = 'None' if here
 
-    @handlertry()
-    def _set_app_name(self):
-        return self._get_app_name()
-    
-    @handlertry()
-    def _set_errorhandler(self):
-        customErrorHandler = errorhandler.errorhandler(self.log)
-        self.err = customErrorHandler.err()
+    """@handlertry()"""
+    def _load_vars(self, kwargs):
+        rhandler_host             = kwargs.pop("rhandler_host","localhost")
+        self.rhandler_host        = self._check_host(rhandler_host)
         
-#     @handlertry()
-#     def _set_service_flag(self, service):
-#         """"""
-#         if   (("rserve" in str(service).lower()) or
-#               ("raw"    in str(service).lower())):
-#               return "RAW"
-#         
-#         elif (("domin" in str(service).lower())):
-#               return "DOMINO"
-# 
-#         elif (("alteryx" in str(service).lower())):
-#               return "ALTERYX"          
-# 
-#         elif (("revo" in str(service).lower())):
-#               return "REVOLUTION"
-#           
-#         elif (("dataiku" in str(service).lower())):
-#               return "DATAIKU"
-#           
-#         elif (("alpine" in str(service).lower())):
-#               return "ALPINE"
-# 
-#         # A raw connection to an Rserve installation is the current default          
-#         else:
-#               return "RAW"
+        rhandler_port             = kwargs.pop("port"         ,"6311")
+        self.rhandler_port        = self._check_port(rhandler_port)
+        
+        rhandler_atomicArray      = kwargs.pop("atomicArray"  , True)
+        self.rhandler_atomicArray = self._check_atomicArray(rhandler_atomicArray)
+        
+        rhandler_arrayOrder       = kwargs.pop("arrayOrder"   , "C")
+        self.rhandler_arrayOrder  = self._check_arrayOrder(rhandler_arrayOrder)
+        
+        rhandler_defaultVoid      = kwargs.pop("defaultVoid"  , False)
+        self.rhandler_defaultVoid = self._check_defaultVoid(rhandler_defaultVoid)
+                
+        rhandler_oobCallback      = kwargs.pop("oobCallback"  , None)
+        self.rhandler_oobCallback = self._check_oobCallback(rhandler_oobCallback)
 
-    @handlertry()
+    """@handlertry()"""
     def _prep_string_command(self, _data):
+        """
+        FOR FUTURE
+        """
         try:
             _data + "STRINGTEST" # no error = Already a string
             # Can add more checks here
@@ -569,8 +551,11 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         finally:
             raise
 
-    @handlertry()
+    """@handlertry()"""
     def _prep_list_command(self, _data):
+        """
+        FOR FUTURE
+        """
         try:
             # Check for list    
             _data.append("DELETEME")
@@ -583,24 +568,48 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         finally:
              raise
 
-    @handlertry('RScriptFileDoesNotExist:')
+    """ @handlertry('RFileNotFound:')"""
     def _source_local_R_file(self, filename):
             # filename should be the complete path and verified at this point 
             with open (filename, "r", 0) as FH:
                 result = FH.read()
             return result
 
-    @handlertry('RScriptFileDoesNotExist:')
-    def _source_remote_R_file(self, filename, host):
-        # Change this to config file self.PEM
-        PEM  = "/Users/mikes/Documents/Work/BioComSoftware/Jobs/2014-10-10-Tesera/Tesera.pem"
+    """@handlertry('RemoteRFileNotFound:')"""
+    def _source_remote_R_file(self, 
+                              filename, 
+                              HOST = None, 
+                              USER = None,
+                              PORT = None, 
+                              PEM = None 
+                              ):
+        # Change this to get data from config file 
+        if PEM is None: PEM = str(self.script_server_pem)
+        # "/Users/mikes/Documents/Work/BioComSoftware/Jobs/2014-10-10-Tesera/Tesera.pem"
+        if USER is None: USER = str(self.script_server_user)
+#         USER = 'ec2-user'
+        if PORT is None: PORT = str(self.script_server_port)
+#         PORT = '22'
+        if HOST is None: HOST = str(self.script_server_host)
+#         HOST = '54.164.196.82'
 
-        return 0 #333 test
+        command = ['cat', filename]
+        
+        ssh = ['ssh', '-i', PEM, '-p', PORT, USER + '@' + HOST]
+        run = ssh + command
+        
+        proc = subprocess.Popen(run, shell=False, 
+                                stdout=subprocess.PIPE) 
+        result = proc.communicate()[0]
+
+        return result
     
 #______________________________________________________________________________
 # PUBLIC METHODS (OVERIDDEN FROM ABSTRACT)
 
-    @handlertry("PassThroughException:")
+    """ ===================================================================="""
+    """ === PUBLIC METHODS ================================================="""
+    """@handlertry("PassThroughException:")"""
     def close(self):
         """
         :NAME:
@@ -628,7 +637,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         # other stuff
         return
     
-    @handlertry("PassThroughException:")
+    """@handlertry("PassThroughException:")"""
     def code(self, command, sanity = False):
         """
         :NAME:
@@ -678,162 +687,7 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
             # popup message here?
             return False
         
-    @handlertry("PassThroughException:")
-    def delenv(self, _env):
-        """
-        :NAME:
-        :DESCRIPTION:
-            Deletes variables within the [R] environment
-        :ARGUMENTS:
-            _env = a string containing a single R-variable to delete
-                   Or a list of R-variables to delete
-    
-        :VARIABLES:
-        :METHODS:
-        :RETURNS:
-        :USAGE:
-        """
-        raise NotImplementedError
-    
-    #@handlertry("PassThroughException:")
-    def env(self):
-        """
-        :NAME:
-        :DESCRIPTION:
-            User interface for managing the [R] environment.
-        :ARGUMENTS:
-        :VARIABLES:
-        :METHODS:
-        :RETURNS:
-        :USAGE:
-        """
-        raise NotImplementedError
-    
-    #@handlertry("PassThroughException:")
-    def getenv(self, _env):
-        """
-        :NAME:
-        :DESCRIPTION:
-            _env = a string containing a single R-variable to retrieve 
-                   Or a list of R-variables to retrieve 
-        :ARGUMENTS:
-        :VARIABLES:
-        :METHODS:
-        :RETURNS:
-        :USAGE:
-        """
-        raise NotImplementedError
-
-    #@handlertry("", tries = 2)
-    def script(self, filename, host = 'localhost'):
-        """
-        :NAME:
-            RHandler.script(filename, [host = localhost])
-            
-        :DESCRIPTION:
-            Calls an [R] script within the the [R] environment.
-
-        :ARGUMENTS:
-            filename = (String) FULLPATH to the file. Acceptable values are:
-                       - /dir/dir/script.R
-
-                       - ./script.R (same directory in which RHandler exists)
-
-                       - script.R (same directory in which RHandler exists)
-                       
-            host    = (String) Whether the script lives on the localhost (where
-                      RHandler is running), on the Rserve host, or an another
-                      machine. Acceptable values are:  
-                      - localhost(where RHandler is running)
-
-                      - local(where RHandler is running)
-
-                      - remote (where Rserve is running)
-
-                      - rserve (where Rserve is running)
-
-                      - <hostname> a FQDN of a server upon which the script 
-                                   lives. ssh will be used to connect to the 
-                                   server and obtain the script. 
-
-                      - xx.xx.xx.xx The IP address of a server upon which the 
-                                    script lives. ssh will be used to connect 
-                                    to the server and obtain the script.
-                    
-                      DEFAULTS TO 'localhost'
-
-        :RETURNS:
-            The normally output results of the script. 
-            
-        :USAGE:
-            RHandler.script('/dir/dir/script.R', host = localhost)
-        
-        """
-        # Two ways to do this:
-        # 1. Call a source command within the R environ
-        # 2. Copy the text of the script file into a Python var, and eval that
-        # 
-        # 1. source(paste(HOME_CONF,"XIterativeVarSel.R.conf", sep = ""))
-        # source can only be used when the script resides ON THE RESERVE SERVER
-        #
-        # 2. 
-
-        filepath = self._check_file_path(filepath = filepath, host = host)
-
-        if 'local' in str(host).lower():        
-            try:#____________________________________________________
-                command = self._source_local_R_file(filename, host)
-            
-            except (NameError, AttributeError, ValueError) as e:
-                e.message = ('RScriptFileDoesNotExist: ' + e.message)
-                raise type(e)(e.message)
-
-        elif 'remot' in str(host).lower():
-            command = self._source_remote_R_file(filename, host)
-            
-        elif 'rser' in str(host).lower():
-            command = self._source_remote_R_file(filename, host)
-        
-        elif checkURL(host):
-            command = self._source_remote_R_file(filename, host)
-        
-        else:
-            err = ''.join([
-                           "RScriptFileDoesNotExist: ",
-                           "Unable to determine file location from 'host'='",
-                           str(host), "'. Aborting." 
-                           ])
-
-            raise ValueError(err)                          
-                            
-        _cmd =  ''.join(["source(paste(", 
-                         str(kwargs["fullpath"]), 
-                         ', sep = ""'])
-            
-
-        _cmd = self.cmd(_cmd)
-        
-        print "_cmd = ", _cmd #3333
-        
-        self.conn.eval(_cmd)
-         
-    #@handlertry("PassThroughException:")
-    def setenv(self, _env):
-        """
-        :NAME:
-        :DESCRIPTION:
-            Sets variables within the [R] environment
-        :ARGUMENTS:
-            _env = a string containing a single R-variable to set 
-                   Or a list of R-variables to set 
-        :VARIABLES:
-        :METHODS:
-        :RETURNS:
-        :USAGE:
-        """
-        raise NotImplementedError
-
-    @handlertry(tries = 2) # One attempt to correct
+    """@handlertry(tries = 2) # One attempt to correct"""
     def connect(self): # No defaults at this level. Always use config vars
         """
         :NAME:
@@ -946,6 +800,168 @@ class rserveHandler(RHandlerAbstract): # Handler object for a raw Rserve env
         return self.conn
 
     @handlertry("PassThroughException:")
+    def delenv(self, _env):
+        """
+        :NAME:
+        :DESCRIPTION:
+            Deletes variables within the [R] environment
+        :ARGUMENTS:
+            _env = a string containing a single R-variable to delete
+                   Or a list of R-variables to delete
+    
+        :VARIABLES:
+        :METHODS:
+        :RETURNS:
+        :USAGE:
+        """
+        raise NotImplementedError
+    
+    @handlertry("PassThroughException:")
+    def env(self):
+        """
+        :NAME:
+        :DESCRIPTION:
+            User interface for managing the [R] environment.
+        :ARGUMENTS:
+        :VARIABLES:
+        :METHODS:
+        :RETURNS:
+        :USAGE:
+        """
+        raise NotImplementedError
+    
+    @handlertry("PassThroughException:")
+    def getenv(self, _env):
+        """
+        :NAME:
+        :DESCRIPTION:
+            _env = a string containing a single R-variable to retrieve 
+                   Or a list of R-variables to retrieve 
+        :ARGUMENTS:
+        :VARIABLES:
+        :METHODS:
+        :RETURNS:
+        :USAGE:
+        """
+        raise NotImplementedError
+
+    #@handlertry("", tries = 2)
+
+    """@handlertry()"""
+    def script(self, filename, host = 'localhost'):
+        """
+        :NAME:
+            RHandler.script(filename, [host = localhost])
+            
+        :DESCRIPTION:
+            Calls an [R] script within the the [R] environment.
+
+        :ARGUMENTS:
+            filename = (String) FULLPATH to the file. Acceptable values are:
+                       - /dir/dir/script.R
+
+                       - ./script.R (same directory in which RHandler exists)
+
+                       - script.R (same directory in which RHandler exists)
+                       
+            host    = (String) Whether the script lives on the localhost (where
+                      RHandler is running), on the Rserve host, or an another
+                      machine. Acceptable values are:  
+                      - localhost(where RHandler is running)
+
+                      - local(where RHandler is running)
+
+                      - remote (where Rserve is running)
+
+                      - rserve (where Rserve is running)
+
+                      - <hostname> a FQDN of a server upon which the script 
+                                   lives. ssh will be used to connect to the 
+                                   server and obtain the script. 
+
+                      - xx.xx.xx.xx The IP address of a server upon which the 
+                                    script lives. ssh will be used to connect 
+                                    to the server and obtain the script.
+                    
+                      DEFAULTS TO 'localhost'
+
+        :RETURNS:
+            The normally output results of the script. 
+            
+        :USAGE:
+            RHandler.script('/dir/dir/script.R', host = localhost)
+        
+        """
+        #===========================
+        # FUTURE
+        # FOR self._source_remote_R_file()
+        # Differentiate between a remote host that is and is not the same as the 
+        # rserve host. If it IS the same host as the reserve host, have rserve
+        # run the scirpt and return the results...if it is NOT the same host, 
+        # use the current method of reading the file nd passing it to the rserve
+        # host. Might be best to have two separate calls for this, as currently
+        # self._source_local_R_file() and self._source_remote_R_file() both
+        # return a command and not a result.
+        # 
+        # self._source_remote_R_file() is pretty slow right now. Needs to be 
+        # addressed. 
+        
+        # This confirms the file...don't repeat
+        filename = self._check_file_path(filepath = filename, host = host)
+
+        if 'local' in str(host).lower():        
+            try:#____________________________________________________
+                command = self._source_local_R_file(filename)
+            
+            except (NameError, AttributeError, ValueError) as e:
+                e.message = ('RScriptFileDoesNotExist: ' + e.message)
+                raise type(e)(e.message)
+
+        elif 'remot' in str(host).lower():
+            command = self._source_remote_R_file(filename, host)
+            
+        elif 'rser' in str(host).lower():
+            command = self._source_remote_R_file(filename, host)
+        
+        elif checkURL(host):
+            command = self._source_remote_R_file(filename, host)
+        
+        else:
+            err = ''.join([
+                           "RScriptFileDoesNotExist: ",
+                           "Unable to determine file location from 'host'='",
+                           str(host), "'. Aborting." 
+                           ])
+
+            raise ValueError(err)                          
+                            
+#         _cmd =  ''.join(["source(paste(", 
+#                          str(kwargs["fullpath"]), 
+#                          ', sep = ""'])
+
+        command = self._cmd(command)
+            
+        return self.conn.eval(command)
+         
+    #@handlertry("PassThroughException:")
+
+    """@handlertry()"""
+    def setenv(self, _env):
+        """
+        :NAME:
+        :DESCRIPTION:
+            Sets variables within the [R] environment
+        :ARGUMENTS:
+            _env = a string containing a single R-variable to set 
+                   Or a list of R-variables to set 
+        :VARIABLES:
+        :METHODS:
+        :RETURNS:
+        :USAGE:
+        """
+        raise NotImplementedError
+
+    """@handlertry("PassThroughException:")"""
     def status(self):
         """"""
         return str(self.conn)

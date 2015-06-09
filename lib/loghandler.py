@@ -177,20 +177,6 @@ class log(object):
         formatter = kwargs.pop('formatter', None)
         create_paths = kwargs.pop('create_paths', None)
         
-#         try: print ' app_name=', app_name
-#         except: print 'no app_name'#:True,   None:True}.get(app_name))   and 
-#         try: print 'logfile=', logfile #:True,    None:True}.get(logfile))    and
-#         except:  print 'no logfile'#:True,   None:True}.get(app_name))   and 
-# #         try: print 'log_path = ', log_path#:True,   None:True}.get(log_path))   and
-# #         except:  print 'no log_path'#:True,   None:True}.get(app_name))   and 
-#         try: print 'log_level=', log_level#:True,  None:True}.get(log_level))  and
-#         except:  print 'no log_level'#:True,   None:True}.get(app_name))   and 
-#         try: print 'formatter=', formatter#:True,  None:True}.get(format))  and
-#         except:  print 'no formatter'#:True,   None:True}.get(app_name))   and 
-#         try: print 'screendump=', screendump#:True, None:True}.get(screendump))
-#         except:  print 'no screendump'#:True,   None:True}.get(app_name))   and 
-        
-
 #         # Now that the loghandler keywords have been stripped out of kwargs, 
 #         # see if singleton instance exists by calling
 #         # setlogger with no params and checking for instance
@@ -448,18 +434,6 @@ class SetLogger(object):
         the __init__.
         """
 
-#         try: print ' app_name=', app_name
-#         except: print 'no app_name'#:True,   None:True}.get(app_name))   and 
-#         try: print 'logfile=', logfile #:True,    None:True}.get(logfile))    and
-#         except:  print 'no logfile'#:True,   None:True}.get(app_name))   and 
-#         try: print 'log_level=', log_level#:True,  None:True}.get(log_level))  and
-#         except:  print 'no log_level'#:True,   None:True}.get(app_name))   and 
-#         try: print 'formatter=', formatter#:True,  None:True}.get(format))  and
-#         except:  print 'no formatter'#:True,   None:True}.get(app_name))   and 
-#         try: print 'screendump=', screendump#:True, None:True}.get(screendump))
-#         except:  print 'no screendump'#:True,   None:True}.get(app_name))   and 
-
-
         # __init__ is called no matter what, so...
         # If there is NOT an instance, just create an instance 
         # This WILL run __init__
@@ -488,31 +462,6 @@ class SetLogger(object):
                 instantiate  = None, # DO NOT CHANGE FROM None
                 ):
 
-#         try: print ' app_name=', app_name
-#         except: print 'no app_name'#:True,   None:True}.get(app_name))   and 
-#         try: print 'logfile=', logfile #:True,    None:True}.get(logfile))    and
-#         except:  print 'no logfile'#:True,   None:True}.get(app_name))   and 
-#         try: print 'log_level=', log_level#:True,  None:True}.get(log_level))  and
-#         except:  print 'no log_level'#:True,   None:True}.get(app_name))   and 
-#         try: print 'formatter=', formatter#:True,  None:True}.get(format))  and
-#         except:  print 'no formatter'#:True,   None:True}.get(app_name))   and 
-#         try: print 'screendump=', screendump#:True, None:True}.get(screendump))
-#         except:  print 'no screendump'#:True,   None:True}.get(app_name))   and 
-#         try: print 'create_paths=', create_paths
-#         except: print 'no create_paths'#:True,   None:True}.get(app_name))   and 
-# 
-#         try: print ' self.app_name=', self.app_name
-#         except: print 'no self.app_name'#:True,   None:True}.get(app_name))   and 
-#         try: print 'self.logfile=', self.logfile #:True,    None:True}.get(logfile))    and
-#         except:  print 'no self.logfile'#:True,   None:True}.get(app_name))   and 
-#         try: print 'self.log_level=', self.log_level#:True,  None:True}.get(log_level))  and
-#         except:  print 'no self.log_level'#:True,   None:True}.get(app_name))   and 
-#         try: print 'self.formatter=', self.formatter#:True,  None:True}.get(format))  and
-#         except:  print 'no self.formatter'#:True,   None:True}.get(app_name))   and 
-#         try: print 'self.screendump=', self.screendump#:True, None:True}.get(screendump))
-#         except:  print 'no self.screendump'#:True,   None:True}.get(app_name))   and 
-#         
-                
         if self.__exists:
             # Changes need to come in a certain order
             # so change_list MUST be a list, to preserve this order. 
@@ -556,17 +505,6 @@ class SetLogger(object):
         self.screendump = self._check_screendump(screendump)
         self.logfile    = self._check_logfile(logfile)
 
-#         try: print ' self.app_name=', self.app_name
-#         except: print 'no self.app_name'#:True,   None:True}.get(app_name))   and 
-#         try: print 'self.logfile=', self.logfile #:True,    None:True}.get(logfile))    and
-#         except:  print 'no self.logfile'#:True,   None:True}.get(app_name))   and 
-#         try: print 'self.log_level=', self.log_level#:True,  None:True}.get(log_level))  and
-#         except:  print 'no self.log_level'#:True,   None:True}.get(app_name))   and 
-#         try: print 'self.formatter=', self.formatter#:True,  None:True}.get(format))  and
-#         except:  print 'no self.formatter'#:True,   None:True}.get(app_name))   and 
-#         try: print 'self.screendump=', self.screendump#:True, None:True}.get(screendump))
-#         except:  print 'no self.screendump'#:True,   None:True}.get(app_name))   and 
-        
         self.handlers = [] #333 maybe dont need this
 
         # Start the log

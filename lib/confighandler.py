@@ -6,7 +6,7 @@ __author__      = "Mike Rightmire"
 __copyright__   = "BioCom Software"
 __license__     = "Tesera"
 __license_file__= "Clause1.PERPETUAL_AND_UNLIMITED_LICENSING_TO_THE_CLIENT.py"
-__version__     = "0.9.5.0"
+__version__     = "0.9.6.0"
 __maintainer__  = "Mike Rightmire"
 __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
@@ -271,7 +271,6 @@ class ConfigHandler(object):
     """
     __exists = False
     
-#     def __new__(cls, callobj, *args, **kwargs): 
     def __new__(cls, *args, **kwargs): 
         """
         This is a singleton class. 
@@ -313,9 +312,6 @@ class ConfigHandler(object):
         self.caller_name = self.caller_name.f_back.f_globals['__file__']
         self.caller_name = os.path.basename(self.caller_name)
         self.caller_name = self.caller_name.lower().replace('.py','')
-
-        # This dict will store the actual configuration vars
-        self.configuration = {}
         
         # Forgot why I did this  ;-)
 #         sys.modules[self.callobj.__class__.__module__] = GettattrWrapper(sys.modules[self.callobj.__class__.__module__])
@@ -324,36 +320,43 @@ class ConfigHandler(object):
         # Singleton. If confighandler object exists, do not re-run __init__, 
         # just return         
         if self.__exists:
+            
             # Always send dict(kwargs) not kwargs
             if self._check_reload(dict(kwargs)): 
                 # Re-run the config file
                 # for now do nothing
                 pass # NOT return
+            
             # if (check here for changes parameters)
+            
+            # Load the configuration into the calling object CRITICAL!
+            self.callobj.__dict__.update(self.configuration)
             return
                 
         # DEFAULT PARAMETERS ARE SET HERE
-        # Always send dict(kwargs)
-        self._set_parameters(dict(kwargs))
-        
+        # This dict will store the actual configuration vars
+        self.configuration = {}
+        self.GLOBAL          = kwargs.pop("global", True)
+
         # Actually creates the loghandler object.
-        msg = ''.join([
-                       'Initiating logger with ',
-                       'app_name:',         str(self.app_name), 
-                       ', logfile: ',       str(self.logfile), 
-                       ', log_level: ',     str(self.log_level), 
-                       ', screendump: ',    str(self.screendump), 
-                       ', create_paths: ',  str(self.create_paths), 
-                       '.'
-                       ])
-        log.debug(  
-                  msg,
-                  app_name      = self.app_name, 
-                  logfile       = self.logfile,
-                  log_level     = self.log_level, 
-                  screendump    = self.screendump, 
-                  create_paths  = self.create_paths 
-                  )
+        self._set_logger(dict(kwargs))
+#         msg = ''.join([
+#                        'Initiating logger with ',
+#                        'app_name:',         str(self.app_name), 
+#                        ', logfile: ',       str(self.logfile), 
+#                        ', log_level: ',     str(self.log_level), 
+#                        ', screendump: ',    str(self.screendump), 
+#                        ', create_paths: ',  str(self.create_paths), 
+#                        '.'
+#                        ])
+#         log.debug(  
+#                   msg,
+#                   app_name      = self._check_app_name(kwargs), 
+#                   logfile       = self._check_logfile(kwargs),
+#                   log_level     = self._check_log_level(kwargs), 
+#                   screendump    = self._check_screendump(kwargs), 
+#                   create_paths  = self._check_create_paths(kwargs) 
+#                   )
 
         # Check for the config file param. Absence of config_file raises err
         # Defaults to None if KW does not exist
@@ -369,14 +372,16 @@ class ConfigHandler(object):
 
         # Set the perm logger config based on settings in the config file
         # As the ocnfig file may have changed the logging parameters, always 
-        # call this with all the options again. 
-        log.debug("Setting logger's permanent configuration",
-                   app_name      = self.app_name, 
-                   logfile       = self.logfile,
-                   log_level     = self.log_level, 
-                   screendump    = self.screendump, 
-                   create_paths  = self.create_paths 
-                   )
+        # call this with all the options again.
+        self._set_logger(dict(kwargs))
+ 
+#         log.debug("Setting logger's permanent configuration",
+#                    app_name      = self.app_name, 
+#                    logfile       = self.logfile,
+#                    log_level     = self.log_level, 
+#                    screendump    = self.screendump, 
+#                    create_paths  = self.create_paths 
+#                    )
         
     
     #==========================================================================
@@ -532,17 +537,33 @@ class ConfigHandler(object):
     """@handlertry()"""
     def _check_app_name(self, kwargs):
         """"""
-        # Must come first
-        app_name_default = kwargs.pop('app_name_default', 'ConfigHandler')
-        # Must come second
-        app_name = kwargs.pop('app_name', app_name_default)
-
+        # === Must come in this order =========================================
+        # First check if the configuration dict has the variables. If not
+        # then check the passed in kwargs. If it's in both, we give priority
+        # to the passed in kwargs...this is why they come second. 
+        # No default. If its not in the cofiguration dict, we want an error
+        try:
+            # No default. If its not in the cofiguration dict, we want an error
+            app_name_default = self.configuration['app_name_default']
+        except (NameError, AttributeError, KeyError) as e:
+            app_name_default = kwargs.pop('app_name_default', 'ConfigHandler')
+            
+        try:
+            # No default. If its not in the cofiguration dict, we want an error
+            app_name = self.configuration['app_name']
+        except (NameError, AttributeError, KeyError) as e:
+            app_name = kwargs.pop('app_name', app_name_default)
+        # ====================================================================
+        
         # Verify string and clean
         # This can deliver nonsense if a nonsense object is passed in as 
         # app_name, but it will be functional nonsense
 
         if ((app_name is None) or (len(str(app_name)) < 1)):
-            return app_name_default
+            try:
+                return self.app_name
+            except (NameError, AttributeError) as e:
+                return app_name_default
     
         app_name = (''.join(c for c in str(app_name) 
                             if re.match("[a-zA-z0-9]", c)))
@@ -559,12 +580,25 @@ class ConfigHandler(object):
 
     """@handlertry()"""
     def _check_create_paths(self, kwargs):
-
-        # Must come first 
-        create_paths_default = kwargs.pop('create_paths_default', True)
-        # Must come second
-        create_paths = kwargs.pop('create_paths', create_paths_default)
+        """"""
+        # === Must come in this order =========================================
+        # First check if the configuration dict has the variables. If not
+        # then check the passed in kwargs. If it's in both, we give priority
+        # to the passed in kwargs...this is why they come second. 
+        # No default. If its not in the cofiguration dict, we want an error
+        try:
+            # No default. If its not in the cofiguration dict, we want an error
+            create_paths_default = self.configuration['create_paths_default']
+        except (NameError, AttributeError, KeyError) as e:
+            create_paths_default = kwargs.pop('create_paths_default', True)
             
+        try:
+            # No default. If its not in the cofiguration dict, we want an error
+            create_paths = self.configuration['create_paths']
+        except (NameError, AttributeError, KeyError) as e:
+            create_paths = kwargs.pop('create_paths', create_paths_default)
+        # ====================================================================
+
         if type(create_paths) is not bool:
             try:
                 return self.create_paths
@@ -574,55 +608,57 @@ class ConfigHandler(object):
             return create_paths
 
     """@handlertry()"""
-    def _check_formatter(self, format = None):
-        # MUST COME FIRST 
-        formatter_default = kwargs.pop('formatter_default', "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        # Must come second
-        formatter = kwargs.pop('formatter', formatter_default)
-    
+    def _check_formatter(self, kwargs):
+        """"""
+        # === Must come in this order =========================================
+        # First check if the configuration dict has the variables. If not
+        # then check the passed in kwargs. If it's in both, we give priority
+        # to the passed in kwargs...this is why they come second. 
+        # No default. If its not in the cofiguration dict, we want an error
+        try:
+            # No default. If its not in the cofiguration dict, we want an error
+            formatter_default = self.configuration['formatter_default']
+        except (NameError, AttributeError, KeyError) as e:
+            formatter_default = kwargs.pop('formatter_default', 
+                    "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+            
+        try:
+            # No default. If its not in the cofiguration dict, we want an error
+            formatter = self.configuration['formatter']
+        except (NameError, AttributeError, KeyError) as e:
+            formatter = kwargs.pop('formatter', formatter_default)
+        # ====================================================================
+            
         if ((formatter is None) or (len(str(formatter)) < 1)):
-            return str(formatter_default)
+            try:
+                return self.formatter._fmt
+            except Exception as e:
+                return str(formatter_default)
         
         else:
             return str(formatter) # Put check in place???
 
-#     def _check_boolean(self, screendump):
-#         if screendump is None:
-#             try:
-#                 return self.screendump
-#             except AttributeError, e:
-#                 return False
-#  
-#         # Check for strings instead of proper bool            
-#         if (("t" in str(screendump).lower())): 
-#             return True
-#  
-#         if (("f" in str(screendump).lower())): 
-#             return False
-#  
-#         # Check for numbers instead of proper bool                        
-#         try:
-#             if int(screendump) == 1: return True
-#             if int(screendump) == 0: return False
-#         except ValueError, e:
-#             return False
-#  
-#         # Check for proper bool
-#         if isinstance(screendump, bool):
-#             return screendump
-#         else:
-#             e = "Parameter 'screendump' must be boolean (True/False)"
-#             raise TypeError(e)
-
-                        
     """@handlertry()"""
-    def _check_logfile(self, logfile):
+    def _check_logfile(self, kwargs):
         """"""
-        # Must come first 
-        logfile_default = kwargs.pop('logfile_default', './ConfigHandler.log')
-        # Must come second
-        logfile = kwargs.pop('logfile', logfile_default)
-        
+        # === Must come in this order =========================================
+        # First check if the configuration dict has the variables. If not
+        # then check the passed in kwargs. If it's in both, we give priority
+        # to the passed in kwargs...this is why they come second. 
+        # No default. If its not in the cofiguration dict, we want an error
+        try:
+            # No default. If its not in the cofiguration dict, we want an error
+            logfile_default = self.configuration['logfile_default']
+        except (NameError, AttributeError, KeyError) as e:
+            logfile_default = kwargs.pop('logfile_default','./ConfigHandler.log')
+            
+        try:
+            # No default. If its not in the cofiguration dict, we want an error
+            logfile = self.configuration['logfile']
+        except (NameError, AttributeError, KeyError) as e:
+            logfile = kwargs.pop('logfile', logfile_default)
+        # ====================================================================
+
         if ((logfile is None) or (len(str(logfile)) < 1)):
             try:
                 return self.logfile
@@ -678,10 +714,24 @@ class ConfigHandler(object):
                         
     """@handlertry()"""
     def _check_log_level(self, kwargs):
-        # Must come first
-        log_level_default = kwargs.pop('log_level_default', 40)
-        # Must come second
-        log_level = kwargs.pop('log_level', log_level_default)
+        """"""
+        # === Must come in this order =========================================
+        # First check if the configuration dict has the variables. If not
+        # then check the passed in kwargs. If it's in both, we give priority
+        # to the passed in kwargs...this is why they come second. 
+        # No default. If its not in the cofiguration dict, we want an error
+        try:
+            # No default. If its not in the cofiguration dict, we want an error
+            log_level_default = self.configuration['log_level_default']
+        except (NameError, AttributeError, KeyError) as e:
+            log_level_default = kwargs.pop('log_level_default',40)
+            
+        try:
+            # No default. If its not in the cofiguration dict, we want an error
+            log_level = self.configuration['log_level']
+        except (NameError, AttributeError, KeyError) as e:
+            log_level = kwargs.pop('log_level', log_level_default)
+        # ====================================================================
 
         #Level
         if log_level is None: 
@@ -738,11 +788,25 @@ class ConfigHandler(object):
 
     """@handlertry()"""
     def _check_screendump(self, kwargs):
-        # Must come first
-        screendump_default = kwargs.pop('screendump_default', False)
-        # Must come second
-        screendump = kwargs.pop('screendump', screendump_default)
-        
+        """"""
+        # === Must come in this order =========================================
+        # First check if the configuration dict has the variables. If not
+        # then check the passed in kwargs. If it's in both, we give priority
+        # to the passed in kwargs...this is why they come second. 
+        # No default. If its not in the cofiguration dict, we want an error
+        try:
+            # No default. If its not in the cofiguration dict, we want an error
+            screendump_default = self.configuration['screendump_default']
+        except (NameError, AttributeError, KeyError) as e:
+            screendump_default = kwargs.pop('screendump_default',False)
+            
+        try:
+            # No default. If its not in the cofiguration dict, we want an error
+            screendump = self.configuration['screendump']
+        except (NameError, AttributeError, KeyError) as e:
+            screendump = kwargs.pop('screendump', screendump_default)
+        # ====================================================================
+
         if type(screendump) is not bool:
             try:
                 return self.screendump
@@ -759,6 +823,7 @@ class ConfigHandler(object):
     """@handlertry()"""
     def _override_with_kw_vars(self, kwargs):
         for key in kwargs.keys():
+#             log.debug("Overriding '" + str(key) + "' with value '" + str(kwargs[key]) + "'.")
             self.configuration[key] = kwargs[key]
             
             if self.GLOBAL:
@@ -772,44 +837,70 @@ class ConfigHandler(object):
     # PUBLIC METHODS
 
     #@handlertry("PassThroughException: rhandler._set_mandatory_defaults")
-    def _set_mandatory_defaults(self, _dict):
-        """
-        """
-        for key in _dict.keys():
-            if key not in self.__dict__.keys():
-                self.__dict__[key] = _dict[key]
-        return
+#     def _set_mandatory_defaults(self, _dict):
+#         """
+#         """
+#         for key in _dict.keys():
+#             if key not in self.__dict__.keys():
+#                 self.__dict__[key] = _dict[key]
+#         return
+# 
+#     #@handlertry("PassThroughException:")    
+#     
+#     
+#     #@handlertry("")
 
-    #@handlertry("PassThroughException:")    
-    
-    
-    #@handlertry("")
-
-    """@handlertry()"""
-    def _set_parameters(self, kwargs):
-        ### These params check for loghandler object params
-        # Get params from kwargs or set to default
-        # self.paramname  = kwargs.pop("paramname", default_value) 
-        # These should all set 'self' parameters
-        create_paths    = kwargs.pop("create_paths", True) 
-        self.create_paths = self._check_create_paths(create_paths)
-
-        log_level       = kwargs.pop("log_level", 40)
-        self.log_level = self._check_log_level(log_level)
-
-        screendump      = kwargs.pop("screendump", False)
-        self.screendump = self._check_screendump(screendump)
+#     """@handlertry()"""
+#     def _set_parameters(self, kwargs):
+#         ### These params check for loghandler object params
+#         # Get params from kwargs or set to default
+#         # self.paramname  = kwargs.pop("paramname", default_value) 
+#         # These should all set 'self' parameters
+# #         create_paths    = kwargs.pop("create_paths", True) 
+#         self.create_paths = self._check_create_paths(kwargs)
+# 
+# #         log_level       = kwargs.pop("log_level", 40)
+#         self.log_level = self._check_log_level(kwargs)
+# 
+# #         screendump      = kwargs.pop("screendump", False)
+#         self.screendump = self._check_screendump(kwargs)
+#         
+#         # Determines if configuration variables are loaded directly into the 
+#         # calling object (True), or accessed only from self.configuration as a 
+#         # returned object or via ConfigHandlerObject.get/set (False)
+#         self.GLOBAL          = kwargs.pop("global", True)
+# 
+# #         app_name        = kwargs.pop("app_name", "configparser")
+#         self.app_name = self._check_app_name(kwargs)
+# 
+# #         logfile         = kwargs.pop("logfile", "./configparser.log")
+#         self.logfile = self._check_logfile(kwargs)
         
-        # Determines if configuration variables are loaded directly into the 
-        # calling object (True), or accessed only from self.configuration as a 
-        # returned object or via ConfigHandlerObject.get/set (False)
-        self.GLOBAL          = kwargs.pop("global", True)
+    def _set_logger(self, kwargs):
+        self.app_name      = self._check_app_name(kwargs) 
+        self.log_level     = self._check_log_level(kwargs) 
+        self.screendump    = self._check_screendump(kwargs)
+        self.create_paths  = self._check_create_paths(kwargs)
+        self.logfile       = self._check_logfile(kwargs)
+                  
 
-        app_name        = kwargs.pop("app_name", "configparser")
-        self.app_name = self._check_app_name(app_name)
-
-        logfile         = kwargs.pop("logfile", "./configparser.log")
-        self.logfile = self._check_logfile(logfile)
+        msg = ''.join([
+                        'Initiating logger with ',
+                        'app_name:',      str(self.app_name), 
+                        'logfile:',       str(self.logfile),
+                        'log_level',      str(self.log_level), 
+                        'screendump',     str(self.screendump), 
+                        'create_paths',   str(self.create_paths), 
+                        '.'
+                       ])
+        log.debug(  
+                  msg,
+                  app_name      = self.app_name, 
+                  logfile       = self.logfile,
+                  log_level     = self.log_level, 
+                  screendump    = self.screendump, 
+                  create_paths  = self.create_paths 
+                  )
         
     """@handlertry()"""
     def cnf(
@@ -817,19 +908,40 @@ class ConfigHandler(object):
             name, 
             value = 'sbh%&bjkUnlikelyNonsenseMeansCanBeSetToNonesi&%wztghvli'
             ):
+        # If 'value' is set, then change the value AND return it
         # The large, unlikely to be accidentally duplicated 'value' means we
         # can accept anything - including Python None and string 'None'
         # and trust it is on purpose. We do not value check as we don't know 
         # literal type it should be.  
-        if value !='sbhbjkUnlikelyNonsenseMeansCanBeSetToNonesi&%wztghvli':
+        if value !='sbh%&bjkUnlikelyNonsenseMeansCanBeSetToNonesi&%wztghvli':
             self.configuration[name] = value
-            return True
+            return value
         
-        else:
+        if str(name).lower() == 'all':
+            # Just to be safe, make sure there isn't a configuration variable 
+            # named some variation of 'all'.
             try:
                 return self.configuration[name]
-            except (NameError, AttributeError) as e:
-                return None
+
+            except (NameError, AttributeError, KeyError) as e:
+                # err means No config var 'all'
+                # return a list of dicts for all variables
+                # Consider changing to generator
+                _list = []
+                for key in self.configuration.keys():
+                    _list.append({key:self.configuration[key]})
+                return _list
+            
+        # If here, method is asking for a single variable. Return it        
+        try:
+            return self.configuration[name]
+
+        except (NameError, AttributeError, KeyError) as e:
+            e.message = ''.join([
+                                 "ConfigHandler.cnf: self.configuration ", 
+                                 "has no variable '", str(name), "'."
+                                 ])
+            raise type(e), type(e)(e.message), sys.exc_info()[2]
          
     """@handlertry()"""
     def get(self, name):
@@ -885,12 +997,11 @@ class ConfigHandler(object):
                 for name, value in self.config.items(section_name):
                     if ({"LOADALL":True, None:True, name:True}.get(varname)):
                         value = self._convert_string_values(value)
-#                         self.__dict__[name] = value # No longer loading to ConfigHandler object
                         self.configuration[name] = value
                         if self.GLOBAL:
                             self.callobj.__dict__[name] = value
 
-#                         self.log.debug(''.join(["set '", str(name), 
+#                         log.debug(''.join(["set '", str(name), 
 #                                                 "' to '", str(value),
 #                                                 "'."]))
                         _found = True
@@ -906,17 +1017,6 @@ class ConfigHandler(object):
                                                     "'. "
                                                     ]))
             
-#     """@handlertry("PassThroughException:")"""
-#     def verify_file(self):
-#         """"""
-#         log.debug(("Verfiying " + str(self.config_file)))
-#         # Check config file exists since parser will not error if you 
-#         # attempt to open a non-existent file
-#         if not fileExists(self.config_file):
-#             e = ''.join(["ConfigFileNotFound(", 
-#                          str(self.config_file),"):"])
-#             raise IOError(e) # Remove me and active self.err line
-
         
 if __name__ == "__main__":
     class forttest(object):
@@ -929,6 +1029,8 @@ if __name__ == "__main__":
                                         )
     o = forttest()
     print 'o.rhandler_host=', o.rhandler_host    
-    print 'o.cnf(rhandler_host)=', o.cnf(rhandler_host)    
+    print 'o.config.cnf(rhandler_host)=', o.config.cnf('rhandler_host')    
+    print 'o.config.cnf(all)=', o.config.cnf('all')    
+    print 'o.config.cnf(nada)=', o.config.cnf('nada')    
 
 

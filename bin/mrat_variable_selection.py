@@ -43,8 +43,7 @@ class mrat_variable_selection(object):
         # they a None, the config file will be used. If they are None here, and 
         # not set in the config file...the default loghandler settings will be 
         # used
-#         self.config = ConfigHandler(
-        ConfigHandler.load(
+        self.config = ConfigHandler(
                         config_file = kwargs.pop('config_file', None),
                         *args,  
                         **kwargs 
@@ -67,8 +66,23 @@ class mrat_variable_selection(object):
                     rhandler_oobCallback = self.rhandler_oobCallback,
                                    )
         
+        print 'self.R.code test: "3 + 3"'#333 TESTING ONLY
         print self.R.code('3 + 3') #333 TESTING ONLY
-        print self.R.code(None) #333 TESTING ONLY
+        print 
+        
+        print 'self.R.script local test: "/Users/mikes/git/Tesera/MRAT_Refactor/bin/test.R"' #333 TESTING ONLY
+        print self.R.script("/Users/mikes/git/Tesera/MRAT_Refactor/bin/test.R") #333 TESTING ONLY
+        print 
+        
+        print 'self.R.script remote test: "/home/ec2-user/test.R"' #333 TESTING ONLY
+        print self.R.script("/home/ec2-user/test.R", host='54.164.196.82') #333 TESTING ONLY
+        print
+        
+        print 'self.R.script test: "/Users/mikes/git/Tesera/MRAT_Refactor/bin/XIterativeVarSelCorVarElimination.R"' #333 TESTING ONLY
+        self.R.script("/Users/mikes/git/Tesera/MRAT_Refactor/bin/XIterativeVarSelCorVarElimination.R") #333 TESTING ONLY
+        print
+        
+#         print self.R.code(None) #333 TESTING ONLY
         
                  
     def _cleanup(self):
