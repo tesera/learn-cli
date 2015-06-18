@@ -686,7 +686,10 @@ class ConfigHandler(object):
         # logfile must start with either '/' or './'
         # If it has neither, we assume local directory
         if not re.match('^\s*[./|/].*$', logfile): 
-            logfile = './' + logfile
+            # We need to ensure the paths are relative to the caller
+            _path = os.path.realpath(__file__)
+            _path = _path.rsplit('/', 1)[0]
+            logfile = _path + '/' + logfile
          
         # If logfile ends with '/', then its just a path
         # Use the path, and add the default logfilename     

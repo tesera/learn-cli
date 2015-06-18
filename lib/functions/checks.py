@@ -6,7 +6,7 @@ __author__      = "Mike Rightmire"
 __copyright__   = "BioCom Software"
 __license__     = "Tesera"
 __license_file__= "Clause1.PERPETUAL_AND_UNLIMITED_LICENSING_TO_THE_CLIENT.py"
-__version__     = "0.9.0.6"
+__version__     = "0.9.0.7"
 __maintainer__  = "Mike Rightmire"
 __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
@@ -28,7 +28,7 @@ def fullPathCheck(line, *args, **kwargs):
     line = str(line)
 
     if ((line.endwith("\\")) or
-        (line.endswith("/"))): 
+        (line.endswith("/"))):
         endslash = True
         
     if (not checkPathFormat(line, endslash = endslash)): return False
@@ -240,11 +240,16 @@ def checkURL(URL):
                 "|" +                            # servername OR IP
                 "(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))" + # OR IP (mandatory)  
                 "(:\d+){0,1}" + # port (mandatory)
-                "(\/.*){0,}"    +   # remainder
+                "(\/\.*){0,}"    +   # remainder
                "$")
-    pattern = re.compile(pattern)
+    pattern = re.compile(pattern, re.IGNORECASE)
+
     if pattern.match(URL):
         return True
+
+    elif re.match("^\s*(https?://){0,1}localhost\s*[/\.]{0,}$", str(URL), re.IGNORECASE):
+        return True
+    
     else: 
         _runerror
         return False
@@ -398,5 +403,5 @@ def checkOS(os = None):
     else: return False
     
 if __name__ == "__main__":
-    print checkLinuxPathFormat("./", endslash = True)
+    print checkURL('https://127.0.0.1/./')
     
