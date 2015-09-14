@@ -4,12 +4,20 @@ Set file paths
 import sys
 
 #Identify admin code directory
-adminPath = '/shared/GitHub/Tesera/Rwd/Python/Admin/'
-filePath = '/shared/GitHub/Tesera/Rwd/'
-dataFilePath = '/shared/GitHub/Tesera/Rwd/'
-dictFilePath = '/shared/GitHub/Tesera/Rwd/Python/DATDICT/'
+#adminPath = '/shared/GitHub/Tesera/Rwd/Python/Admin/'
+#filePath = '/shared/GitHub/Tesera/Rwd/'
+#dataFilePath = '/shared/GitHub/Tesera/Rwd/'
+#dictFilePath = '/shared/GitHub/Tesera/Rwd/Python/DATDICT/'
+#fileExtension = '.csv'
+#readErrorFilePath = '/shared/GitHub/Tesera/Rwd/Python/PyReadError/'
+
+# ammended 20150828 by MB and SK
+adminPath = '/opt/MRAT_Refactor/Rwd/Python/Admin'
+filePath = '/opt/MRAT_Refactor/Rwd/'
+dataFilePath = '/opt/MRAT_Refactor/Rwd/'
+dictFilePath = '/opt/MRAT_Refactor/Rwd/Python/DATDICT/'
 fileExtension = '.csv'
-readErrorFilePath = '/shared/GitHub/Tesera/Rwd/Python/PyReadError/'
+readErrorFilePath = '/opt/MRAT_Refactor/Rwd/Python/PyReadError/'
 
 #Add directory to sys.path 
 sys.path.append(adminPath)
