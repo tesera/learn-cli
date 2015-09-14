@@ -70,18 +70,24 @@ class mrat_variable_selection(object):
         print self.R.code('3 + 3') #333 TESTING ONLY
         print 
         
-        print 'self.R.script local test: "/Users/mikes/git/Tesera/MRAT_Refactor/bin/test.R"' #333 TESTING ONLY
-        print self.R.script("/Users/mikes/git/Tesera/MRAT_Refactor/bin/test.R") #333 TESTING ONLY
-        print 
-        
-        print 'self.R.script remote test: "/home/ec2-user/test.R"' #333 TESTING ONLY
-        print self.R.script("/home/ec2-user/test.R", host='54.164.196.82') #333 TESTING ONLY
+#        print 'self.R.script local test: "/Users/mikes/git/Tesera/MRAT_Refactor/bin/test.R"' #333 TESTING ONLY
+#        print self.R.script("/Users/mikes/git/Tesera/MRAT_Refactor/bin/test.R") #333 TESTING ONLY
+#        print 
+        print 'self.R.script local test: "/opt/MRAT_Refactor/bin/test.R"' #333 TESTING ONLY
+        print self.R.script("/opt/MRAT_Refactor/bin/test.R") #333 TESTING ONLY
         print
-        
-        print 'self.R.script test: "/Users/mikes/git/Tesera/MRAT_Refactor/bin/XIterativeVarSelCorVarElimination.R"' #333 TESTING ONLY
-        self.R.script("/Users/mikes/git/Tesera/MRAT_Refactor/bin/XIterativeVarSelCorVarElimination.R") #333 TESTING ONLY
+
+#        print 'self.R.script remote test: "/home/ec2-user/test.R"' #333 TESTING ONLY
+#        print self.R.script("/home/ec2-user/test.R", host='54.164.196.82') #333 TESTING ONLY
+#        print
+
+#        print 'self.R.script test: "/Users/mikes/git/Tesera/MRAT_Refactor/bin/XIterativeVarSelCorVarElimination.R"' #333 TESTING ONLY
+#        self.R.script("/Users/mikes/git/Tesera/MRAT_Refactor/bin/XIterativeVarSelCorVarElimination.R") #333 TESTING ONLY
+#        print
+        print 'self.R.script test: "/opt/MRAT_Refactor/bin/XIterativeVarSelCorVarElimination.R"' #333 TESTING ONLY
+        self.R.script("/opt/MRAT_Refactor/bin/XIterativeVarSelCorVarElimination.R") #333 TESTING ONLY
         print
-        
+
 #         print self.R.code(None) #333 TESTING ONLY
         
                  
