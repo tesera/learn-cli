@@ -23,6 +23,8 @@ import sys
 #Add imports for Python Capabilities moved from R to Python Side 20150903 MB, SK
 import test_EXTRACT_RVARIABLE_COMBOS_v2
 import RANKVAR
+import REMOVE_HIGHCORVAR_FROM_XVARSELV
+import COUNT_XVAR_IN_XVARSELV1
 
 class mrat_variable_selection(object):
     """"""
@@ -94,48 +96,51 @@ class mrat_variable_selection(object):
 #         print self.R.code(None) #333 TESTING ONLY
 
 
-        import routineLviApplications
-        print '\n Reading VARRANK.csv'
-        tableName = 'XVARSELV1'
-        printTypes = 'YES'
-        nLines = 10000
-        oldDict, newDict = routineLviApplications.createNewDataDictionaryFromFile(tableName, printTypes, nLines)
-        varSelKeyVarNameList = ['VARNAME']
-        readErrorFileName = 'ERROR_'+ tableName
-        varSelHeader, varSelDict = routineLviApplications.ReadCsvDataFileAndTransformIntoDictionaryFormat_v2(oldDict, newDict, tableName, \
-                                                                                                         readErrorFileName, varSelKeyVarNameList)
-        # Count remaining X-Variables
-        xVarCount = 0
-        for varName in varSelDict:
-            if varSelDict[varName]['XVARSEL']=='X':
-                xVarCount = xVarCount + 1
+        #import routineLviApplications
+        #print '\n Reading VARRANK.csv'
+        #tableName = 'XVARSELV1'
+        #printTypes = 'YES'
+        #nLines = 10000
+        #oldDict, newDict = routineLviApplications.createNewDataDictionaryFromFile(tableName, printTypes, nLines)
+        #varSelKeyVarNameList = ['VARNAME']
+        #readErrorFileName = 'ERROR_'+ tableName
+        #varSelHeader, varSelDict = routineLviApplications.ReadCsvDataFileAndTransformIntoDictionaryFormat_v2(oldDict, newDict, tableName, \
+        #                                                                                                 readErrorFileName, varSelKeyVarNameList)
+        ## Count remaining X-Variables
+        #xVarCount = 0
+        #for varName in varSelDict:
+        #    if varSelDict[varName]['XVARSEL']=='X':
+        #        xVarCount = xVarCount + 1
 
-        print '\n There are',xVarCount,'eligible X-Variables remaining in XVARSELV1.'
-        fileName = 'XVARSELV1_XCOUNT'
-        floatFormat = '%0.6f'
-        varCountList = [[xVarCount]]
-        routineLviApplications.writeListArrayToCsvFile(varCountList, fileName, floatFormat)
+        #print '\n There are',xVarCount,'eligible X-Variables remaining in XVARSELV1.'
+        #fileName = 'XVARSELV1_XCOUNT'
+        #floatFormat = '%0.6f'
+        #varCountList = [[xVarCount]]
+        #routineLviApplications.writeListArrayToCsvFile(varCountList, fileName, floatFormat)
+        currentCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()  #20150914 SK MB
 
-#        self.R.script("/opt/MRAT_Refactor/Rwd/RScript/test_ZReadXvarselvCount.R")
-#        print self.R.script("/opt/MRAT_Refactor/Rwd/RScript/test_ZReadXvarselvCount.R")
+        # self.R.script("/opt/MRAT_Refactor/Rwd/RScript/test_ZReadXvarselvCount.R")
+        # print self.R.script("/opt/MRAT_Refactor/Rwd/RScript/test_ZReadXvarselvCount.R")
 
-#        print 'self.R.scripttest :"/opt/MRAT_Refactor/bin/test_XIterativeVarSelCorVarElimination.R"'
+        # print 'self.R.scripttest :"/opt/MRAT_Refactor/bin/test_XIterativeVarSelCorVarElimination.R"'
+        #self.R.script("/opt/MRAT_Refactor/bin/SixplusSix.R")
+        #
         self.R.script("/opt/MRAT_Refactor/bin/test_XIterativeVarSelCorVarElimination.R") #333 TESTING ONLY
-        print self.R.script("/opt/MRAT_Refactor/bin/test_XIterativeVarSelCorVarElimination.R")
+        #print self.R.script("/opt/MRAT_Refactor/bin/test_XIterativeVarSelCorVarElimination.R")
         # best to break apart test_XIterativeVarSelCorVarElimination.R
-        # so that we call the R's then the Pythons
-        #import subprocess
-        #subprocess.call("/opt/MRAT_Refactor/Rwd/Python/EXTRACT_RVARIABLE_COMBOS_v2.py")
+        # so that we call the Rs then the Pythons
+        #
+        #
         #print 'EXTRACT_RVARIABLE_COMBOS_v2.py'
         test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() #20150904 MB IM SK  
         RANKVAR.RankVar() #20150908 SK
-        self.R.script("opt/MRAT_Refactor/Rwd/RScript/test2_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R") #20150908 SK
-
-        #self.R.script("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R") #20150908 SK to be added later
-        #REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()  #20150908 SK to be added later
-        #COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()  #20150908 SK to be added later
-        #self.R.script("opt/MRAT_Refactor/Rwd/RScript/ZReadXvarselvCount.R") #20150909 SK
-               
+        
+        self.R.script("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R") #20150911 SK
+        REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()  #20150908 SK to be added later
+        nextCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()  #20150908 SK and 20150914 SK MB
+        print "currentCount = ", currentCount, "  nextCount = ", nextCount
+        print "\n"
+        #self.R.script("/opt/MRAT_Refactor/bin/test3_XIterativeVarSelCorVarElimination.R") #20150912 SK       
                  
     def _cleanup(self):
         """"""

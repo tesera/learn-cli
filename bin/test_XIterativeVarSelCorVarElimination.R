@@ -1,5 +1,6 @@
+#This is latest working version 20150914 SK MB
 #Set Default Working Directory where R places outputs 20150831 MB, IM, SK
-#setwd("/opt/MRAT_Refactor/Rwd")
+setwd("/opt/MRAT_Refactor/Rwd")
 # Iteratively Run Discriminant Analysis Variable Selection
 # and XVariable Reduction To Eliminate Correlations >= 0.8
 # or Correlations <= -0.8.
@@ -29,7 +30,7 @@ source(paste("/opt/MRAT_Refactor/etc/", "XIterativeVarSel.R.conf", sep = ""))
 
 source(paste(HOME_RWD,"RScript/test_ZReadXvarselvCount.R", sep = ""))
 initialCount <- xVarCount
-#write.csv(initialCount, file = "zzz.csv") #SK added 20150901 - this works
+write.csv(initialCount, file = "zzz.csv") #SK added 20150901 - this works
 
 #####################################################################
 
