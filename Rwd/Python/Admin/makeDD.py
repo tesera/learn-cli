@@ -1,5 +1,7 @@
 from fileUtilities import newFilePath, newFilePath_v2
 
+import string
+
 def data_dictionary(filepath, filename):
     dict_path = newFilePath(filepath, filename)
     '''
@@ -455,6 +457,8 @@ def dataDictionaryType_21(filepath = '', filename = '', fileExtension = '.csv'):
     dict_path = newFilePath_v2(filepath, filename, fileExtension)
     #Open dictionary
     temp_file = open (dict_path,'r')
+    #print temp_file #added as check 20150904 IM MB SK
+
     #Define original data dictionary (with original table and variable names as keys) and
     #Define new data dictionary (with original table names and new variable names as keys) 
     originalNameDict = {}
@@ -462,6 +466,9 @@ def dataDictionaryType_21(filepath = '', filename = '', fileExtension = '.csv'):
     #Set line index to 0
     i = 0 
     for line in temp_file:
+        line = string.replace(line, '\r\n', '\n')
+        line = string.replace(line, '\r', '\n')
+        print i, line
         #This part of the program strips off linefeed symbol, '\n' that
         #is inserted by ACCESS or Python at the end of line(s)
         #when it reads files.
@@ -482,6 +489,7 @@ def dataDictionaryType_21(filepath = '', filename = '', fileExtension = '.csv'):
         if i == 0:
             #Get column numbers associated with variable names
             for j in range(0,end_j):
+                print j, x[j]
                 if x[j] == 'TVID':
                     tvidCol = j
                 else:
@@ -505,7 +513,9 @@ def dataDictionaryType_21(filepath = '', filename = '', fileExtension = '.csv'):
                                         else:
                                             if x[j] == 'DESCRIPTION':
                                                 descriptionCol = j
+                                                #print descriptionCol
         if not i==0:
+            print i, descriptionCol
             #assign variable values from appropriate column numbers  
             tvid = int(x[tvidCol])
             tableName = str(x[tableCol])
@@ -535,8 +545,9 @@ def dataDictionaryType_21(filepath = '', filename = '', fileExtension = '.csv'):
             else:
                 select = int(x[selectCol])
 
-                          
+
             description = str(x[descriptionCol])
+            #description = 'description'
             #Start process of assigning appropriate types() to varDefault values
             #If variable type is not a string, character or nominal type() the change the type
             #Must either be related to a float or integer type
