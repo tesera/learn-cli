@@ -140,7 +140,8 @@ class mrat_variable_selection(object):
         nextCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()  #20150908 SK and 20150914 SK MB
         print "currentCount = ", currentCount, "  nextCount = ", nextCount
         print "\n"
-        #self.R.script("/opt/MRAT_Refactor/bin/test3_XIterativeVarSelCorVarElimination.R") #20150912 SK       
+        #self.R.script("/opt/MRAT_Refactor/bin/test3_XIterativeVarSelCorVarElimination.R") #20150912 SK
+        self.R.script("/opt/MRAT_Refactor/bin/kluge.R") #20150915 a cobbledTogetherInelegantSolution SK MB       
                  
     def _cleanup(self):
         """"""

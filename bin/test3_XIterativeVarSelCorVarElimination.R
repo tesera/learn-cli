@@ -1,12 +1,12 @@
 #Set Default Working Directory where R places outputs 20150831 MB, IM, SK
-setwd("/opt/MRAT_Refactor/Rwd")
+#setwd("/opt/MRAT_Refactor/Rwd")
 # Iteratively Run Discriminant Analysis Variable Selection
 # and XVariable Reduction To Eliminate Correlations >= 0.8
 # or Correlations <= -0.8.
 
 ################################################################################
 # Source environment
-source(paste("/opt/MRAT_Refactor/etc/", "XIterativeVarSel.R.conf", sep = ""))
+#source(paste("/opt/MRAT_Refactor/etc/", "XIterativeVarSel.R.conf", sep = ""))
 #source(paste(HOME_CONF,"XIterativeVarSel.R.conf", sep = ""))
 #source(paste("/shared/GitHub/Tesera/MRAT_Refactor/etc/","XIterativeVarSel.conf", sep = ""))
 #333 BETTER TO USE pwd TO SET THIS, BUT RStudio is REPORTING THE ORIGINAL DIR NOT THE CURRENT
@@ -42,9 +42,10 @@ source(paste("/opt/MRAT_Refactor/etc/", "XIterativeVarSel.R.conf", sep = ""))
 # Initialize Variable selection process
 #20150831 Add test_ to ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R MB, IM, SK
 #source(paste(HOME_RWD,"RScript/test_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R", sep = ""))
-source(paste(HOME_RWD,"RScript/test_ZReadXvarselvCount.R", sep = ""))
-step21 <- xVarCount
-write.csv(step21, file = "Step21.csv")
+#source(paste(HOME_RWD,"RScript/test_ZReadXvarselvCount.R", sep = "")) commented out 20150915 SK MB
+#xVarCount <- scan("/opt/MRAT_Refactor/Rwd/XVARSELV1_XCOUNT.csv")
+#step21 <- xVarCount
+#write.csv(step21, file = "myStep21.csv")
 
 #Confirming we got to Step 3 (step 10 in underlying file) 20150831 MB
 #cat(myZCompleteTest)
