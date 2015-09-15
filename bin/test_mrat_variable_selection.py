@@ -142,7 +142,7 @@ class mrat_variable_selection(object):
         print "\n"
         #self.R.script("/opt/MRAT_Refactor/bin/test3_XIterativeVarSelCorVarElimination.R") #20150912 SK
         self.R.script("/opt/MRAT_Refactor/bin/kluge.R") #20150915 a cobbledTogetherInelegantSolution SK MB
-        counter = 0
+        #counter = 0
         while currentCount != nextCount:
             
             #config part of test_XItertative plus test_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
@@ -153,8 +153,8 @@ class mrat_variable_selection(object):
             self.R.script("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R")
             REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()
             nextCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()
-            counter = counter +1
-            if counter > 100: break
+            #counter = counter +1
+            #if counter > 100: break
                  
     def _cleanup(self):
         """"""
