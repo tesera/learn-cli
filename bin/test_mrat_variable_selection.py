@@ -105,13 +105,13 @@ class mrat_variable_selection(object):
      
         # test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() identifies the unique variable sets and organizes 
         #them into a new file VARSELV.csv;
-        test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() #20150904 MB IM SK  
+        uniqueVarSets = test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() #20150904 MB IM SK  
         # RANKVAR.RankVar() ranks the variables in terms of their contribution to a model
-        RANKVAR.RankVar() #20150908 SK
+        ranksVariables = RANKVAR.RankVar() #20150908 SK
         
         # test2_XIterativeVarSelCorVarElimination.R runs steps 13 -18 ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
         self.R.script("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R") #20150911 SK
-        REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()  #20150908 SK to be added later
+        removeCorXVars = REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()  #20150908 SK to be added later
         nextCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()  #20150908 SK and 20150914 SK MB
         print "currentCount = ", currentCount, "  nextCount = ", nextCount
         print "\n"
@@ -137,7 +137,8 @@ class mrat_variable_selection(object):
             counter = counter +1
 
         print "Number of Iterations: ", counter
-        
+        print "\n"
+
 
     # STEP 4 -- GUARANTEE CLEAN EXIT         
     def _cleanup(self):
