@@ -145,6 +145,7 @@ class mrat_variable_selection(object):
         #counter = 0
         while currentCount != nextCount:
             
+            currentCount = nextCount
             #config part of test_XItertative plus test_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
             self.R.script("/opt/MRAT_Refactor/bin/XIterativeConfFile.R")
             #self.R.script("/opt/MRAT_Refactor/Rwd/RScript/test_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R)
