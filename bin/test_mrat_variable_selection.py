@@ -11,7 +11,11 @@ __maintainer__  = "Mike Rightmire"
 __email__       = "Mike.Rightmire@BiocomSoftware.com"
 __status__      = "Development"
 ##############################################################################
+#Updated 20150917 MB, SK
+# Author: Mike Rightmire
+#Maintainers: Sam Kaharabata, Mishtu Banerjee, Ian Moss
 
+# TSIBRIDGE SPECIFIC IMPORTS
 from confighandler import ConfigHandler
 from loghandler     import log
 from rhandler       import RHandler
@@ -20,12 +24,15 @@ from signal         import *
 import atexit
 import os
 import sys
-#Add imports for Python Capabilities moved from R to Python Side 20150903 MB, SK
+
+# AUTOMATED VARIABLE SELECTION SPECIFIC IMPORTS
 import test_EXTRACT_RVARIABLE_COMBOS_v2
 import RANKVAR
 import REMOVE_HIGHCORVAR_FROM_XVARSELV
 import COUNT_XVAR_IN_XVARSELV1
 
+
+# STEP 0 -- ABSTRACT ANALYTICS PROCESS TO A CLASS (EXAMPLE: AUTOMATED VARIABLE SELECTION)
 class mrat_variable_selection(object):
     """"""
     def __init__(self,*args, **kwargs):
@@ -70,79 +77,52 @@ class mrat_variable_selection(object):
                     rhandler_defaultVoid = self.rhandler_defaultVoid,  
                     rhandler_oobCallback = self.rhandler_oobCallback,
                                    )
-        
+        # STEP 1 -- DO SIMPLE SANITY TESTS THAT INFORMATION CORRECTLY PASSES FROM R TO PYTHON
         print 'self.R.code test: "3 + 3"'#333 TESTING ONLY
         print self.R.code('3 + 3') #333 TESTING ONLY
         print 
-        
-#        print 'self.R.script local test: "/Users/mikes/git/Tesera/MRAT_Refactor/bin/test.R"' #333 TESTING ONLY
-#        print self.R.script("/Users/mikes/git/Tesera/MRAT_Refactor/bin/test.R") #333 TESTING ONLY
-#        print 
+
+        # Local Test Example        
+        # print 'self.R.script local test: "/Users/mikes/git/Tesera/MRAT_Refactor/bin/test.R"' #333 TESTING ONLY
+        # print self.R.script("/Users/mikes/git/Tesera/MRAT_Refactor/bin/test.R") #333 TESTING ONLY
+        # print 
         print 'self.R.script local test: "/opt/MRAT_Refactor/bin/test.R"' #333 TESTING ONLY
         print self.R.script("/opt/MRAT_Refactor/bin/test.R") #333 TESTING ONLY
         print
 
-#        print 'self.R.script remote test: "/home/ec2-user/test.R"' #333 TESTING ONLY
-#        print self.R.script("/home/ec2-user/test.R", host='54.164.196.82') #333 TESTING ONLY
-#        print
-
-#        print 'self.R.script test: "/Users/mikes/git/Tesera/MRAT_Refactor/bin/XIterativeVarSelCorVarElimination.R"' #333 TESTING ONLY
-#        self.R.script("/Users/mikes/git/Tesera/MRAT_Refactor/bin/XIterativeVarSelCorVarElimination.R") #333 TESTING ONLY
-#        print
-#        print 'self.R.script test: "/opt/MRAT_Refactor/bin/XIterativeVarSelCorVarElimination.R"' #333 TESTING ONLY
-#        self.R.script("/opt/MRAT_Refactor/bin/XIterativeVarSelCorVarElimination.R") #333 TESTING ONLY
-        print
-
-#         print self.R.code(None) #333 TESTING ONLY
+        # Remote Test Example
+        # print 'self.R.script remote test: "/home/ec2-user/test.R"' #333 TESTING ONLY
+        # print self.R.script("/home/ec2-user/test.R", host='54.164.196.82') #333 TESTING ONLY
 
 
-        #import routineLviApplications
-        #print '\n Reading VARRANK.csv'
-        #tableName = 'XVARSELV1'
-        #printTypes = 'YES'
-        #nLines = 10000
-        #oldDict, newDict = routineLviApplications.createNewDataDictionaryFromFile(tableName, printTypes, nLines)
-        #varSelKeyVarNameList = ['VARNAME']
-        #readErrorFileName = 'ERROR_'+ tableName
-        #varSelHeader, varSelDict = routineLviApplications.ReadCsvDataFileAndTransformIntoDictionaryFormat_v2(oldDict, newDict, tableName, \
-        #                                                                                                 readErrorFileName, varSelKeyVarNameList)
-        ## Count remaining X-Variables
-        #xVarCount = 0
-        #for varName in varSelDict:
-        #    if varSelDict[varName]['XVARSEL']=='X':
-        #        xVarCount = xVarCount + 1
-
-        #print '\n There are',xVarCount,'eligible X-Variables remaining in XVARSELV1.'
-        #fileName = 'XVARSELV1_XCOUNT'
-        #floatFormat = '%0.6f'
-        #varCountList = [[xVarCount]]
-        #routineLviApplications.writeListArrayToCsvFile(varCountList, fileName, floatFormat)
+        # STEP 2 -- RUN AUTO VARIABLE SELECTION "PARENT" SCRIPT: XIterativeVarSelCorVarElimination.R
+        # AND ASSOCIATED SUB SCRIPTS IN R & PYTHON
         currentCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()  #20150914 SK MB
 
-        # self.R.script("/opt/MRAT_Refactor/Rwd/RScript/test_ZReadXvarselvCount.R")
-        # print self.R.script("/opt/MRAT_Refactor/Rwd/RScript/test_ZReadXvarselvCount.R")
-
-        # print 'self.R.scripttest :"/opt/MRAT_Refactor/bin/test_XIterativeVarSelCorVarElimination.R"'
-        #self.R.script("/opt/MRAT_Refactor/bin/SixplusSix.R")
-        #
+        # test_XIterativeVarSelCorVarElimination.R runs the Discriminant Analysis and Variable selection procedures.
+        # It runs the 1st 10 steps in ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
         self.R.script("/opt/MRAT_Refactor/bin/test_XIterativeVarSelCorVarElimination.R") #333 TESTING ONLY
-        #print self.R.script("/opt/MRAT_Refactor/bin/test_XIterativeVarSelCorVarElimination.R")
-        # best to break apart test_XIterativeVarSelCorVarElimination.R
-        # so that we call the Rs then the Pythons
-        #
-        #
-        #print 'EXTRACT_RVARIABLE_COMBOS_v2.py'
+     
+        # test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() identifies the unique variable sets and organizes 
+        #them into a new file VARSELV.csv;
         test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() #20150904 MB IM SK  
+        # RANKVAR.RankVar() ranks the variables in terms of their contribution to a model
         RANKVAR.RankVar() #20150908 SK
         
+        # test2_XIterativeVarSelCorVarElimination.R runs steps 13 -18 ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
         self.R.script("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R") #20150911 SK
         REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()  #20150908 SK to be added later
         nextCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()  #20150908 SK and 20150914 SK MB
         print "currentCount = ", currentCount, "  nextCount = ", nextCount
         print "\n"
-        #self.R.script("/opt/MRAT_Refactor/bin/test3_XIterativeVarSelCorVarElimination.R") #20150912 SK
+        
+        # "Kluge" is: Helps get around an unknown crash when calling test3_XiterativeVarSelCorVarElimination.R
         self.R.script("/opt/MRAT_Refactor/bin/kluge.R") #20150915 a cobbledTogetherInelegantSolution SK MB
-        #counter = 0
+
+        
+        # STEP 3 -- LOOP THROUGH THE AUTOMATED VARIABLE SELECTION PROCESS TO ELIMINATE VARIABLES THAT DO NOT CONTRIBUTE TO THE MODEL
+        #ORIGINALLY THIS WAS 'STEP 4' IN XIterativeVarSelCorVarElimination.R
+        counter = 0
         while currentCount != nextCount:
             
             currentCount = nextCount
@@ -154,9 +134,12 @@ class mrat_variable_selection(object):
             self.R.script("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R")
             REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()
             nextCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()
-            #counter = counter +1
-            #if counter > 100: break
-                 
+            counter = counter +1
+
+        print "Number of Iterations: ", counter
+        
+
+    # STEP 4 -- GUARANTEE CLEAN EXIT         
     def _cleanup(self):
         """"""
         log.info("Completing '__main__' in " + self.local_filename)
