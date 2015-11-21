@@ -1,4 +1,4 @@
-*.project
-*.pydevproject
-README.md
-*.pyc
+.project
+.pydevproject
+.pyc
+.DS_Store
