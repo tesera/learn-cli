@@ -1,3 +1,16 @@
 MRAT Refactor
 =====
-test
+
+Setup
+-----
+
+Docker
+-----
+* OSX:
+	- Install homebrew: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	- Instal virtual box: brew install virtualbox
+	- Install docker: brew install docker (do not install depreceated boot2docker)	
+	- Setup a VM: docker-machine create -d virtualbox dev
+	- Checkout MRAT_Refactor/slimrat: 
+	- Build docker image: docker build -t mrat .
+	- Run MRAT: docker run -v $PWD:/opt/MRAT_Refactor -it mrat

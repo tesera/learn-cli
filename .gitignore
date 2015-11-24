@@ -1,6 +1,6 @@
-.project
-.pydevproject
-.pyc
-.DS_Store
+*.project
+*.pydevproject
+*.pyc
+*.DS_Store
 *.csv
 *.log
