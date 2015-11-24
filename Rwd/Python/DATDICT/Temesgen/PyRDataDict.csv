@@ -1,0 +1,168 @@
+TVID,TABLENAME,VARNAME,NEWVARNAME,VARTYPE,VARDEFAULT,SELECT,DESCRIPTION
+1,VARSELECT,UID,UID,integer,-1,1,R output file
+2,VARSELECT,MODELID,MODELID,integer,-1,1,R output file
+3,VARSELECT,SOLTYPE,SOLTYPE,integer,-1,1,R output file
+4,VARSELECT,SOLNUM,SOLNUM,integer,-1,1,R output file
+5,VARSELECT,KVAR,KVAR,integer,-1,1,R output file
+6,VARSELECT,VARNUM,VARNUM,integer,-1,1,R output file
+7,VARSELECT,VARNAME,VARNAME,string,-1,1,R output file
+8,XVARSELV1,TVID,TVID,integer,,1,
+9,XVARSELV1,VARNAME,VARNAME,string,,1,
+10,XVARSELV1,XVARSEL,XVARSEL,string,,1,X if X-variable - Y if Y-variable - otherwise N (not X or Y)
+11,CTABULATION,VARSET,VARSET,integer,-1,1,The R variable set number
+12,CTABULATION,REFCLASS,REFCLASS,integer,-1,1,Actual class assigned to observation originally
+13,CTABULATION,PREDCLASS,PREDCLASS,integer,-1,1,Predicted class assigned to observation
+14,CTABULATION,CTAB,CTAB,integer,-1,1,Number of observations assigned to both REFCLASS and PREDCLASS
+15,MINMAXCOR,VARSET,VARSET,integer,-1,1,The R variable set number
+16,MINMAXCOR,VARNO,VARNO,integer,-1,1,The number of variables included in the variable set
+17,MINMAXCOR,MAXCOR,MAXCOR,float,-1,1,Maximum correlation coefficient amongst all pairs of variables
+18,MINMAXCOR,MINCOR,MINCOR,float,-1,1,Minimum correlation coefficient amongst all pairs of variables
+19,POSTERIOR,VARSET,VARSET,integer,-1,1,The R variable set number
+20,POSTERIOR,NVAR,NVAR,integer,-1,1,The number of variables included in the variable set
+21,POSTERIOR,UERROR,UERROR,float,-1,1,Posterior error of estimation
+22,CTABSUM,VARSET,VARSET,integer,-1,1,The R variable set number
+23,CTABSUM,OA,OA,float,-1,1,Overall error percent
+24,CTABSUM,KHAT,KHAT,float,-1,1,Cohen's 1960 KHAT statistic
+25,CTABSUM,MINPA,MINPA,float,-1,1,Minimum producer's classification success rate (1-omission error)
+26,CTABSUM,MAXPA,MAXPA,float,-1,1,Maximum producer's  classification success rate (1-omission error)
+27,CTABSUM,MINUA,MINUA,float,-1,1,Minimum user's classification success rate (1-comission error)
+28,CTABSUM,MAXUA,MAXUA,float,-1,1,Maximum user's classification success rate (1-omission error)
+29,DFUNCT,VARSET3,VARSET3,integer,,1,This corresponds to a system of classification and provides a key link with VARSET in the tables above.
+30,DFUNCT,VARNAMES3,VARNAMES3,string,,1,These are the actual variable names used in the equations to classify a given object or establish a nearest neighbour
+31,DFUNCT,FUNCLABEL3,FUNCLABEL3,string,,1,These are labels to identify each unique discriminant function within a a VARSET3
+32,DFUNCT,DFCOEF3,DFCOEF3,float,,1,These are the coefficients assigned to each variable name within each dscriminant function for a given variable set
+33,BWRATIO,VARSET4,VARSET4,integer,,1,This corresponds to a system of classification and provides a key link with VARSET3 in the DFUNC table
+34,BWRATIO,FUNCLABEL4,FUNCLABEL4,string,,1,This corrsponds with FUNCLABEL3 in the DFUNC table
+35,BWRATIO,BTWTWCR4,BTWTWCR4,float,,1,Between to with variance ratios (sqrt of eigen values associated with each discriminant function)
+36,LVINEW,LVI_FCOID,LVI_FCOID,integer,,0,
+37,LVINEW,TopHt,TopHt,continuous,,0,
+38,LVINEW,LnVolL,LnVolL,continuous,,0,
+39,LVINEW,LnVolDF,LnVolDF,continuous,,0,
+40,LVINEW,LnVolLP,LnVolLP,continuous,,0,
+41,LVINEW,LnVolES,LnVolES,continuous,,1,
+42,LVINEW,LnVolAF,LnVolAF,continuous,,0,
+43,LVINEW,LnVolPP,LnVolPP,continuous,,0,
+44,LVINEW,CCover,CCover,continuous,,0,
+45,LVINEW,ctim,ctim,continuous,,0,
+46,LVINEW,elevm,elevm,continuous,,0,
+47,LVINEW,eevsqrd,eevsqrd,continuous,,0,
+48,LVINEW,slopem,slopem,continuous,,0,
+49,LVINEW,slpcosaspm,slpcosaspm,continuous,,0,
+50,LVINEW,slpsinaspm,slpsinaspm,continuous,,0,
+51,LVINEW,tmb1m,tmb1m,continuous,,0,
+52,LVINEW,tmb2m,tmb2m,continuous,,0,
+53,LVINEW,tmb3m,tmb3m,continuous,,0,
+54,LVINEW,tmb4m,tmb4m,continuous,,0,
+55,LVINEW,tmb5m,tmb5m,continuous,,0,
+56,LVINEW,tmb6m,tmb6m,continuous,,0,
+57,LVINEW,durm,durm,continuous,,0,
+58,LVINEW,insom,insom,continuous,,0,
+59,LVINEW,utmx,utmx,continuous,,0,
+60,LVINEW,utmy,utmy,continuous,,0,
+61,LVINEW,msavim,msavim,continuous,,0,
+62,LVINEW,ndvim,ndvim,continuous,,0,
+63,LVINEW,crvm,crvm,continuous,,0,
+64,LVINEW,tancrvm,tancrvm,continuous,,0,
+65,LVINEW,tancrvsd,tancrvsd,continuous,,0,
+66,LVINEW,CLASS1,CLASS1,nominal,,0,
+67,LVINEW,CLASS2,CLASS2,nominal,,0,
+68,LVINEW,CLASS3,CLASS3,nominal,,0,
+69,LVINEW,CLASS4,CLASS4,nominal,,0,
+70,LVINEW,CLASS5,CLASS5,nominal,,0,
+71,LVINEW,CLASS6,CLASS6,nominal,,0,
+72,LVINEW,CLASS7,CLASS7,nominal,,0,
+73,LVINEW,CLASS8,CLASS8,nominal,,0,
+74,LVINEW,CLASS9,CLASS9,nominal,,0,
+75,LVINEW,CLASS10,CLASS10,nominal,,0,
+76,LVINEW,CLASS11,CLASS11,nominal,,0,
+77,LVINEW,CLASS12,CLASS12,nominal,,0,
+78,LVINEW,CLASS13,CLASS13,nominal,,0,
+79,LVINEW,CLASS14,CLASS14,nominal,,0,
+80,LVINEW,CLASS15,CLASS15,nominal,,0,
+81,LVINEW,CLASS16,CLASS16,nominal,,0,
+82,LVINEW,CLASS17,CLASS17,nominal,,0,
+83,LVINEW,CLASS18,CLASS18,nominal,,0,
+84,LVINEW,CLASS19,CLASS19,nominal,,0,
+85,LVINEW,CLASS20,CLASS20,nominal,,0,
+86,LVINEW,CLASS21,CLASS21,nominal,,0,
+87,LVINEW,CLASS22,CLASS22,nominal,,0,
+88,LVINEW,CLASS23,CLASS23,nominal,,0,
+89,LVINEW,CLASS24,CLASS24,nominal,,0,
+90,LVINEW,CLASS25,CLASS25,nominal,,0,
+91,LVINORM,LVI_FCOID,LVI_FCOID,integer,,0,
+92,LVINORM,TopHt,TopHt,continuous,,0,
+93,LVINORM,LnVolL,LnVolL,continuous,,0,
+94,LVINORM,LnVolDF,LnVolDF,continuous,,0,
+95,LVINORM,LnVolLP,LnVolLP,continuous,,0,
+96,LVINORM,LnVolES,LnVolES,continuous,,1,
+97,LVINORM,LnVolAF,LnVolAF,continuous,,0,
+98,LVINORM,LnVolPP,LnVolPP,continuous,,0,
+99,LVINORM,CCover,CCover,continuous,,0,
+100,LVINORM,ctim,ctim,continuous,,0,
+101,LVINORM,elevm,elevm,continuous,,0,
+102,LVINORM,eevsqrd,eevsqrd,continuous,,0,
+103,LVINORM,slopem,slopem,continuous,,0,
+104,LVINORM,slpcosaspm,slpcosaspm,continuous,,0,
+105,LVINORM,slpsinaspm,slpsinaspm,continuous,,0,
+106,LVINORM,tmb1m,tmb1m,continuous,,0,
+107,LVINORM,tmb2m,tmb2m,continuous,,0,
+108,LVINORM,tmb3m,tmb3m,continuous,,0,
+109,LVINORM,tmb4m,tmb4m,continuous,,0,
+110,LVINORM,tmb5m,tmb5m,continuous,,0,
+111,LVINORM,tmb6m,tmb6m,continuous,,0,
+112,LVINORM,durm,durm,continuous,,0,
+113,LVINORM,insom,insom,continuous,,0,
+114,LVINORM,utmx,utmx,continuous,,0,
+115,LVINORM,utmy,utmy,continuous,,0,
+116,LVINORM,msavim,msavim,continuous,,0,
+117,LVINORM,ndvim,ndvim,continuous,,0,
+118,LVINORM,crvm,crvm,continuous,,0,
+119,LVINORM,tancrvm,tancrvm,continuous,,0,
+120,LVINORM,tancrvsd,tancrvsd,continuous,,0,
+121,LVINORM,CLASS1,CLASS1,nominal,,0,
+122,LVINORM,CLASS2,CLASS2,nominal,,0,
+123,LVINORM,CLASS3,CLASS3,nominal,,0,
+124,LVINORM,CLASS4,CLASS4,nominal,,0,
+125,LVINORM,CLASS5,CLASS5,nominal,,0,
+126,LVINORM,CLASS6,CLASS6,nominal,,0,
+127,LVINORM,CLASS7,CLASS7,nominal,,0,
+128,LVINORM,CLASS8,CLASS8,nominal,,0,
+129,LVINORM,CLASS9,CLASS9,nominal,,0,
+130,LVINORM,CLASS10,CLASS10,nominal,,0,
+131,LVINORM,CLASS11,CLASS11,nominal,,0,
+132,LVINORM,CLASS12,CLASS12,nominal,,0,
+133,LVINORM,CLASS13,CLASS13,nominal,,0,
+134,LVINORM,CLASS14,CLASS14,nominal,,0,
+135,LVINORM,CLASS15,CLASS15,nominal,,0,
+136,LVINORM,CLASS16,CLASS16,nominal,,0,
+137,LVINORM,CLASS17,CLASS17,nominal,,0,
+138,LVINORM,CLASS18,CLASS18,nominal,,0,
+139,LVINORM,CLASS19,CLASS19,nominal,,0,
+140,LVINORM,CLASS20,CLASS20,nominal,,0,
+141,LVINORM,CLASS21,CLASS21,nominal,,0,
+142,LVINORM,CLASS22,CLASS22,nominal,,0,
+143,LVINORM,CLASS23,CLASS23,nominal,,0,
+144,LVINORM,CLASS24,CLASS24,nominal,,0,
+145,LVINORM,CLASS25,CLASS25,nominal,,0,
+146,QTARGET,TFCOID,TFCOID,integer,,,
+147,QTARGET,ctim,ctim,continuous,,0,
+148,QTARGET,elevm,elevm,continuous,,0,
+149,QTARGET,eevsqrd,eevsqrd,continuous,,0,
+150,QTARGET,slopem,slopem,continuous,,0,
+151,QTARGET,slpcosaspm,slpcosaspm,continuous,,0,
+152,QTARGET,slpsinaspm,slpsinaspm,continuous,,0,
+153,QTARGET,tmb1m,tmb1m,continuous,,0,
+154,QTARGET,tmb2m,tmb2m,continuous,,0,
+155,QTARGET,tmb3m,tmb3m,continuous,,0,
+156,QTARGET,tmb4m,tmb4m,continuous,,0,
+157,QTARGET,tmb5m,tmb5m,continuous,,0,
+158,QTARGET,tmb6m,tmb6m,continuous,,0,
+159,QTARGET,durm,durm,continuous,,0,
+160,QTARGET,insom,insom,continuous,,0,
+161,QTARGET,utmx,utmx,continuous,,0,
+162,QTARGET,utmy,utmy,continuous,,0,
+163,QTARGET,msavim,msavim,continuous,,0,
+164,QTARGET,ndvim,ndvim,continuous,,0,
+165,QTARGET,crvm,crvm,continuous,,0,
+166,QTARGET,tancrvm,tancrvm,continuous,,0,
+167,QTARGET,tancrvsd,tancrvsd,continuous,,0,
