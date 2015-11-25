@@ -13,5 +13,5 @@ Single line runner in form of bash script or Makefile does not exist for a reaso
 	- Make sure to follow the instructions to setup environment variables: `docker-machine env dev`. Docker won't work without them.
 	- Checkout MRAT_Refactor/slimrat: `git clone git@github.com:tesera/MRAT_Refactor.git && git checkout origin/slimrat -b slimrat`
 	- Build docker image: `docker build -t mrat .`
-	- Run MRAT: `docker run -v $PWD:/opt/MRAT_Refactor -it mrat`
+	- Run MRAT: `docker run -v $PWD:/opt/MRAT_Refactor -it -e DATASET=MONCTON mrat`
 	- On new terminal session run: `docker-machine env dev` to configure environment variables

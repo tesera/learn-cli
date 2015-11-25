@@ -19,5 +19,6 @@ ENV MRATPATH /opt/MRAT_Refactor
 ENV PYTHONPATH $MRATPATH:$MRATPATH/bin:$MRATPATH/lib:$MRATPATH/etc:$MRATPATH/lib/functions:$MRATPATH/etc:$MRATPATH/lib/confighandler:$MRATPATH/share:$MRATPATH/Rwd:$MRATPATH/Rwd/Python:$MRATPATH/Rwd/RScript:$MRATPATH/Rwd/Python/CopyToSitePackages:$MRATPATH/Rwd/Python/Admin:$MRATPATH/Rwd/Python/PyReadError:$MRATPATH/Rwd/Python/DATDICT
 
 RUN mkdir $MRATPATH
-ADD etc/Rserv.conf Rserv.conf
-CMD ["/bin/bash", "-c", "R CMD Rserve --RS-conf Rserv.conf && cd $MRATPATH/bin && python test_mrat_variable_selection.py"]
+ADD etc/Rserv.conf /tmp/Rserv.conf
+ADD bin/mrat.sh /tmp/mrat.sh
+CMD ["/bin/bash", "/tmp/mrat.sh"]
