@@ -1,5 +1,0 @@
-Standard Error:0.0435439505526
-Intercept:5.33253197439
-p Value:0.0
-Rsq:0.957567331042
-Slope Coefficient:7.01473443731
