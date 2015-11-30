@@ -13,7 +13,7 @@ Single line runner in form of bash script or Makefile does not exist for a reaso
 	- Checkout MRAT_Refactor/slimrat: `git clone git@github.com:tesera/MRAT_Refactor.git && git checkout origin/slimrat -b slimrat`
 	- Build docker image: `docker build -t mrat .`
 
-## Runtime
+## Running
 
 Insure docker image is loaded via `docker images`. If *Cannot connect to the Docker daemon. Is the docker daemon running on this host?* error displays this is not an issue with docker or docker-machine. Run `docker-machine env dev` to display and setup environment variables. `dev` is the name of virtual machine that was setup in above step.
 
@@ -22,6 +22,12 @@ To run MRAT copy and paste the following command:
 * `docker run -v $PWD:/opt/MRAT_Refactor -it -e DATASET=MONCTON mrat`
 	- `-e DATASET=MONCTON` this refers one of the test environments in tests/data. DATASET is the environment variable.
 	- bin/mrat.sh is the script that's added to the virtual machine and executes MRAT and tests. 
+
+To run MRAT tests copy and paste the following command:
+
+* `docker run -v $PWD:/opt/MRAT_Refactor -it -e DATASET=MONCTON mrat ./bin/test.sh`
+
+*Note: In order to have tests copy the results of first run to tests/regression/DATASET. Files to copy are noted below. The DATASET must correspond to the runtime folder above that exists in tests/data.*
 
 ## Refactoring
 
