@@ -5,11 +5,11 @@ then
 	echo "DATASET env variable missing. Set one from options in tests/data."
 else	
 	echo "Processing $DATASET."
-	R CMD Rserve --RS-conf $MRATPATH/etc/Rserv.conf 
+	# R CMD Rserve --RS-conf $MRATPATH/etc/Rserv.conf 
 	cd $MRATPATH/bin
 	cp $MRATPATH/tests/data/$DATASET/*.csv $MRATPATH/Rwd/
 	cp $MRATPATH/tests/data/$DATASET/XIterativeVarSel.R.conf $MRATPATH/etc/
-	python test_mrat_variable_selection.py 2
+	time python test_mrat_variable_selection.py 2
 	
 	if [ $? -eq 0 ]
 	then

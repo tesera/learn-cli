@@ -41,3 +41,4 @@ After each run the output in Rwd will be compared following files in tests/regre
 - XVARSELV.csv
 - XVARSELV1_XCOUNT.csv
 - XVARSELV1.csv
+

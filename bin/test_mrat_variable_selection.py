@@ -55,20 +55,11 @@ class mrat_variable_selection(object):
         self.local_filename = str(os.path.basename(__file__))
         log.info("Starting '__main__' in " + self.local_filename)
         
-        self.R = RHandler.rHandler(
-                    service     = self.rhandler_service, 
-                    rhandler_host        = self.rhandler_host,  
-                    rhandler_port        = self.rhandler_port,
-                    rhandler_atomicArray = self.rhandler_atomicArray,  
-                    rhandler_arrayOrder  = self.rhandler_arrayOrder,  
-                    rhandler_defaultVoid = self.rhandler_defaultVoid,  
-                    rhandler_oobCallback = self.rhandler_oobCallback,
-                                   )
         # STEP 1 -- DO SIMPLE SANITY TESTS THAT INFORMATION CORRECTLY PASSES FROM R TO PYTHON
-        print 'self.R.code test: "3 + 3" -> ' + str(self.R.code('3 + 3'))
+        #print 'self.R.code test: "3 + 3" -> ' + str(self.R.code('3 + 3'))
         print 'rpy2 test: "3 + 3" -> ' + str(r('3 + 3'))
 
-        print 'self.R.script local test: "/opt/MRAT_Refactor/bin/test.R" -> ' + str(self.R.script("/opt/MRAT_Refactor/bin/test.R"))
+        #print 'self.R.script local test: "/opt/MRAT_Refactor/bin/test.R" -> ' + str(self.R.script("/opt/MRAT_Refactor/bin/test.R"))
         
         # with open('/opt/MRAT_Refactor/bin/test.R', 'r') as f:
         #     string = f.read()
@@ -82,8 +73,6 @@ class mrat_variable_selection(object):
         currentCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()
         r.source("/opt/MRAT_Refactor/bin/test_XIterativeVarSelCorVarElimination.R")
      
-        sys.exit(0);
-
         # test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() identifies the unique variable sets and organizes 
         #them into a new file VARSELV.csv;
         uniqueVarSets = test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() #20150904 MB IM SK  
@@ -91,14 +80,15 @@ class mrat_variable_selection(object):
         ranksVariables = RANKVAR.RankVar() #20150908 SK
         
         # test2_XIterativeVarSelCorVarElimination.R runs steps 13 -18 ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
-        self.R.script("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R") #20150911 SK
+        r.source("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R") #20150911 SK
+        
         removeCorXVars = REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()  #20150908 SK to be added later
         nextCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()  #20150908 SK and 20150914 SK MB
         print "currentCount = ", currentCount, "  nextCount = ", nextCount
         print "\n"
         
         # "Kluge" is: Helps get around an unknown crash when calling test3_XiterativeVarSelCorVarElimination.R
-        self.R.script("/opt/MRAT_Refactor/bin/kluge.R") #20150915 a cobbledTogetherInelegantSolution SK MB
+        r.source("/opt/MRAT_Refactor/bin/kluge.R") #20150915 a cobbledTogetherInelegantSolution SK MB
 
         
         # STEP 3 -- LOOP THROUGH THE AUTOMATED VARIABLE SELECTION PROCESS TO ELIMINATE VARIABLES THAT DO NOT CONTRIBUTE TO THE MODEL
@@ -108,11 +98,11 @@ class mrat_variable_selection(object):
             
             currentCount = nextCount
             #config part of test_XItertative plus test_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
-            self.R.script("/opt/MRAT_Refactor/bin/XIterativeConfFile.R")
+            r.source("/opt/MRAT_Refactor/bin/XIterativeConfFile.R")
             #self.R.script("/opt/MRAT_Refactor/Rwd/RScript/test_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R)
             test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2()
             RANKVAR.RankVar()
-            self.R.script("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R")
+            r.source("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R")
             REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()
             nextCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()
             counter = counter +1
