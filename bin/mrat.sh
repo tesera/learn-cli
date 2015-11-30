@@ -5,7 +5,6 @@ then
 	echo "DATASET env variable missing. Set one from options in tests/data."
 else	
 	echo "Processing $DATASET."
-	# R CMD Rserve --RS-conf $MRATPATH/etc/Rserv.conf 
 	cd $MRATPATH/bin
 	cp $MRATPATH/tests/data/$DATASET/*.csv $MRATPATH/Rwd/
 	cp $MRATPATH/tests/data/$DATASET/XIterativeVarSel.R.conf $MRATPATH/etc/

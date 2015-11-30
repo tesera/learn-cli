@@ -1,8 +1,8 @@
 # TSIBRIDGE SPECIFIC IMPORTS
 from confighandler import ConfigHandler
-from loghandler     import log
-from rhandler       import RHandler
-from signal         import *
+from loghandler import log
+from signal import *
+from loader import AutoLoadRLibs
 
 import atexit
 import os
@@ -10,6 +10,7 @@ import sys
 import pdb
 import rpy2.robjects as robjects
 from rpy2.robjects.packages import STAP
+from rpy2.robjects.packages import importr
 
 # AUTOMATED VARIABLE SELECTION SPECIFIC IMPORTS
 import test_EXTRACT_RVARIABLE_COMBOS_v2
@@ -17,62 +18,35 @@ import RANKVAR
 import REMOVE_HIGHCORVAR_FROM_XVARSELV
 import COUNT_XVAR_IN_XVARSELV1
 
-
 # STEP 0 -- ABSTRACT ANALYTICS PROCESS TO A CLASS (EXAMPLE: AUTOMATED VARIABLE SELECTION)
 class mrat_variable_selection(object):
-    """"""
-    def __init__(self,*args, **kwargs):
+    def __init__(self, *args, **kwargs):
         r = robjects.r
-        
+        tesera = AutoLoadRLibs('../Rwd/tesera/')
+        loginfo = tesera.system.LogInfo
+
         # Set exit and cleanup        
         for sig in (SIGABRT,SIGINT,SIGTERM,SIGQUIT):
             signal(sig, self._cleanup)
         atexit.register(self._cleanup)        
 
-        # NOTE: ConfigHandler will override some of the self.variables 
-        # kwargs passed to the __init__ will override the config file. 
-        # Configuration loading goes in the following order:
-        # 1. Config file parameters
-        # 2. keyword args passed into this __init__
-        # 3. Mandatory defaults on a package by package basis if they ere not
-        #    included in the config file or the kwargs
-        # ConfigHandler sets the log file parameters: so app_name, logfile, 
-        # screendump, formatter, create_paths arguments should be included.
-        # If included here, they will override whats in the config file. If 
-        # they a None, the config file will be used. If they are None here, and 
-        # not set in the config file...the default loghandler settings will be 
-        # used
-        self.config = ConfigHandler(
-                        config_file = kwargs.pop('config_file', None),
-                        *args,  
-                        **kwargs 
-                        )
-        
-        # The first call to log will create a log instance if it does not exist. 
-        # The "kwargs.pop('app_name'      , None)," lines will override the 
-        #  logger parameters obtained from the config file, if any have been 
-        #  passed to __init__
         self.local_filename = str(os.path.basename(__file__))
-        log.info("Starting '__main__' in " + self.local_filename)
+        self.config = ConfigHandler(config_file = kwargs.pop('config_file', None), *args, **kwargs)
         
-        # STEP 1 -- DO SIMPLE SANITY TESTS THAT INFORMATION CORRECTLY PASSES FROM R TO PYTHON
-        #print 'self.R.code test: "3 + 3" -> ' + str(self.R.code('3 + 3'))
-        print 'rpy2 test: "3 + 3" -> ' + str(r('3 + 3'))
-
-        #print 'self.R.script local test: "/opt/MRAT_Refactor/bin/test.R" -> ' + str(self.R.script("/opt/MRAT_Refactor/bin/test.R"))
-        
-        # with open('/opt/MRAT_Refactor/bin/test.R', 'r') as f:
-        #     string = f.read()
-        # func = STAP(string, 'tesera')
-        print 'rpy2 local test: "/opt/MRAT_Refactor/bin/test.R" -> '
-        str(r.source('/opt/MRAT_Refactor/bin/test.R', True, False, True))
-        
+        loginfo("Starting '__main__' in " + self.local_filename)
+        loginfo("rpy2 invole sample: ' + str(tesera.test.SquareIt(4))")
 
         # setup
         r.source(os.environ['MRATPATH'] + '/etc/XIterativeVarSel.R.conf')
         currentCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()
-        r.source("/opt/MRAT_Refactor/bin/test_XIterativeVarSelCorVarElimination.R")
-     
+
+        # test_XIterativeVarSelCorVarElimination.R
+        # use logging library
+        tesera.variable_selection.SetInitialCount()
+        tesera.system.Log(r['initialCount'], "zzz.csv")
+        r.source('./RScript/test_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R')
+        tesera.system.Log(r['myZCompleteTest'], "zzzStep10.csv")
+
         # test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() identifies the unique variable sets and organizes 
         #them into a new file VARSELV.csv;
         uniqueVarSets = test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() #20150904 MB IM SK  
@@ -120,10 +94,4 @@ class mrat_variable_selection(object):
         
                  
 if __name__ == "__main__":
-    o = mrat_variable_selection(
-        config_file = "../etc/MRAT.conf",
-#         app_name   = "MRAT", 
-#         logfile    = "/Users/mikes/GitHub/Tesera/MRAT_Refactor/log/MRAT.log",
-         log_level  = 10,
-         screendump = True
-         )
+    o = mrat_variable_selection(config_file = "../etc/MRAT.conf", log_level  = 10, screendump = True)
