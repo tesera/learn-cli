@@ -12,6 +12,7 @@ RUN apt-get install -y --no-install-recommends \
 		python-pip
 
 RUN pip install pyRserve
+RUN pip install rpy2
 RUN R -e 'install.packages(c("subselect"))'
 
 # Setup environment

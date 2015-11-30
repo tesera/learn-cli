@@ -1,20 +1,3 @@
-##############################################################################
-# Removal of the "__license__" line or content from  "__license__", or removal 
-# of "__author__" in this or any constituent # component or file constitutes a 
-# violation of the licensing and copyright agreement. 
-__author__      = "Mike Rightmire"
-__copyright__   = "BioCom Software"
-__license__     = "Tesera"
-__license_file__= "Clause1.PERPETUAL_AND_UNLIMITED_LICENSING_TO_THE_CLIENT.py"
-__version__     = "0.9.0.0"
-__maintainer__  = "Mike Rightmire"
-__email__       = "Mike.Rightmire@BiocomSoftware.com"
-__status__      = "Development"
-##############################################################################
-#Updated 20150917 MB, SK
-# Author: Mike Rightmire
-#Maintainers: Sam Kaharabata, Mishtu Banerjee, Ian Moss
-
 # TSIBRIDGE SPECIFIC IMPORTS
 from confighandler import ConfigHandler
 from loghandler     import log
@@ -24,6 +7,9 @@ from signal         import *
 import atexit
 import os
 import sys
+import pdb
+import rpy2.robjects as robjects
+from rpy2.robjects.packages import STAP
 
 # AUTOMATED VARIABLE SELECTION SPECIFIC IMPORTS
 import test_EXTRACT_RVARIABLE_COMBOS_v2
@@ -36,6 +22,7 @@ import COUNT_XVAR_IN_XVARSELV1
 class mrat_variable_selection(object):
     """"""
     def __init__(self,*args, **kwargs):
+        r = robjects.r
         
         # Set exit and cleanup        
         for sig in (SIGABRT,SIGINT,SIGTERM,SIGQUIT):
@@ -78,31 +65,25 @@ class mrat_variable_selection(object):
                     rhandler_oobCallback = self.rhandler_oobCallback,
                                    )
         # STEP 1 -- DO SIMPLE SANITY TESTS THAT INFORMATION CORRECTLY PASSES FROM R TO PYTHON
-        print 'self.R.code test: "3 + 3"'#333 TESTING ONLY
-        print self.R.code('3 + 3') #333 TESTING ONLY
-        print 
+        print 'self.R.code test: "3 + 3" -> ' + str(self.R.code('3 + 3'))
+        print 'rpy2 test: "3 + 3" -> ' + str(r('3 + 3'))
 
-        # Local Test Example        
-        # print 'self.R.script local test: "/Users/mikes/git/Tesera/MRAT_Refactor/bin/test.R"' #333 TESTING ONLY
-        # print self.R.script("/Users/mikes/git/Tesera/MRAT_Refactor/bin/test.R") #333 TESTING ONLY
-        # print 
-        print 'self.R.script local test: "/opt/MRAT_Refactor/bin/test.R"' #333 TESTING ONLY
-        print self.R.script("/opt/MRAT_Refactor/bin/test.R") #333 TESTING ONLY
-        print
+        print 'self.R.script local test: "/opt/MRAT_Refactor/bin/test.R" -> ' + str(self.R.script("/opt/MRAT_Refactor/bin/test.R"))
+        
+        # with open('/opt/MRAT_Refactor/bin/test.R', 'r') as f:
+        #     string = f.read()
+        # func = STAP(string, 'tesera')
+        print 'rpy2 local test: "/opt/MRAT_Refactor/bin/test.R" -> '
+        str(r.source('/opt/MRAT_Refactor/bin/test.R', True, False, True))
+        
 
-        # Remote Test Example
-        # print 'self.R.script remote test: "/home/ec2-user/test.R"' #333 TESTING ONLY
-        # print self.R.script("/home/ec2-user/test.R", host='54.164.196.82') #333 TESTING ONLY
-
-
-        # STEP 2 -- RUN AUTO VARIABLE SELECTION "PARENT" SCRIPT: XIterativeVarSelCorVarElimination.R
-        # AND ASSOCIATED SUB SCRIPTS IN R & PYTHON
-        currentCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()  #20150914 SK MB
-
-        # test_XIterativeVarSelCorVarElimination.R runs the Discriminant Analysis and Variable selection procedures.
-        # It runs the 1st 10 steps in ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
-        self.R.script("/opt/MRAT_Refactor/bin/test_XIterativeVarSelCorVarElimination.R") #333 TESTING ONLY
+        # setup
+        r.source(os.environ['MRATPATH'] + '/etc/XIterativeVarSel.R.conf')
+        currentCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()
+        r.source("/opt/MRAT_Refactor/bin/test_XIterativeVarSelCorVarElimination.R")
      
+        sys.exit(0);
+
         # test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() identifies the unique variable sets and organizes 
         #them into a new file VARSELV.csv;
         uniqueVarSets = test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() #20150904 MB IM SK  
