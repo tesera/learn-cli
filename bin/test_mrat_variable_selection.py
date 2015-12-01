@@ -3,6 +3,7 @@ import atexit
 import os
 import sys
 import pdb
+import docopt
 
 import rpy2.robjects as robjects
 from rpy2.robjects.packages import STAP
