@@ -1,6 +1,6 @@
 # TSIBRIDGE SPECIFIC IMPORTS
-from confighandler import ConfigHandler
-from loghandler import log
+#from confighandler import ConfigHandler
+#from loghandler import log
 from signal import *
 from loader import AutoLoadRLibs
 
@@ -8,6 +8,7 @@ import atexit
 import os
 import sys
 import pdb
+
 import rpy2.robjects as robjects
 from rpy2.robjects.packages import STAP
 from rpy2.robjects.packages import importr
@@ -18,23 +19,17 @@ import RANKVAR
 import REMOVE_HIGHCORVAR_FROM_XVARSELV
 import COUNT_XVAR_IN_XVARSELV1
 
+flog = importr("futile.logger")
+#flog.flog_appender(flog.appender_file('mrat.log'))
+
 # STEP 0 -- ABSTRACT ANALYTICS PROCESS TO A CLASS (EXAMPLE: AUTOMATED VARIABLE SELECTION)
 class mrat_variable_selection(object):
     def __init__(self, *args, **kwargs):
         r = robjects.r
         tesera = AutoLoadRLibs('../Rwd/tesera/')
-        loginfo = tesera.system.LogInfo
-
-        # Set exit and cleanup        
-        for sig in (SIGABRT,SIGINT,SIGTERM,SIGQUIT):
-            signal(sig, self._cleanup)
-        atexit.register(self._cleanup)        
-
-        self.local_filename = str(os.path.basename(__file__))
-        self.config = ConfigHandler(config_file = kwargs.pop('config_file', None), *args, **kwargs)
         
-        loginfo("Starting '__main__' in " + self.local_filename)
-        loginfo("rpy2 invole sample: ' + str(tesera.test.SquareIt(4))")
+        flog.flog_info("Starting '__main__'")
+        flog.flog_info("rpy2 invoke sample: %s", tesera.test.SquareIt(4))
 
         # setup
         r.source(os.environ['MRATPATH'] + '/etc/XIterativeVarSel.R.conf')
@@ -43,30 +38,27 @@ class mrat_variable_selection(object):
         # test_XIterativeVarSelCorVarElimination.R
         # use logging library
         tesera.variable_selection.SetInitialCount()
-        tesera.system.Log(r['initialCount'], "zzz.csv")
+        flog.flog_info("Initial variable count: %s", r['initialCount'])
         r.source('./RScript/test_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R')
-        tesera.system.Log(r['myZCompleteTest'], "zzzStep10.csv")
+        flog.flog_info("ZCompleteTest: %s", r['myZCompleteTest'])
 
-        # test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() identifies the unique variable sets and organizes 
-        #them into a new file VARSELV.csv;
-        uniqueVarSets = test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() #20150904 MB IM SK  
-        # RANKVAR.RankVar() ranks the variables in terms of their contribution to a model
-        ranksVariables = RANKVAR.RankVar() #20150908 SK
+        # test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() identifies the unique variable sets and organizes them into a new file VARSELV.csv;
+        uniqueVarSets = test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2()  
+        # Rank the variables in terms of their contribution to a model
+        ranksVariables = RANKVAR.RankVar()
         
         # test2_XIterativeVarSelCorVarElimination.R runs steps 13 -18 ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
-        r.source("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R") #20150911 SK
+        r.source("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R")
         
-        removeCorXVars = REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()  #20150908 SK to be added later
-        nextCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()  #20150908 SK and 20150914 SK MB
+        removeCorXVars = REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()
+        nextCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()
         print "currentCount = ", currentCount, "  nextCount = ", nextCount
         print "\n"
         
         # "Kluge" is: Helps get around an unknown crash when calling test3_XiterativeVarSelCorVarElimination.R
-        r.source("/opt/MRAT_Refactor/bin/kluge.R") #20150915 a cobbledTogetherInelegantSolution SK MB
-
+        r.source("/opt/MRAT_Refactor/bin/kluge.R") 
         
-        # STEP 3 -- LOOP THROUGH THE AUTOMATED VARIABLE SELECTION PROCESS TO ELIMINATE VARIABLES THAT DO NOT CONTRIBUTE TO THE MODEL
-        #ORIGINALLY THIS WAS 'STEP 4' IN XIterativeVarSelCorVarElimination.R
+        # LOOP THROUGH THE AUTOMATED VARIABLE SELECTION PROCESS TO ELIMINATE VARIABLES THAT DO NOT CONTRIBUTE TO THE MODEL
         counter = 0
         while currentCount != nextCount:
             
@@ -83,15 +75,6 @@ class mrat_variable_selection(object):
 
         print "Number of Iterations: ", counter
         print "\n"
-
-
-    # STEP 4 -- GUARANTEE CLEAN EXIT         
-    def _cleanup(self):
-        """"""
-        log.info("Completing '__main__' in " + self.local_filename)
-        log.info('Clean exit.')
-        sys.exit(0)
-        
                  
 if __name__ == "__main__":
-    o = mrat_variable_selection(config_file = "../etc/MRAT.conf", log_level  = 10, screendump = True)
+    o = mrat_variable_selection(log_level  = 10, screendump = True)

@@ -15,7 +15,7 @@ import readCSV
 import typeDataset
 import dictionaryDBUtilities
 
-print '\n Extract R Variable Combinations from Discriminant Aanlysis'
+#print '\n Extract R Variable Combinations from Discriminant Aanlysis'
 
 def Extract_RVariable_Combos_v2():
     #Identify code directory and data directory
@@ -169,9 +169,9 @@ def Extract_RVariable_Combos_v2():
     PRINTv1.initialize_header(uniqueDictHeader,printFilePath2)
     PRINTv1.print_to_nested_dictionary(uniqueDictKeyList,uniqueDictHeader,uniqueDict, printFilePath2)       
 
-    print ' Two new csv files created: XVARSELV and UNIQUEVAR'
-    print '\n XVARSELV contains a list of all of the models, each with unique variable combinations within a variable set'
-    print '\n UNIQUEVAR contains a list of unique variable names used across all models'
+    #print ' Two new csv files created: XVARSELV and UNIQUEVAR'
+    #print '\n XVARSELV contains a list of all of the models, each with unique variable combinations within a variable set'
+    #print '\n UNIQUEVAR contains a list of unique variable names used across all models'
                 
     #raw_input("\n Press ENTER to Close This Session ... ")         
     return uniqueDict

@@ -9,11 +9,15 @@ RUN apt-get install -y --no-install-recommends \
 		python-dev \
 		python-setuptools \
 		python-scipy \
-		python-pip
+		python-pip \
+		libssl-dev \
+		libxml2 \
+		libxml2-dev \
+		libcurl4-openssl-dev
 
 RUN pip install pyRserve
 RUN pip install rpy2
-RUN R -e 'install.packages(c("subselect", "logging"))'
+RUN R -e 'install.packages(c("subselect", "futile.logger", "devtools"))'
 
 # Setup environment
 ENV MRATPATH /opt/MRAT_Refactor

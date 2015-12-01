@@ -1,9 +1,9 @@
 if (excludeRowVarName %in% names(lvinew)) {
 	if (excludeRowValue %in% lvinew[,excludeRowVarName]) {
-		cat(" Deleting selected rows from variable. \n RemainingNumber of rows in dataframe: ")
+		flog.info("Deleting selected rows from variable.")
 		sel <- lvinew[excludeRowVarName]== excludeRowValue
 		lvinew <- lvinew[!sel,]
 		nLviRows <- length(lvinew[,1])
-		cat(nLviRows)
-		}
+		flog.info("Remaining number of rows in dataframe: %s", nLviRows)
 	}
+}

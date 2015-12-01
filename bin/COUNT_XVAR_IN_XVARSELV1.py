@@ -1,12 +1,10 @@
-'''
-'''
 import routineLviApplications
-
-# 20150908 COUNT_XVAR_IN_XVARSELV1 is now converted to a function to work in the Bridge by SK
+from rpy2.robjects.packages import importr
+flog = importr("futile.logger")
 
 def Count_XVar_in_XVarSelv1():
 
-    print '\n Reading VARRANK.csv'
+    flog.flog_info("Reading VARRANK.csv")
     tableName = 'XVARSELV1'
     printTypes = 'YES'
     nLines = 10000
@@ -21,7 +19,7 @@ def Count_XVar_in_XVarSelv1():
         if varSelDict[varName]['XVARSEL']=='X':
             xVarCount = xVarCount + 1
     
-    print '\n There are',xVarCount,'eligible X-Variables remaining in XVARSELV1.'
+    flog.flog_info("There are %s eligible X-Variables remaining in XVARSELV1.", xVarCount)
     fileName = 'XVARSELV1_XCOUNT'
     floatFormat = '%0.6f'
     varCountList = [[xVarCount]]
