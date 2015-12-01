@@ -20,10 +20,10 @@ vs.IdentifyAndOrganizeUniqueVariableSets <- function(lviFileName, xVarSelectFile
 	detach(xVarSel)
 }
 
-vs.CompleteVariableSelectionPlusRemoveCorrelationVariables <- function(lviFileName, uniqueVarPath, xVarSelectOutFile) {
+vs.CompleteVariableSelectionPlusRemoveCorrelationVariables <- function(lviFileName, uniqueVarFilePath, xVarSelectOutFile) {
 	vs.LoadDatasetAndAttachVariableNames(lviFileName)
 	vs.ExcludeRowsWithCertainVariableValues()
-	vs.SelectUniqueXVariableSubset(uniqueVarPath)
+	vs.SelectUniqueXVariableSubset(uniqueVarFilePath)
 	vs.CompileUniqueXVariableCorrelationMatrixSubset()
 	vs.CreateUniqueVarCorrelationMatrixFileForPrinting()
 	vs.WriteUniqueVarCorrelationMatrix(xVarSelectOutFile)
@@ -170,14 +170,14 @@ vs.ExtractVariableNameSubsets <- function() {
 	SOLSUM <<- cbind(UID,MODELID,SOLTYPE,SOLNUM,KVAR,VARNUM,VARNAME)		
 }
 
-vs.SelectUniqueXVariableSubset <- function(uniqueVarPath) {
+vs.SelectUniqueXVariableSubset <- function(uniqueVarFilePath) {
 	flog.info(paste("Step:", match.call()[[1]]))
-	xVarSel <<- read.csv(uniqueVarPath, header=T, row.names=1, stringsAsFactors=FALSE, strip.white=TRUE, na.strings = c("NA",""))
+	xVarSel <<- read.csv(uniqueVarFilePath, header=T, row.names=1, stringsAsFactors=FALSE, strip.white=TRUE, na.strings = c("NA",""))
 
 	nCols <<- length(xVarSel)
 	#Create a DUMMY vector of zeros of length 1 (initial) dataset dataset
 	DUMMY <<- rep(0,nLviRows)
-	xDataset <- data.frame(DUMMY)
+	xDataset <<- data.frame(DUMMY)
 	for (j in 1:nCols) {
 		xDataset[,xVarSel[1,j]] <<- lvinew[,xVarSel[1,j]]
 	}

@@ -2,15 +2,19 @@ install('DiscriminantAnalysisVariableSelection')
 library('DiscriminantAnalysisVariableSelection')
 
 
-source("/opt/MRAT_Refactor/Rwd/RScript/ZLoadDatasetAndAttachVariableNames.R")
-step13 <- 3.13
-write.csv(step13, file = "step13.csv")
+#source("/opt/MRAT_Refactor/Rwd/RScript/ZLoadDatasetAndAttachVariableNames.R")
+#step13 <- 3.13
+#write.csv(step13, file = "step13.csv")
+vs.LoadDatasetAndAttachVariableNames(lviFileName)
+
 #
 # Step 14
 # Exclude rows with excludeRowValue associated with excludeRowVarName
-source("/opt/MRAT_Refactor/Rwd/RScript/ZExcludeRowsWithCertainVariableValues.R")
-step14 <- 3.14
-write.csv(step14, file = "step14.csv")
+#source("/opt/MRAT_Refactor/Rwd/RScript/ZExcludeRowsWithCertainVariableValues.R")
+#step14 <- 3.14
+#write.csv(step14, file = "step14.csv")
+vs.ExcludeRowsWithCertainVariableValues()
+
 #	 
 # Step 15
 # Variable Selection using xVarSelectFileName (UNIQUEVAR.csv)
@@ -21,9 +25,11 @@ write.csv(step15, file = "step15.csv")
 #
 # Step 16
 # Generate correlations amongst variables
-source("/opt/MRAT_Refactor/Rwd/RScript/CompileUniqueXVariableCorrelationMatrixSubset.R")
-step16 <- 3.16
-write.csv(step16, file = "step16.csv")
+#source("/opt/MRAT_Refactor/Rwd/RScript/CompileUniqueXVariableCorrelationMatrixSubset.R")
+#step16 <- 3.16
+#write.csv(step16, file = "step16.csv")
+vs.CompileUniqueXVariableCorrelationMatrixSubset()
+
 #
 # Step 17
 # Create correlation matrix for printing
