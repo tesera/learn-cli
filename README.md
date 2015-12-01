@@ -42,3 +42,19 @@ After each run the output in Rwd will be compared following files in tests/regre
 - XVARSELV1_XCOUNT.csv
 - XVARSELV1.csv
 
+## Creating an R Library
+
+- Start R console.
+- `library('devtools')`
+- `library('roxygen2')`
+- `setwd('./Rwd')` - this will create the library in Rwd folder
+- `create('MyLibrary')
+
+In finder open this folder and inside R create a file, **my_library.R**. Once the function is complete install it with: `install("MyLibrary")
+The library can be pushed to github and installed with: `install_github('MyLibrary','github_username')`
+
+To use the library while in development use devtools to install and load it at runtime:
+```
+install('DiscriminantAnalysisVariableSelection')
+library('DiscriminantAnalysisVariableSelection')
+```

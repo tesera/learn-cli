@@ -17,7 +17,7 @@ RUN apt-get install -y --no-install-recommends \
 
 RUN pip install pyRserve
 RUN pip install rpy2
-RUN R -e 'install.packages(c("subselect", "futile.logger", "devtools"))'
+RUN R -e 'install.packages(c("subselect", "futile.logger", "devtools", "roxygen2"))'
 
 # Setup environment
 ENV MRATPATH /opt/MRAT_Refactor

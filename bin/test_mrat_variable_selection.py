@@ -19,29 +19,28 @@ import RANKVAR
 import REMOVE_HIGHCORVAR_FROM_XVARSELV
 import COUNT_XVAR_IN_XVARSELV1
 
-flog = importr("futile.logger")
+flog = importr('futile.logger')
+devtools = importr('devtools')
 #flog.flog_appender(flog.appender_file('mrat.log'))
 
 # STEP 0 -- ABSTRACT ANALYTICS PROCESS TO A CLASS (EXAMPLE: AUTOMATED VARIABLE SELECTION)
 class mrat_variable_selection(object):
     def __init__(self, *args, **kwargs):
         r = robjects.r
-        tesera = AutoLoadRLibs('../Rwd/tesera/')
-        
         flog.flog_info("Starting '__main__'")
-        flog.flog_info("rpy2 invoke sample: %s", tesera.test.SquareIt(4))
-
+        
         # setup
         r.source(os.environ['MRATPATH'] + '/etc/XIterativeVarSel.R.conf')
         currentCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()
 
         # test_XIterativeVarSelCorVarElimination.R
         # use logging library
-        tesera.variable_selection.SetInitialCount()
+        devtools.install('DiscriminantAnalysisVariableSelection')
+        davs = importr('DiscriminantAnalysisVariableSelection')
+        r('initialCount <<- scan(xVarCountFileName)')
         flog.flog_info("Initial variable count: %s", r['initialCount'])
-        r.source('./RScript/test_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R')
-        flog.flog_info("ZCompleteTest: %s", r['myZCompleteTest'])
-
+        davs.vs_DiscriminantAnalysisVariableSelection(r['lviFileName'], r['xVarSelectFileName'], 'VARSELECT.csv')        
+        
         # test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() identifies the unique variable sets and organizes them into a new file VARSELV.csv;
         uniqueVarSets = test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2()  
         # Rank the variables in terms of their contribution to a model
