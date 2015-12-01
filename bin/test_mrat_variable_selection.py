@@ -2,7 +2,6 @@
 #from confighandler import ConfigHandler
 #from loghandler import log
 from signal import *
-from loader import AutoLoadRLibs
 
 import atexit
 import os
