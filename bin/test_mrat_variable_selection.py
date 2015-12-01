@@ -1,8 +1,4 @@
-# TSIBRIDGE SPECIFIC IMPORTS
-#from confighandler import ConfigHandler
-#from loghandler import log
 from signal import *
-
 import atexit
 import os
 import sys
@@ -36,7 +32,7 @@ class mrat_variable_selection(object):
         # use logging library
         devtools.install('DiscriminantAnalysisVariableSelection')
         davs = importr('DiscriminantAnalysisVariableSelection')
-        r('initialCount <<- scan(xVarCountFileName)')
+        r('initialCount <- scan(xVarCountFileName)')
         flog.flog_info("Initial variable count: %s", r['initialCount'])
         davs.vs_IdentifyAndOrganizeUniqueVariableSets(r['lviFileName'], r['xVarSelectFileName'], 'VARSELECT.csv')        
         
@@ -53,25 +49,27 @@ class mrat_variable_selection(object):
         flog.flog_info("CurrentCount = %s, nextCount %s", currentCount, nextCount)
         
         # "Kluge" is: Helps get around an unknown crash when calling test3_XiterativeVarSelCorVarElimination.R
-        #r.source("/opt/MRAT_Refactor/bin/kluge.R") 
+        r('xVarCount <- scan(xVarCountFileName)')
         
         # LOOP THROUGH THE AUTOMATED VARIABLE SELECTION PROCESS TO ELIMINATE VARIABLES THAT DO NOT CONTRIBUTE TO THE MODEL
         counter = 0
         while currentCount != nextCount:
-            
             currentCount = nextCount
             #config part of test_XItertative plus test_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
-            r.source("/opt/MRAT_Refactor/bin/XIterativeConfFile.R")
-            #self.R.script("/opt/MRAT_Refactor/Rwd/RScript/test_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R)
+            #r.source("/opt/MRAT_Refactor/bin/XIterativeConfFile.R")
+            davs.vs_IdentifyAndOrganizeUniqueVariableSets(r['lviFileName'], r['xVarSelectFileName'], 'VARSELECT.csv')
+
             test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2()
             RANKVAR.RankVar()
-            r.source("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R")
+            
+            #r.source("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R")
+            davs.vs_CompleteVariableSelectionPlusRemoveCorrelationVariables(r['lviFileName'], r['uniqueVarPath'], 'UCORCOEF.csv')        
+        
             REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()
             nextCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()
             counter = counter +1
 
-        print "Number of Iterations: ", counter
-        print "\n"
+        flog.flog_info("Number of Iterations: %s", counter)
                  
 if __name__ == "__main__":
-    o = mrat_variable_selection(log_level  = 10, screendump = True)
+    o = mrat_variable_selection(log_level = 10, screendump = True)
