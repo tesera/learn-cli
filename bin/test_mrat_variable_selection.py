@@ -46,8 +46,8 @@ class mrat_variable_selection(object):
         ranksVariables = RANKVAR.RankVar()
         
         # test2_XIterativeVarSelCorVarElimination.R runs steps 13 -18 ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
-        r.source("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R")        
-        #davs.vs_CompleteVariableSelectionPlusRemoveCorrelationVariables(r['lviFileName'], r['uniqueVarPath'], 'UCORCOEF.csv')        
+        #r.source("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R")        
+        davs.vs_CompleteVariableSelectionPlusRemoveCorrelationVariables(r['lviFileName'], r['uniqueVarPath'], 'UCORCOEF.csv')        
         
         removeCorXVars = REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()
         nextCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()

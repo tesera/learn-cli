@@ -4,6 +4,7 @@ library('subselect')
 vs.IdentifyAndOrganizeUniqueVariableSets <- function(lviFileName, xVarSelectFileName, xVarSelectOutFile) {
 	flog.info('Reading lviFileName %s and xVarSelectFileName %s', lviFileName, xVarSelectFileName)
 	xVarSel <<- read.csv(xVarSelectFileName, header=T, row.names=1, stringsAsFactors=FALSE, strip.white=TRUE, na.strings = c("NA",""))
+	attach(xVarSel)
 
 	vs.LoadDatasetAndAttachVariableNames(lviFileName)
 	vs.ExcludeRowsWithCertainVariableValues()
@@ -26,14 +27,14 @@ vs.CompleteVariableSelectionPlusRemoveCorrelationVariables <- function(lviFileNa
 	vs.CompileUniqueXVariableCorrelationMatrixSubset()
 	vs.CreateUniqueVarCorrelationMatrixFileForPrinting()
 	vs.WriteUniqueVarCorrelationMatrix(xVarSelectOutFile)
+
+	detach(lvinew)		
 }
 
 vs.LoadDatasetAndAttachVariableNames <- function(lviFileName) { 
 	flog.info(paste("Step:", match.call()[[1]]))
 	lvinew <<- read.csv(lviFileName, header=T, row.names=1)
-	
 	attach(lvinew)		
-	attach(xVarSel)
 
 	lviVarNamesv <<- names(lvinew)					
 	nLviRows <<- length(lvinew[,1])

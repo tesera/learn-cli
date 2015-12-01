@@ -1,3 +1,5 @@
+install('DiscriminantAnalysisVariableSelection')
+library('DiscriminantAnalysisVariableSelection')
 
 
 source("/opt/MRAT_Refactor/Rwd/RScript/ZLoadDatasetAndAttachVariableNames.R")
