@@ -38,7 +38,7 @@ class mrat_variable_selection(object):
         davs = importr('DiscriminantAnalysisVariableSelection')
         r('initialCount <<- scan(xVarCountFileName)')
         flog.flog_info("Initial variable count: %s", r['initialCount'])
-        davs.vs_DiscriminantAnalysisVariableSelection(r['lviFileName'], r['xVarSelectFileName'], 'VARSELECT.csv')        
+        davs.vs_IdentifyAndOrganizeUniqueVariableSets(r['lviFileName'], r['xVarSelectFileName'], 'VARSELECT.csv')        
         
         # test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() identifies the unique variable sets and organizes them into a new file VARSELV.csv;
         uniqueVarSets = test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2()  
@@ -46,7 +46,8 @@ class mrat_variable_selection(object):
         ranksVariables = RANKVAR.RankVar()
         
         # test2_XIterativeVarSelCorVarElimination.R runs steps 13 -18 ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
-        r.source("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R")
+        r.source("/opt/MRAT_Refactor/bin/test2_XIterativeVarSelCorVarElimination.R")        
+        #davs.vs_CompleteVariableSelectionPlusRemoveCorrelationVariables(r['lviFileName'], r['uniqueVarPath'], 'UCORCOEF.csv')        
         
         removeCorXVars = REMOVE_HIGHCORVAR_FROM_XVARSELV.Remove_HighCorVar_from_XVarSelv()
         nextCount = COUNT_XVAR_IN_XVARSELV1.Count_XVar_in_XVarSelv1()

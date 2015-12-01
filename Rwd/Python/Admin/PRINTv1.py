@@ -1,9 +1,9 @@
-'''
-'''
 from types import *
 import numpy
 import os
 from operator import concat
+from rpy2.robjects.packages import importr
+flog = importr("futile.logger")
 
 def new_file_path(filepath, filename):
     FileKind = '.txt'

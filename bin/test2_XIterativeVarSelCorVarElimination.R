@@ -9,14 +9,14 @@
 
 #####################################################################
 #Set Default Working Directory where R places outputs 20150831 MB, IM, SK
-setwd("/opt/MRAT_Refactor/Rwd")
+#setwd("/opt/MRAT_Refactor/Rwd")
 # Iteratively Run Discriminant Analysis Variable Selection
 # and XVariable Reduction To Eliminate Correlations >= 0.8
 # or Correlations <= -0.8.
 
 ################################################################################
 # Source environment
-source(paste("/opt/MRAT_Refactor/etc/", "XIterativeVarSel.R.conf", sep = ""))
+#source(paste("/opt/MRAT_Refactor/etc/", "XIterativeVarSel.R.conf", sep = ""))
 #source(paste(HOME_CONF,"XIterativeVarSel.R.conf", sep = ""))
 #source(paste("/shared/GitHub/Tesera/MRAT_Refactor/etc/","XIterativeVarSel.conf", sep = ""))
 

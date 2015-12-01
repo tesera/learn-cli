@@ -8,8 +8,10 @@ Another file, UNIQUEVAR.csv provides a list of all of the variables
 referred to in VARSELV.csv 
 '''
 import sys
+from rpy2.robjects.packages import importr
+flog = importr("futile.logger")
 
-print '\n Extract R Variable Combinations from Discriminant Aanlysis'
+flog.flog_info('Extract R Variable Combinations from Discriminant Aanlysis')
 
 #Identify code directory and data directory
 adminFilePath = 'D:\\Rwd\\Python\\Admin\\'
@@ -151,9 +153,9 @@ for i in range(0,end_i,1):
 PRINTv1.initialize_header(uniqueDictHeader,printFilePath2)
 PRINTv1.print_to_nested_dictionary(uniqueDictKeyList,uniqueDictHeader,uniqueDict, printFilePath2)       
 
-print ' Two new csv files created: XVARSELV and UNIQUEVAR'
-print '\n XVARSELV contains a list of all of the models, each with unique variable combinations within a variable set'
-print '\n UNIQUEVAR contains a list of unique variable names used across all models'
+flog.flog_info('Two new csv files created: XVARSELV and UNIQUEVAR')
+flog.flog_info('XVARSELV contains a list of all of the models, each with unique variable combinations within a variable set')
+flog.flog_info('UNIQUEVAR contains a list of unique variable names used across all models')
                 
 #raw_input("\n Press ENTER to Close This Session ... ")         
     

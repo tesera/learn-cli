@@ -11,7 +11,7 @@ Single line runner in form of bash script or Makefile does not exist for a reaso
 	- Setup a VM: `docker-machine create -d virtualbox dev`
 	- Make sure to follow the instructions to setup environment variables: `docker-machine env dev`. Docker won't work without them.
 	- Checkout MRAT_Refactor/slimrat: `git clone git@github.com:tesera/MRAT_Refactor.git && git checkout origin/slimrat -b slimrat`
-	- Build docker image: `docker build -t mrat .`
+	- Build docker image: `docker build --rm -t mrat .`
 
 ## Running
 
@@ -58,3 +58,7 @@ To use the library while in development use devtools to install and load it at r
 install('DiscriminantAnalysisVariableSelection')
 library('DiscriminantAnalysisVariableSelection')
 ```
+
+## Style Guidelines
+[Python](https://www.python.org/dev/peps/pep-0008/)
+[R](https://google.github.io/styleguide/Rguide.xml)

@@ -14,36 +14,17 @@ import PRINTv1
 import readCSV
 import typeDataset
 import dictionaryDBUtilities
+import pdb
 
 #print '\n Extract R Variable Combinations from Discriminant Aanlysis'
 
 def Extract_RVariable_Combos_v2():
-    #Identify code directory and data directory
-    #These paths are commented out and replaced by current paths for MRAT_Refactor; eventually need to remove
-    #20150903 Swap out old paths (commented out) for new paths; MB, SK
-    #adminFilePath = 'D:\\Rwd\\Python\\Admin\\'
-    #inputDataPath = 'D:\\Rwd\\'
-    #dictFilePath = 'D:\\Rwd\\Python\\DATDICT\\'
-    #filePathReadError = 'D:\\Rwd\\Python\\PyReadError\\'
-    #sys.path.append(adminFilePath)
-    #sys.path.append(inputDataPath)
-    #printFilePath = inputDataPath + 'XVARSELV.csv'
-    #printFilePath2 = inputDataPath + 'UNIQUEVAR.csv'
     adminFilePath = '/opt/MRAT_Refactor/Rwd/Python/Admin/' #D:\\Rwd\\Python\\Admin\\'
     inputDataPath = '/opt/MRAT_Refactor/Rwd/' #D:\\Rwd\\'
     dictFilePath = '/opt/MRAT_Refactor/Rwd/Python/DATDICT/' #D:\\Rwd\\Python\\DATDICT\\'
     filePathReadError = '/opt/MRAT_Refactor/Rwd/Python/PyReadError/' #D:\\Rwd\\Python\\PyReadError\\'
-    #sys.path appends commented out; as added earlier in auto var process 20150903
-    #sys.path.append(adminFilePath)
-    #sys.path.append(inputDataPath)
     printFilePath = inputDataPath + 'XVARSELV.csv'
     printFilePath2 = inputDataPath + 'UNIQUEVAR.csv'
-    #Imports moved to the top 20150903 MB SK
-    #import makeDD
-    #import PRINTv1
-    #import readCSV
-    #import typeDataset
-    #import dictionaryDBUtilities
 
     #Get data dictionary to identify variables and variable types
     filename = 'PyRDataDict'
@@ -65,6 +46,7 @@ def Extract_RVariable_Combos_v2():
     #Get ModelId key list and then sort it
     varSelModelIdKeyList = varSelDict.keys()
     varSelModelIdKeyList.sort()
+
     #
     #Get maximum number of variables 
     maxN = 0

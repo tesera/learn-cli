@@ -468,7 +468,7 @@ def dataDictionaryType_21(filepath = '', filename = '', fileExtension = '.csv'):
     for line in temp_file:
         line = string.replace(line, '\r\n', '\n')
         line = string.replace(line, '\r', '\n')
-        print i, line
+        #bc: print i, line
         #This part of the program strips off linefeed symbol, '\n' that
         #is inserted by ACCESS or Python at the end of line(s)
         #when it reads files.
@@ -489,7 +489,7 @@ def dataDictionaryType_21(filepath = '', filename = '', fileExtension = '.csv'):
         if i == 0:
             #Get column numbers associated with variable names
             for j in range(0,end_j):
-                print j, x[j]
+                #bc: print j, x[j]
                 if x[j] == 'TVID':
                     tvidCol = j
                 else:
@@ -515,7 +515,7 @@ def dataDictionaryType_21(filepath = '', filename = '', fileExtension = '.csv'):
                                                 descriptionCol = j
                                                 #print descriptionCol
         if not i==0:
-            print i, descriptionCol
+            #bc: print i, descriptionCol
             #assign variable values from appropriate column numbers  
             tvid = int(x[tvidCol])
             tableName = str(x[tableCol])

@@ -4,7 +4,6 @@ MAINTAINER Tesera Systems Inc.
 # Install dependencies
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends \
-		r-cran-rserve \
 		build-essential \ 
 		python-dev \
 		python-setuptools \
@@ -15,7 +14,6 @@ RUN apt-get install -y --no-install-recommends \
 		libxml2-dev \
 		libcurl4-openssl-dev
 
-RUN pip install pyRserve
 RUN pip install rpy2
 RUN R -e 'install.packages(c("subselect", "futile.logger", "devtools", "roxygen2"))'
 
