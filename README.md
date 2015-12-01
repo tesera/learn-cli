@@ -60,5 +60,5 @@ library('DiscriminantAnalysisVariableSelection')
 ```
 
 ## Style Guidelines
-[Python](https://www.python.org/dev/peps/pep-0008/)
-[R](https://google.github.io/styleguide/Rguide.xml)
+- [Python](https://www.python.org/dev/peps/pep-0008/)
+- [R](https://google.github.io/styleguide/Rguide.xml)
