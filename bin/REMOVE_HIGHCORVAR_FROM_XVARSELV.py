@@ -1,11 +1,11 @@
 '''
 '''
-import routineLviApplications
+from routineLviApplications import RoutineLviApplications
 #
 # 20150908 REMOVE_HIGHCORVAR_FROM_XVARSELV is now converted to a function to work in the Bridge by SK
 #
 def Remove_HighCorVar_from_XVarSelv():
-
+    lvi = RoutineLviApplications()
     print '\n Removing highly correlated X-Variables in order of importance \n (least to most) from XVARSELV1.csv using importance in VARRANK.csv'
     print '\n Reading UCORCOEF'
     
@@ -13,10 +13,10 @@ def Remove_HighCorVar_from_XVarSelv():
     tableName = 'UCORCOEF'
     printTypes = 'YES'
     nLines = 10000
-    oldDict, newDict = routineLviApplications.createNewDataDictionaryFromFile(tableName, printTypes, nLines)
+    oldDict, newDict = lvi.createNewDataDictionaryFromFile(tableName, printTypes, nLines)
     corCoefKeyVarNameList = ['VARNAME1', 'VARNAME2']
     readErrorFileName = 'ERROR_'+ tableName
-    corCoefHeader, corCoefDict = routineLviApplications.ReadCsvDataFileAndTransformIntoDictionaryFormat_v2(oldDict, newDict, tableName, \
+    corCoefHeader, corCoefDict = lvi.ReadCsvDataFileAndTransformIntoDictionaryFormat_v2(oldDict, newDict, tableName, \
                                                                                                            readErrorFileName, corCoefKeyVarNameList)
     corCoefVarNameList = corCoefDict.keys()
     corCoefVarNameList.sort()
@@ -27,10 +27,10 @@ def Remove_HighCorVar_from_XVarSelv():
     tableName = 'VARRANK'
     printTypes = 'YES'
     nLines = 10000
-    oldDict, newDict = routineLviApplications.createNewDataDictionaryFromFile(tableName, printTypes, nLines)
+    oldDict, newDict = lvi.createNewDataDictionaryFromFile(tableName, printTypes, nLines)
     varRankKeyVarNameList = ['IMPORTANCE', 'VARNAME']
     readErrorFileName = 'ERROR_'+ tableName
-    rankHeader, rankDict = routineLviApplications.ReadCsvDataFileAndTransformIntoDictionaryFormat_v2(oldDict, newDict, tableName, \
+    rankHeader, rankDict = lvi.ReadCsvDataFileAndTransformIntoDictionaryFormat_v2(oldDict, newDict, tableName, \
                                                                                                          readErrorFileName, varRankKeyVarNameList)
     impValueList = rankDict.keys()
     impValueList.sort()
@@ -39,10 +39,10 @@ def Remove_HighCorVar_from_XVarSelv():
     tableName = 'XVARSELV1'
     printTypes = 'YES'
     nLines = 10000
-    oldDict, newDict = routineLviApplications.createNewDataDictionaryFromFile(tableName, printTypes, nLines)
+    oldDict, newDict = lvi.createNewDataDictionaryFromFile(tableName, printTypes, nLines)
     varSelKeyVarNameList = ['VARNAME']
     readErrorFileName = 'ERROR_'+ tableName
-    varSelHeader, varSelDict = routineLviApplications.ReadCsvDataFileAndTransformIntoDictionaryFormat_v2(oldDict, newDict, tableName, \
+    varSelHeader, varSelDict = lvi.ReadCsvDataFileAndTransformIntoDictionaryFormat_v2(oldDict, newDict, tableName, \
                                                                                                          readErrorFileName, varSelKeyVarNameList)
     xVarSelvUpdateFlag = False
     for impValue in impValueList:
@@ -65,7 +65,7 @@ def Remove_HighCorVar_from_XVarSelv():
     
     if xVarSelvUpdateFlag == True:
         print '\n XVARSELV1 has been updated with changes in varibale status (XVARSEL) from X to N'
-        routineLviApplications.printNestedDictionary(varSelKeyVarNameList, varSelHeader, varSelDict, tableName)
+        lvi.printNestedDictionary(varSelKeyVarNameList, varSelHeader, varSelDict, tableName)
     else:
         print '\n XVARSELV1 has not been updated.\n There are no correlations amongst selected X-Variable >= 0.8 or <= -0.8.'
 

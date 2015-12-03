@@ -14,7 +14,7 @@ RUN apt-get install -y --no-install-recommends \
 		libxml2-dev \
 		libcurl4-openssl-dev
 
-RUN pip install rpy2
+RUN pip install rpy2 docopt schema
 RUN R -e 'install.packages(c("subselect", "futile.logger", "devtools", "roxygen2"))'
 
 # Setup environment

@@ -6,19 +6,19 @@ Another file, UNIQUEVAR.csv provides a list of all of the variables
 referred to in VARSELV.csv 
 '''
 
-import routineLviApplications
+from routineLviApplications import RoutineLviApplications
 
 # 20150908 RANKVAR is now converted to a function to work in the Bridge SK
 
 def RankVar():
-
+    lvi = RoutineLviApplications()
     varSelTableName = 'VARSELECT'
     printTypes = 'YES'
     nLines = 10000
-    oldDict, newDict = routineLviApplications.createNewDataDictionaryFromFile(varSelTableName, printTypes, nLines)
+    oldDict, newDict = lvi.createNewDataDictionaryFromFile(varSelTableName, printTypes, nLines)
     varSelKeyVarNameList = ['UID']
     readErrorFileName = 'ERROR_'+varSelTableName
-    varSelHeader, varSelDict = routineLviApplications.ReadCsvDataFileAndTransformIntoDictionaryFormat_v2(oldDict, newDict, varSelTableName, \
+    varSelHeader, varSelDict = lvi.ReadCsvDataFileAndTransformIntoDictionaryFormat_v2(oldDict, newDict, varSelTableName, \
                                                                                                          readErrorFileName, varSelKeyVarNameList)
     keyVarValueList = varSelDict.keys()
     keyVarValueList.sort()
@@ -52,7 +52,7 @@ def RankVar():
     print ' rank    is equal to the minimum number of variables in an equation where\n          1 is the highest ranked variable'
     
     tableName = 'VARRANK'    
-    routineLviApplications.printNestedDictionary(rankDictKeyList, rankDictHeader, rankDict, tableName)
+    lvi.printNestedDictionary(rankDictKeyList, rankDictHeader, rankDict, tableName)
     return rankDict #20150908 added by SK
 
 if __name__ == '__main__':

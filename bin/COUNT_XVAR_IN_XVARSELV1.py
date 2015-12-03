@@ -1,18 +1,18 @@
-import routineLviApplications
+from routineLviApplications import RoutineLviApplications
 from rpy2.robjects.packages import importr
 flog = importr("futile.logger")
 
 def Count_XVar_in_XVarSelv1():
+    lvi = RoutineLviApplications()
 
     flog.flog_info("Reading VARRANK.csv")
     tableName = 'XVARSELV1'
     printTypes = 'YES'
     nLines = 10000
-    oldDict, newDict = routineLviApplications.createNewDataDictionaryFromFile(tableName, printTypes, nLines)
+    oldDict, newDict = lvi.createNewDataDictionaryFromFile(tableName, printTypes, nLines)
     varSelKeyVarNameList = ['VARNAME']
     readErrorFileName = 'ERROR_'+ tableName
-    varSelHeader, varSelDict = routineLviApplications.ReadCsvDataFileAndTransformIntoDictionaryFormat_v2(oldDict, newDict, tableName, \
-                                                                                                         readErrorFileName, varSelKeyVarNameList)
+    varSelHeader, varSelDict = lvi.ReadCsvDataFileAndTransformIntoDictionaryFormat_v2(oldDict, newDict, tableName, readErrorFileName, varSelKeyVarNameList)
     #Count remaining X-Variables
     xVarCount = 0
     for varName in varSelDict:
@@ -23,7 +23,7 @@ def Count_XVar_in_XVarSelv1():
     fileName = 'XVARSELV1_XCOUNT'
     floatFormat = '%0.6f'
     varCountList = [[xVarCount]]
-    routineLviApplications.writeListArrayToCsvFile(varCountList, fileName, floatFormat)
+    lvi.writeListArrayToCsvFile(varCountList, fileName, floatFormat)
 
     return xVarCount #20150914 added by SK
     
