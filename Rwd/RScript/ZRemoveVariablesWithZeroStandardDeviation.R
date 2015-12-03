@@ -10,6 +10,7 @@ for (i in 1:length(xNames)) {
 newXData$DUMMY<-NULL
 xDataset<-newXData
 xNames <- names(xDataset) 
-flog.info("Variables with 0 standard deviation have been removed from the xDataset")
+cat(" Variables with 0 standard deviation have been removed from the xDataset \n")
 xVarCount <- length(xDataset)
-flog.info("The following number of variables remain selected: %s", xVarCount)
+cat(" The following number of variables remain selected: ", xVarCount)
+

@@ -16,5 +16,5 @@ for (i in 1:nRows) {
 xDataset$DUMMY <- NULL			#Delete the initial DUMMY variable from the dataframe
 xNames <- names(xDataset)		#Create a vector of xDataset names
 xVarCount = length(xDataset)
-flog.info("A new data frame, xDataset, has been created") 
-flog.info("The following number of variables have been selected: %s", xVarCount)
+cat(" A new data frame, xDataset, has been created\n") 
+cat(" The following number of variables have been selected: ", xVarCount)

@@ -69,6 +69,7 @@ class MRAT(object):
                     self.r('%s <- "%s"' % (key, value))
             
         self.r('lviFileName <- "%s"' % config.args['LVIFILENAME'])
+        self.r('outDir <- "%s"' % config.args['OUTDIR'])
         self.r('xVarSelectFileName <- "%s"' % config.args['XVARSELECTFILENAME'])
         self.r('uniqueVarPath <- "%s/UNIQUEVAR.csv"' % config.args['OUTDIR'])
         self.r('printFileName <- "%s/UCORCOEF.csv"' % config.args['OUTDIR'])
