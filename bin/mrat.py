@@ -53,13 +53,13 @@ import COUNT_XVAR_IN_XVARSELV1
 class MRAT(object):
     r = None
     devtools = None
-    
+
     def __init__(self):
         global flog
         self.r = robjects.r
         self.devtools = importr('devtools')
         flog = importr('futile.logger')
-        
+
         for key, value in config.args.iteritems():
             if('--' in key):
                 key = key.strip('-')
