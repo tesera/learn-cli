@@ -20,10 +20,10 @@ import config
 #print '\n Extract R Variable Combinations from Discriminant Aanlysis'
 
 def Extract_RVariable_Combos_v2():
-    adminFilePath = '/opt/MRAT_Refactor/Rwd/Python/Admin/'
-    inputDataPath = config.args['OUTPUT-DIR']
-    dictFilePath = '/opt/MRAT_Refactor/Rwd/Python/DATDICT/'
-    filePathReadError = '/opt/MRAT_Refactor/Rwd/Python/PyReadError/'
+    adminFilePath = config.args['WORKINGDIR'] + 'Rwd/Python/Admin/'
+    inputDataPath = config.args['OUTDIR']
+    dictFilePath = config.args['WORKINGDIR'] + 'Rwd/Python/DATDICT/'
+    filePathReadError = config.args['WORKINGDIR'] + 'Rwd/Python/PyReadError/'
     printFilePath = inputDataPath + 'XVARSELV.csv'
     printFilePath2 = inputDataPath + 'UNIQUEVAR.csv'
 

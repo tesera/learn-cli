@@ -3,22 +3,6 @@ Set file paths
 '''
 import sys
 import config
-#Identify admin code directory
-#adminPath = '/shared/GitHub/Tesera/Rwd/Python/Admin/'
-#self.filePath = '/shared/GitHub/Tesera/Rwd/'
-#self.dataFilePath = '/shared/GitHub/Tesera/Rwd/'
-#dictFilePath = '/shared/GitHub/Tesera/Rwd/Python/DATDICT/'
-#fileExtension = '.csv'
-#readErrorFilePath = '/shared/GitHub/Tesera/Rwd/Python/PyReadError/'
-
-# ammended 20150828 by MB and SK
-adminPath = '/opt/MRAT_Refactor/Rwd/Python/Admin'
-dictFilePath = '/opt/MRAT_Refactor/Rwd/Python/DATDICT/'
-fileExtension = '.csv'
-readErrorFilePath = '/opt/MRAT_Refactor/Rwd/Python/PyReadError/'
-
-#Add directory to sys.path 
-sys.path.append(adminPath)
 
 import makeDD
 import dataMachete
@@ -45,10 +29,22 @@ from scipy import linalg
 class RoutineLviApplications:
     filePath = ''
     dataFilePath = ''
+    adminPath = ''
+    dictFilePath = ''
+    fileExtension = ''
+    readErrorFilePath = ''
 
     def __init__(self):
-        self.filePath = config.args['OUTPUT-DIR']
-        self.dataFilePath = config.args['OUTPUT-DIR']
+        self.filePath = config.args['OUTDIR']
+        self.dataFilePath = config.args['OUTDIR']
+        self.adminPath = config.args['WORKINGDIR'] + 'Rwd/Python/Admin'
+        self.dictFilePath = config.args['WORKINGDIR'] + 'Rwd/Python/DATDICT/'
+        self.fileExtension = '.csv'
+        self.readErrorFilePath = config.args['WORKINGDIR'] + '/Rwd/Python/PyReadError/'
+
+        #Add directory to sys.path 
+        sys.path.append(self.adminPath)
+
 
     def ReadLviDataDictionary(self, filename = 'PyRDataDict'):
         '''
@@ -58,7 +54,7 @@ class RoutineLviApplications:
 
         Note that this dictionary estblishes variable names and types. 
         '''
-        originalDict, newDict = makeDD.dataDictionaryType_21(dictFilePath,filename, fileExtension)
+        originalDict, newDict = makeDD.dataDictionaryType_21(self.dictFilePath,filename, self.fileExtension)
         return originalDict, newDict
 
     def ReadStandardDataDictionary(self, filename = ''):
@@ -69,7 +65,7 @@ class RoutineLviApplications:
 
         Note that this dictionary estblishes variable names and types. 
         '''
-        originalDict, newDict = makeDD.dataDictionaryType_21(self.dataFilePath,filename, fileExtension)
+        originalDict, newDict = makeDD.dataDictionaryType_21(self.dataFilePath,filename, self.fileExtension)
         return originalDict, newDict
 
     def UpdateDataDictionaryWithNewTableName(self, myDataDict={}, oldTableName = '', newTableName = ''):
@@ -111,21 +107,21 @@ class RoutineLviApplications:
             dataDict is the dictionary containing table name, variable name and variable types (i.e. originalDict or newDict
             dataPath is the file path 
             dataTableName must be a string variable without any file extension but referring to a CSV file
-            readErrorFilePath is the read error file path relating to the use of the data dictionary to establish a variable type
+            self.readErrorFilePath is the read error file path relating to the use of the data dictionary to establish a variable type
             readErrorFileName is the dsired name of the read error file without any extension
-            fileExtension refers to the type of file, e.g. .txt or .csv
+            self.fileExtension refers to the type of file, e.g. .txt or .csv
         '''
-        dataErrorFilePath = readErrorFilePath + readErrorFileName + '.txt'
-        dataStringList = readCSV.read_csv_text_file_v2(self.filePath, dataTableName, fileExtension)
+        dataErrorFilePath = self.readErrorFilePath + readErrorFileName + '.txt'
+        dataStringList = readCSV.read_csv_text_file_v2(self.filePath, dataTableName, self.fileExtension)
         dataTypedList = typeDataset.typeDataset_v2(dataStringList, dataDict, dataTableName, dataErrorFilePath)
         return dataTypedList
 
     def ReadFirstNlinesInCsvDataFile_v2(self, originalDataDict = {}, newDataDict = {}, dataTableName = '', readErrorFileName = '', nLines = 1):
         '''
         '''
-        dataErrorFilePath = readErrorFilePath + readErrorFileName + '.txt'
+        dataErrorFilePath = self.readErrorFilePath + readErrorFileName + '.txt'
         PRINTv1.deleteFileIfItExists(dataErrorFilePath)
-        dataStringList = readCSV.read_first_nLines_csv_text_file_v2(self.filePath, dataTableName, fileExtension, nLines)
+        dataStringList = readCSV.read_first_nLines_csv_text_file_v2(self.filePath, dataTableName, self.fileExtension, nLines)
         if originalDataDict == {} and newDataDict == {}:
             originalDataDict = makeDD.makeNewDataDictionaryFromDataStringFile(dataTableName , dataStringList, oldDict = {})
             newDataDict = originalDataDict
@@ -143,9 +139,9 @@ class RoutineLviApplications:
             dataDict is the dictionary containing table name, variable name and variable types (i.e. originalDict or newDict
             dataPath is the file path 
             dataTableName must be a string variable without any file extension but referring to a CSV file
-            readErrorFilePath is the read error file path relating to the use of the data dictionary to establish a variable type
+            self.readErrorFilePath is the read error file path relating to the use of the data dictionary to establish a variable type
             readErrorFileName is the dsired name of the read error file without any extension
-            fileExtension refers to the type of file, e.g. .txt or .csv
+            self.fileExtension refers to the type of file, e.g. .txt or .csv
             #Note that this version accounts for changes from old (i.e. VARNAME) to new (i.e. NEWVARNAME) variable names
 
             If the originalDataDict = {} and the newDataDict = {} then the program will try to make a new dictionary from
@@ -154,9 +150,9 @@ class RoutineLviApplications:
             #Note that this version does not account for changes from old (i.e. VARNAME) to new (i.e. NEWVARNAME) variable names
             #This deficiency was corrected in ReadCsvDataFile_v2
         '''
-        dataErrorFilePath = readErrorFilePath + readErrorFileName + '.txt'
+        dataErrorFilePath = self.readErrorFilePath + readErrorFileName + '.txt'
         PRINTv1.deleteFileIfItExists(dataErrorFilePath)
-        dataStringList = readCSV.read_csv_text_file_v2(self.filePath, dataTableName, fileExtension)
+        dataStringList = readCSV.read_csv_text_file_v2(self.filePath, dataTableName, self.fileExtension)
         if originalDataDict == {} and newDataDict == {}:
             originalDataDict = makeDD.makeNewDataDictionaryFromDataStringFile(dataTableName , dataStringList, oldDict = {})
             newDataDict = originalDataDict
@@ -173,9 +169,9 @@ class RoutineLviApplications:
             dataPath is the file path 
             dataTableName must be a string variable without any file extension but referring to a CSV file
             keyVarNameList is a list of key variable names in string format starting with Primary, Secondary, Tertiary ... keys
-            readErrorFilePath is the read error file path relating to the use of the data dictionary to establish a variable type
+            self.readErrorFilePath is the read error file path relating to the use of the data dictionary to establish a variable type
             readErrorFileName is the dsir name of the read error file without any extension
-            fileExtension refers to the type of file, e.g. .txt or .csv
+            self.fileExtension refers to the type of file, e.g. .txt or .csv
 
             Note that this version does not adequately account for transition from old to new variable names.
             To correct for this problem ReadCsvDataFileAndTransformIntoDictionaryFormat_v2 as created instead
@@ -194,9 +190,9 @@ class RoutineLviApplications:
             dataPath is the file path 
             dataTableName must be a string variable without any file extension but referring to a CSV file
             keyVarNameList is a list of key variable names in string format starting with Primary, Secondary, Tertiary ... keys
-            readErrorFilePath is the read error file path relating to the use of the data dictionary to establish a variable type
+            self.readErrorFilePath is the read error file path relating to the use of the data dictionary to establish a variable type
             readErrorFileName is the dsired name of the read error file without any extension
-            fileExtension refers to the type of file, e.g. .txt or .csv
+            self.fileExtension refers to the type of file, e.g. .txt or .csv
 
             Note that this version corrects a deficiency in the original ReadCsvDataFileAndTransformIntoDictionaryFormat
             It allows for the original variable names (i.e. VARNAME) in the data DICTIONARY to be replaced by the new names (i.e. NEWVARNAME)
@@ -1551,7 +1547,7 @@ class RoutineLviApplications:
         Ian Moss
         April 17 2013
         '''
-        spTableFilePath = self.dataFilePath + spTableName + fileExtension                                                #Create a new file path 
+        spTableFilePath = self.dataFilePath + spTableName + self.fileExtension                                                #Create a new file path 
         readSpErrorFileName = 'ERROR_' + spTableName                                                                #Create a read error file
         spHeader = ['ORIGSP','NEWSP']                                                                               #Species file header
         spKeyNameList = ['ORIGSP']                                                                                  #List of key variable names for constructing dictionary
@@ -1639,7 +1635,7 @@ class RoutineLviApplications:
         print ("\n Enter NODICT without '' if there is no data DICTIONARY associated with a data file") 
         myDataDictName = raw_input("\n Input name of DICTIONARY without .csv extension\n and without '' and press ENTER to continue ... ")
         if not myDataDictName == 'NODICT':
-            myDataDictName = checkForFilePath(dictFilePath, myDataDictName, '.csv')
+            myDataDictName = checkForFilePath(self.dictFilePath, myDataDictName, '.csv')
         else:
             myDataDictName = {}
         raw_input("\n The .csv DATA file should be in the top of the /Rwd/ directory\n press ENTER to continue ... ")
@@ -1661,21 +1657,21 @@ class RoutineLviApplications:
     def checkForFilePath(self, filePath = '', tableName = '', fileExtension = '.txt'):
         '''
         '''
-        newFilePath = self.filePath + tableName + fileExtension
+        newFilePath = self.filePath + tableName + self.fileExtension
         if os.path.exists(newFilePath):
             flag = True
         else:
             flag = False
         if flag == False:
             while flag == False:
-                print '\n There is no fileName', tableName, 'in self.filePath', self.filePath, 'with file extension', fileExtension
+                print '\n There is no fileName', tableName, 'in self.filePath', self.filePath, 'with file extension', self.fileExtension
                 tableName = raw_input(' Please input new fileName without self.filePath or file extension and press ENTER ... ')
-                newFilePath = self.filePath + tableName + fileExtension
+                newFilePath = self.filePath + tableName + self.fileExtension
                 if os.path.exists(newFilePath):
                     flag = True
                 else:
                     flag = False
-            print '\n FileName', tableName, 'FOUND IN self.filePath', self.filePath, 'with file extension', fileExtension
+            print '\n FileName', tableName, 'FOUND IN self.filePath', self.filePath, 'with file extension', self.fileExtension
             raw_input (' Press ENTER to continue ... ')
         return tableName
 
@@ -2028,27 +2024,27 @@ class RoutineLviApplications:
     def readDataStringListHeader(self, table_name = ''):
         '''
         '''
-        newHeader = readCSV.read_csv_text_file_header_v2(self.dataFilePath,table_name, fileExtension)
+        newHeader = readCSV.read_csv_text_file_header_v2(self.dataFilePath,table_name, self.fileExtension)
         return newHeader
 
     def createNewDataDictionaryFromFile(self, dataTableName = '', printTypes = 'YES', nLines = 1000):
         '''
         This routine creates a data dictionary including a list of data types based
         on the first nLines (e.g. 1000) for the dataTableName given the self.filePath and
-        fileExtension attached to this module.  printTypes = 'YES' provides a listing
+        self.fileExtension attached to this module.  printTypes = 'YES' provides a listing
         of the variable names in the file header and the data types assigned based on
         the first nLines in the file - as output in the IDE to enable the user to check
         that everything is ok.  This is created directly from from a file instead of a
         string table that has already been loaded into memmory for cases where the file
         size is too big to hold in  memory.
         '''
-        oldDict, newDict = makeDD.makeNewDataDictionaryFromLargeDataStringFile(dataTableName, self.filePath, fileExtension, printTypes, nLines)
+        oldDict, newDict = makeDD.makeNewDataDictionaryFromLargeDataStringFile(dataTableName, self.filePath, self.fileExtension, printTypes, nLines)
         return oldDict, newDict
 
     def writeListArrayToCsvFile(self, TwoDList = [[]], fileName = '', floatFormat = ''):
         '''
         '''
-        dataMachete.writeListarrayToCSVFile(TwoDList, self.dataFilePath, fileName, floatFormat, fileExtension)
+        dataMachete.writeListarrayToCSVFile(TwoDList, self.dataFilePath, fileName, floatFormat, self.fileExtension)
         return
                                 
     def createPivotTable(self, dataTableName = [], dataDict = {}, keyRowVarNameList = [], keyColumnVarName = '', keyVarValueName = '', nObs = -1, nnTargetTableNo = 0):
@@ -2056,16 +2052,16 @@ class RoutineLviApplications:
         '''
         print '\n Start identifying column variables in pivot table'
         print '', time.ctime()
-        file_path = fileUtilities.newFilePath_v2(self.filePath, dataTableName, fileExtension)              #Input self.filePath
+        file_path = fileUtilities.newFilePath_v2(self.filePath, dataTableName, self.fileExtension)              #Input self.filePath
         newDataTableName = 'TNNSTATP' + str(nnTargetTableNo)                            #Initialize print file name including target table number
         if keyVarValueName == 'MEAN':
             newDataTableName = newDataTableName + '_MEAN'
         if keyVarValueName == 'SDEV':
             newDataTableName = newDataTableName + '_SDEV'
         print '\n ', newDataTableName, '.csv file is being created in Rwd directory'
-        newFilePath = fileUtilities.newFilePath_v2(self.filePath, newDataTableName, fileExtension)
+        newFilePath = fileUtilities.newFilePath_v2(self.filePath, newDataTableName, self.fileExtension)
         readErrorFileName = 'ERROR_' + dataTableName
-        readErrorFilePath = fileUtilities.newFilePath_v2(self.filePath, readErrorFileName, fileExtension)
+        self.readErrorFilePath = fileUtilities.newFilePath_v2(self.filePath, readErrorFileName, self.fileExtension)
         colNamesList = []
         keyRowNoList = []   
         newHeader = deepcopy(keyRowVarNameList)

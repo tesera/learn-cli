@@ -1,5 +1,3 @@
-'''
-'''
 from routineLviApplications import RoutineLviApplications
 #
 # 20150908 REMOVE_HIGHCORVAR_FROM_XVARSELV is now converted to a function to work in the Bridge by SK

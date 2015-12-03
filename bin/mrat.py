@@ -2,17 +2,32 @@
 """MRAT
 
 Usage:
-  mrat.py DATA-FILE VARIABLE-SELECTION-FILE OUTPUT-DIR
-  mrat.py DATA-FILE VARIABLE-SELECTION-FILE OUTPUT-DIR [--class=<class>]
+  mrat.py LVIFILENAME XVARSELECTFILENAME OUTDIR
+  mrat.py LVIFILENAME XVARSELECTFILENAME OUTDIR \
+ [--classVariableName=<string>] \
+ [--excludeRowValue=<int>] \
+ [--excludeRowVarName=<string>] \
+ [--xVarSelectCriteria=<string>] \
+ [--minNvar=<int>] \
+ [--maxNvar=<int>] \
+ [--nSolutions=<int>] \
+ [--criteria=<int>]
 
 Arguments:
-    DATA-FILE  Input file.
-    VARIABLE-SELECTION-FILE  File containing variable selections.
-    OUTPUT-DIR  Directory to write results out too.
+  LVIFILENAME  Input file.
+  XVARSELECTFILENAME  File containing variable selections.
+  OUTDIR  Directory to write results out too.
 
 Options:
-    -h --Help  Show this screen.
-    --class=<class>  Class variable name, CLASS5 or CLPRDP [default: CLASS5].
+  -h --Help  Show this screen.
+  --classVariableName=<string>  Class variable name: CLASS5, CLPRDP [default: CLASS5].
+  --excludeRowValue=<int>  Variable value to exclude rows from a dataset [default: -1].  
+  --excludeRowVarName=<string>  Variable name to exclude rows from a dataset [default: SORTGRP].
+  --xVarSelectCriteria=<string>  Variable indicator value [default: X].
+  --minNvar=<int>  Minimum number of variables to select [default: 1]
+  --maxNvar=<int>  Maximum number of variables to select [default: 20]
+  --nSolutions=<int>  Number of iterations to be applied [default: 20]
+  --criteria=<string>  Set the criteria to be applied for variables selection: ccr12, Wilkes xi2 zeta2 [default: xi2]
 
 """
 from signal import *
@@ -21,7 +36,7 @@ import os
 import sys
 import pdb
 from docopt import docopt
-from schema import Schema, And, Or, Use, SchemaError
+from schema import Schema, And, Or, Use, SchemaError, Optional
 
 import rpy2.robjects as robjects
 from rpy2.robjects.packages import STAP
@@ -45,21 +60,21 @@ class MRAT(object):
         self.devtools = importr('devtools')
         flog = importr('futile.logger')
         
-        self.r('lviFileName <- "%s"' % config.args['DATA-FILE'])
-        self.r('xVarSelectFileName <- "%s"' % config.args['VARIABLE-SELECTION-FILE'])
-        self.r('classVariableName <- "%s"' % config.args['--class'])
-        self.r('excludeRowValue = -1')
-        self.r('excludeRowVarName <- "SORTGRP"')
-        self.r('xVarSelectCriteria <- "X"')
-        self.r('minNvar <- 1')
-        self.r('maxNvar <- 20')
-        self.r('nSolutions <- 10')
-        self.r('criteria <- "xi2"')
-        self.r('uniqueVarPath <- "%s/UNIQUEVAR.csv"' % config.args['OUTPUT-DIR'])
-        self.r('printFileName <- "%s/UCORCOEF.csv"' % config.args['OUTPUT-DIR'])
-        self.r('xVarCountFileName <- "%s/XVARSELV1_XCOUNT.csv"' % config.args['OUTPUT-DIR'])
-        self.r('varSelect <- "%s/VARSELECT.csv"' % config.args['OUTPUT-DIR'])
-        self.r.setwd('/opt/MRAT_Refactor/Rwd')
+        for key, value in config.args.iteritems():
+            if('--' in key):
+                key = key.strip('-')
+                if(value.isdigit()):
+                    self.r('%s <- %s' % (key, value))
+                else:
+                    self.r('%s <- "%s"' % (key, value))
+            
+        self.r('lviFileName <- "%s"' % config.args['LVIFILENAME'])
+        self.r('xVarSelectFileName <- "%s"' % config.args['XVARSELECTFILENAME'])
+        self.r('uniqueVarPath <- "%s/UNIQUEVAR.csv"' % config.args['OUTDIR'])
+        self.r('printFileName <- "%s/UCORCOEF.csv"' % config.args['OUTDIR'])
+        self.r('xVarCountFileName <- "%s/XVARSELV1_XCOUNT.csv"' % config.args['OUTDIR'])
+        self.r('varSelect <- "%s/VARSELECT.csv"' % config.args['OUTDIR'])
+        self.r.setwd(config.args['WORKINGDIR'] + 'Rwd')
 
     def variable_selection(self):
         flog.flog_info("Starting variable_selection")
@@ -111,15 +126,24 @@ if __name__ == "__main__":
     args = docopt(__doc__)
     
     schema = Schema({
-        'DATA-FILE': And(os.path.isfile, error='VARIABLE-SELECTION-FILE should exist and be readable.'),
-        'VARIABLE-SELECTION-FILE': And(os.path.isfile, error='VARIABLE-SELECTION-FILE should exist and be readable.'),
-        'OUTPUT-DIR': And(os.path.exists, error='OUTPUT-DIR should exist and be writable.'),
-        '--class': And(str, len)
+        'LVIFILENAME': And(os.path.isfile, error='LVIFILENAME should exist and be readable.'),
+        'XVARSELECTFILENAME': And(os.path.isfile, error='XVARSELECTFILENAME should exist and be readable.'),
+        'OUTDIR': And(os.path.exists, error='OUTDIR should exist and be writable.'),
+        Optional('--classVariableName'): And(str, len),
+        Optional('--excludeRowValue'): And(str, len),
+        Optional('--excludeRowVarName'): And(str, len),
+        Optional('--xVarSelectCriteria'): And(str, len),
+        Optional('--minNvar'): And(str, len),
+        Optional('--maxNvar'): And(str, len),
+        Optional('--nSolutions'): And(str, len),
+        Optional('--criteria'): And(str, len)  
     })
 
     try:
         config.args = schema.validate(args)
-        config.args['OUTPUT-DIR'] = config.args['OUTPUT-DIR'].rstrip('/') + '/';
+        config.args['OUTDIR'] = config.args['OUTDIR'].rstrip('/') + '/';
+        config.args['WORKINGDIR'] = os.getcwd().rstrip('/').replace('/bin', '') + '/'
+
         mrat = MRAT()
         mrat.variable_selection()
 
