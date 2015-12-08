@@ -3,7 +3,7 @@
 ## Docker Setup
 
 Single line runner in form of bash script or Makefile does not exist for a reason. Help improve the process by working through these steps. 
-
+ 
 * OSX:
 	- Install homebrew: `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 	- Instal virtual box: `brew cask install virtualbox`
