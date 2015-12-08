@@ -1,9 +1,0 @@
-drive:The main drive containing your programs and data files
-dataInPath:The file path of data inputs excluding file names 
-dataOutPath:The file path to which new files will be written excluding file names and extensions
-dataInFileNameLeft:The left table to which data will be joined including filename plus extension (e.g. QNREFFIN.csv)
-dataInFileNameRight:The right table from which data will be joined (e.g. fileName plus extension (e.g. QN_STAGE_TERRAIN.csv)  
-dataKeyNameList:The key-variable names linking the two tables (e.g. MYCITY, MYSTREET, MYNUMBER each separated using a comma and in the proper order)
-dataOutFileName:The newly joined table name including file extension to be written to dataOutPath (e.g. QNREFFIN2.csv)
-readErrorFilePath:The read error file path name excluding filename (e.g./Rwd/Python/PyReadError/)
-largeDatasetReadLines: The number of records to be processed in the left table before writing to file and proceeding to the next set of records

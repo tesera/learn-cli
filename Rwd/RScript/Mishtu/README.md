@@ -1,3 +1,0 @@
-TSIAnalytics
-============
-Geomatics + Analytics + Visualization

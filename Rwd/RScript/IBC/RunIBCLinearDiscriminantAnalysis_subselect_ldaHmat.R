@@ -1,1 +1,0 @@
-ibcHmat <- ldaHmat(xDataset,CLASSIFICATION)

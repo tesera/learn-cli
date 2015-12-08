@@ -1,9 +1,0 @@
-drive:D
-dataInPath:/Rwd/
-dataOutPath:/Rwd/
-dataInFileNameLeft:interp_c.csv
-dataInFileNameRight:FCLASS.csv
-dataKeyNameList:MPLOTID
-dataOutFileName:interp_c2.csv
-readErrorFilePath:/Rwd/Python/PyReadError/
-largeDatasetReadLines:20000
