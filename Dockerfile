@@ -1,9 +1,7 @@
 FROM r-base:latest
 MAINTAINER Tesera Systems Inc.
 
-
-
 # Need this for docker
-EXPOSE 80
+EXPOSE 8000
 
-CMD [ "ls" ]
+ENTRYPOINT [ "ls" ]
