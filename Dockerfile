@@ -20,9 +20,14 @@ RUN R -e "library('devtools');install_github('tesera/dicriminant-analysis-variab
 
 # Setup environment
 ENV MRATPATH /opt/MRAT_Refactor
-ENV PYTHONPATH $MRATPATH:$MRATPATH/bin:$MRATPATH/lib:$MRATPATH/etc:$MRATPATH/lib/functions:$MRATPATH/etc:$MRATPATH/lib/confighandler:$MRATPATH/share:$MRATPATH/Rwd:$MRATPATH/Rwd/Python:$MRATPATH/Rwd/RScript:$MRATPATH/Rwd/Python/CopyToSitePackages:$MRATPATH/Rwd/Python/Admin:$MRATPATH/Rwd/Python/PyReadError:$MRATPATH/Rwd/Python/DATDICT
-
 RUN mkdir $MRATPATH && mkdir -p /opt/src/libvariableselection && mkdir -p /opt/src/dicriminant-analysis-variable-selection
 WORKDIR $MRATPATH
 
-CMD ["/bin/bash", "-c", "python mrat.py"]
+# Need this for docker
+EXPOSE 80
+
+ADD mrat.py /usr/local/bin/mrat
+RUN chmod +x /usr/local/bin/mrat
+ENTRYPOINT [ "/usr/local/bin/mrat" ]
+
+CMD []

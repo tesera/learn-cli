@@ -67,7 +67,7 @@ class MRAT(object):
         for key, value in args.iteritems():
             if('--' in key):
                 key = key.strip('-')
-                if(value.isdigit()):
+                if(value is not None and value.isdigit()):
                     self.r('%s <- %s' % (key, value))
                 else:
                     self.r('%s <- "%s"' % (key, value))
@@ -161,7 +161,7 @@ if __name__ == "__main__":
         Optional('--maxNvar'): And(str, len),
         Optional('--nSolutions'): And(str, len),
         Optional('--criteria'): And(str, len),  
-        Optional('--s3Bucket'): And(str, len)
+        Optional('--s3Bucket'): Or(None, And(str, len))
     })
 
     try:
