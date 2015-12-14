@@ -10,3 +10,4 @@ Rwd/*.csv
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 venv
+out

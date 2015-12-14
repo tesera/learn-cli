@@ -1,0 +1,6 @@
+{
+	"--s3Bucket": "tesera.mrat",
+	"LVIFILENAME": "ANALYSIS.csv",
+	"XVARSELECTFILENAME": "XVARSELV1.csv",
+	"OUTDIR": "/out/MONCTON"
+}

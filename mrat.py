@@ -2,8 +2,8 @@
 """MRAT
 
 Usage:
-  mrat.py LVIFILENAME XVARSELECTFILENAME OUTDIR
-  mrat.py LVIFILENAME XVARSELECTFILENAME OUTDIR \
+  mrat LVIFILENAME XVARSELECTFILENAME OUTDIR
+  mrat LVIFILENAME XVARSELECTFILENAME OUTDIR \
  [--classVariableName=<string>] \
  [--excludeRowValue=<int>] \
  [--excludeRowVarName=<string>] \
@@ -129,6 +129,7 @@ class MRAT(object):
             counter = counter +1
 
         flog.flog_info("Number of Iterations: %s", counter)
+        exit(0)
                  
 if __name__ == "__main__":
     args = docopt(__doc__)

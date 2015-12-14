@@ -13,11 +13,6 @@ Single line runner in form of bash script or Makefile does not exist for a reaso
 	- Checkout MRAT_Refactor/slimrat: `git clone git@github.com:tesera/MRAT_Refactor.git && git checkout origin/slimrat -b slimrat`
 	- Build docker image: `docker build --rm -t mrat .`
 
-* Windows:
-	- Install [Docker Toolbox](https://www.docker.com/docker-toolbox).
-	- Following commands should all be ran in Git Bash.
-		- Setup a VM: `docker-machine create -d virtualbox dev`
-
 
 ## Working with S3
 In order to work with S3 export your S3 keys:
