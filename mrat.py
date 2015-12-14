@@ -129,7 +129,6 @@ class MRAT(object):
             counter = counter +1
 
         flog.flog_info("Number of Iterations: %s", counter)
-        exit(0)
                  
 if __name__ == "__main__":
     args = docopt(__doc__)
@@ -178,6 +177,8 @@ if __name__ == "__main__":
                 up = ("%s/%s" % (outdir, outfile)).strip('/')
                 outfile = ("%s/%s" % (tempdir, outfile))
                 s3_client.upload_file(outfile, args['--s3Bucket'], up.strip('/'))
+
+        exit(0)
 
     except SchemaError as e:
         exit(e)
