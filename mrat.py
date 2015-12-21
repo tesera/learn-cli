@@ -39,6 +39,8 @@ import sys
 import pdb
 import boto3
 import tempfile
+import pip
+import imp
 from urlparse import urlparse
 from docopt import docopt
 from schema import Schema, And, Or, Use, SchemaError, Optional
@@ -47,10 +49,20 @@ import rpy2.robjects as robjects
 from rpy2.robjects.packages import STAP
 from rpy2.robjects.packages import importr
 
-from libvariableselection.count_xvar_in_xvarsel import CountXVarInXvarSel
-from libvariableselection.test_extract_rvariable_combos import ExtractRVariableCombos
-from libvariableselection.rank_var import RankVar
-from libvariableselection.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
+try:
+    from libvariableselection.count_xvar_in_xvarsel import CountXVarInXvarSel
+    from libvariableselection.test_extract_rvariable_combos import ExtractRVariableCombos
+    from libvariableselection.rank_var import RankVar
+    from libvariableselection.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
+except ImportError:
+    devtools = importr('devtools')
+    pip.main(['install', 'git+https://' + os.getenv('GITHUB_TOKEN') + '@github.com/tesera/libvariableselection.git@' + os.getenv('GITHUB_REF', 'master')])
+    devtools.install_github('tesera/dicriminant-analysis-variable-selection', ref = os.getenv('GITHUB_REF', 'master'), auth_token=os.getenv('GITHUB_TOKEN'))
+    from libvariableselection.count_xvar_in_xvarsel import CountXVarInXvarSel
+    from libvariableselection.test_extract_rvariable_combos import ExtractRVariableCombos
+    from libvariableselection.rank_var import RankVar
+    from libvariableselection.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
+
 
 #, RANKVAR, REMOVE_HIGHCORVAR_FROM_XVARSELV, COUNT_XVAR_IN_XVARSELV1
 
