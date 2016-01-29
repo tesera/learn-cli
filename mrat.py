@@ -40,6 +40,7 @@ import boto3
 import tempfile
 import pip
 import imp
+import shutil
 from urlparse import urlparse
 from docopt import docopt
 from schema import Schema, And, Or, Use, SchemaError, Optional
@@ -182,15 +183,7 @@ if __name__ == "__main__":
         args['WORKINGDIR'] = os.getcwd().rstrip('/').replace('/bin', '') + '/'
 
         mrat = MRAT()
-
-
-        flog.flog_info("Test")
-        exit;
-
-
-    
-
-        #mrat.variable_selection(args)
+        mrat.variable_selection(args)
 
         outdir_url = urlparse(outdir)
         if(outdir_url.scheme == 's3'):
@@ -204,7 +197,7 @@ if __name__ == "__main__":
             for outfile in os.listdir(tempdir):
                 up = ("%s/%s" % (outdir, outfile))
                 outfile = ("%s/%s" % (tempdir, outfile))
-                os.copy(outfile, up)
+                shutil.copy(outfile, up)
         
         exit(0)
 

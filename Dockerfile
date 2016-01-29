@@ -19,4 +19,7 @@ RUN R -e "install.packages(c('subselect', 'futile.logger', 'devtools', 'roxygen2
 RUN R -e "library('devtools');"
 
 ADD mrat.py /usr/local/bin/mrat
+ADD runner.py /usr/local/bin/runner
+
 RUN chmod +x /usr/local/bin/mrat
+RUN chmod +x /usr/local/bin/runner
