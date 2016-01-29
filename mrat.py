@@ -63,9 +63,6 @@ except ImportError:
     from libvariableselection.rank_var import RankVar
     from libvariableselection.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
 
-
-#, RANKVAR, REMOVE_HIGHCORVAR_FROM_XVARSELV, COUNT_XVAR_IN_XVARSELV1
-
 #flog.flog_appender(flog.appender_file('mrat.log'))
 
 class MRAT(object):
@@ -75,6 +72,9 @@ class MRAT(object):
         global flog
         self.r = robjects.r
         flog = importr('futile.logger')
+
+        flog.flog_info('test')
+        exit
 
         for key, value in args.iteritems():
             if('--' in key):
@@ -144,22 +144,23 @@ class MRAT(object):
                  
 if __name__ == "__main__":
     args = docopt(__doc__)
+    s3_client = boto3.client('s3')
     outdir = args['OUTDIR']
+    args['OUTDIR'] = tempdir = tempfile.mkdtemp('mrat')
 
-    if(args['--s3Bucket'] == None):
-        args['LVIFILENAME'] = os.path.abspath(args['LVIFILENAME'])
-        args['XVARSELECTFILENAME'] = os.path.abspath(args['XVARSELECTFILENAME'])
-        args['OUTDIR'] = os.path.abspath(args['OUTDIR'])
-    else:
-        s3_client = boto3.client('s3')
-        args['OUTDIR'] = tempdir = tempfile.mkdtemp('mrat')
-        try:
-            for key in ['LVIFILENAME', 'XVARSELECTFILENAME']:
+    try:
+        for key in ['LVIFILENAME', 'XVARSELECTFILENAME']:
+            url = urlparse(args[key])
+            if url.scheme == 's3':
                 dl = tempdir + '/' + args[key].split('/')[-1]
-                s3_client.download_file(args['--s3Bucket'], args[key].strip('/'), dl)
+                s3_client.download_file(url.netloc, url.path.strip('/'), dl)
                 args[key] = dl
-        except Exception as e:
+    except Exception as e:
             exit(e)
+
+    args['LVIFILENAME'] = os.path.abspath(args['LVIFILENAME'])
+    args['XVARSELECTFILENAME'] = os.path.abspath(args['XVARSELECTFILENAME'])
+    args['OUTDIR'] = os.path.abspath(args['OUTDIR'])
 
     schema = Schema({
         'LVIFILENAME': And(os.path.isfile, error='LVIFILENAME should exist and be readable.'),
@@ -182,13 +183,23 @@ if __name__ == "__main__":
         args['WORKINGDIR'] = os.getcwd().rstrip('/').replace('/bin', '') + '/'
 
         mrat = MRAT()
-        mrat.variable_selection(args)
 
-        if(args['--s3Bucket'] is not None):
+
+        flog.flog_info("Test")
+        exit;
+
+
+    
+
+        #mrat.variable_selection(args)
+
+        outdir_url = urlparse(outdir)
+        if(outdir_url.scheme == 's3'):
+            flog.flog_info("Copying results to %s%s", outdir_url.netloc, outdir_url.path)
             for outfile in os.listdir(tempdir):
-                up = ("%s/%s" % (outdir, outfile)).strip('/')
+                up = ("%s/%s" % (outdir_url.path, outfile)).strip('/')
                 outfile = ("%s/%s" % (tempdir, outfile))
-                s3_client.upload_file(outfile, args['--s3Bucket'], up.strip('/'))
+                s3_client.upload_file(outfile, outdir_url.netloc, up.strip('/'))
 
         exit(0)
 
