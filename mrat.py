@@ -15,8 +15,8 @@ Usage:
  [--s3Bucket=<string>]
 
 Arguments:
-  LVIFILENAME  Input file.
-  XVARSELECTFILENAME  File containing variable selections.
+  LVIFILENAME  Input file, local or S3 in format s3://bucket/path/filename.csv.
+  XVARSELECTFILENAME  File containing variable selections, local or S3 in format s3://bucket/path/filename.csv.
   OUTDIR  Directory to write results out too.
 
 Options:
@@ -29,7 +29,6 @@ Options:
   --maxNvar=<int>  Maximum number of variables to select [default: 20].
   --nSolutions=<int>  Number of iterations to be applied [default: 20].
   --criteria=<string>  Set the criteria to be applied for variables selection: ccr12, Wilkes xi2 zeta2 [default: xi2].
-  --s3Bucket=<string>  If paths reside on an S3 bucket.
 
 """
 from signal import *
@@ -200,7 +199,13 @@ if __name__ == "__main__":
                 up = ("%s/%s" % (outdir_url.path, outfile)).strip('/')
                 outfile = ("%s/%s" % (tempdir, outfile))
                 s3_client.upload_file(outfile, outdir_url.netloc, up.strip('/'))
-
+        else:
+            flog.flog_info("Copying results to %s", outdir)
+            for outfile in os.listdir(tempdir):
+                up = ("%s/%s" % (outdir, outfile))
+                outfile = ("%s/%s" % (tempdir, outfile))
+                os.copy(outfile, up)
+        
         exit(0)
 
     except SchemaError as e:
