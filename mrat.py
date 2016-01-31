@@ -12,7 +12,8 @@ Usage:
  [--maxNvar=<int>] \
  [--nSolutions=<int>] \
  [--criteria=<int>] \
- [--s3Bucket=<string>]
+ [--tempDir=<string>]
+
 
 Arguments:
   LVIFILENAME  Input file, local or S3 in format s3://bucket/path/filename.csv.
@@ -29,6 +30,7 @@ Options:
   --maxNvar=<int>  Maximum number of variables to select [default: 20].
   --nSolutions=<int>  Number of iterations to be applied [default: 20].
   --criteria=<string>  Set the criteria to be applied for variables selection: ccr12, Wilkes xi2 zeta2 [default: xi2].
+  --tempDir=<string>  Use this temp directory instead of generating one.
 
 """
 from signal import *
@@ -144,10 +146,30 @@ class MRAT(object):
                  
 if __name__ == "__main__":
     args = docopt(__doc__)
+    schema = Schema({
+        'LVIFILENAME': And(os.path.isfile, error='LVIFILENAME should exist and be readable.'),
+        'XVARSELECTFILENAME': And(os.path.isfile, error='XVARSELECTFILENAME should exist and be readable.'),
+        'OUTDIR': And(os.path.exists, error='OUTDIR should exist and be writable.'),
+        Optional('--classVariableName'): And(str, len),
+        Optional('--excludeRowValue'): And(str, len),
+        Optional('--excludeRowVarName'): And(str, len),
+        Optional('--xVarSelectCriteria'): And(str, len),
+        Optional('--minNvar'): And(str, len),
+        Optional('--maxNvar'): And(str, len),
+        Optional('--nSolutions'): And(str, len),
+        Optional('--criteria'): And(str, len),
+        Optional('--tempDir'): Or(None, And(str, len))
+    })
+
     s3_client = boto3.client('s3')
     outdir = args['OUTDIR']
-    args['OUTDIR'] = tempdir = tempfile.mkdtemp('mrat')
+    tmp = tempfile.mkdtemp('mrat')
 
+    if args['--tempDir'] != None:
+        tmp = args['--tempDir']
+
+    args['OUTDIR'] = tempdir = tmp
+    
     try:
         for key in ['LVIFILENAME', 'XVARSELECTFILENAME']:
             url = urlparse(args[key])
@@ -162,21 +184,6 @@ if __name__ == "__main__":
     args['XVARSELECTFILENAME'] = os.path.abspath(args['XVARSELECTFILENAME'])
     args['OUTDIR'] = os.path.abspath(args['OUTDIR'])
 
-    schema = Schema({
-        'LVIFILENAME': And(os.path.isfile, error='LVIFILENAME should exist and be readable.'),
-        'XVARSELECTFILENAME': And(os.path.isfile, error='XVARSELECTFILENAME should exist and be readable.'),
-        'OUTDIR': And(os.path.exists, error='OUTDIR should exist and be writable.'),
-        Optional('--classVariableName'): And(str, len),
-        Optional('--excludeRowValue'): And(str, len),
-        Optional('--excludeRowVarName'): And(str, len),
-        Optional('--xVarSelectCriteria'): And(str, len),
-        Optional('--minNvar'): And(str, len),
-        Optional('--maxNvar'): And(str, len),
-        Optional('--nSolutions'): And(str, len),
-        Optional('--criteria'): And(str, len),  
-        Optional('--s3Bucket'): Or(None, And(str, len))
-    })
-
     try:
         args = schema.validate(args)
         args['OUTDIR'] = args['OUTDIR'].rstrip('/') + '/';
@@ -186,6 +193,7 @@ if __name__ == "__main__":
         mrat.variable_selection(args)
 
         outdir_url = urlparse(outdir)
+        
         if(outdir_url.scheme == 's3'):
             flog.flog_info("Copying results to %s%s", outdir_url.netloc, outdir_url.path)
             for outfile in os.listdir(tempdir):
@@ -194,6 +202,9 @@ if __name__ == "__main__":
                 s3_client.upload_file(outfile, outdir_url.netloc, up.strip('/'))
         else:
             flog.flog_info("Copying results to %s", outdir)
+            if not os.path.exists(outdir):
+                os.makedirs(outdir)
+
             for outfile in os.listdir(tempdir):
                 up = ("%s/%s" % (outdir, outfile))
                 outfile = ("%s/%s" % (tempdir, outfile))
