@@ -11,3 +11,4 @@ Rwd/*.csv
 !.elasticbeanstalk/*.global.yml
 venv
 out
+tests
