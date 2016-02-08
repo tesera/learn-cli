@@ -1,35 +1,18 @@
-# MRAT Refactor
+# Variable Selection Client
 
 ## Running
 
-Insure docker image is loaded via `docker images`. If *Cannot connect to the Docker daemon. Is the docker daemon running on this host?* error displays this is not an issue with docker or docker-machine. Run `docker-machine env dev` to display and setup environment variables. `dev` is the name of virtual machine that was setup in above step.
+The runner consists of two components
 
-To run MRAT copy and paste the following command:
+- mrat.py: Base varselect tool that logs to command line. Type 'python mrat.py' for usage.
+- runner.py: Wrapper around mrat.py that pipes output to Cloudwatch and a log file. Usage, ./runner.py log-id params_for_mrat.py
 
-* `docker run -v $PWD:/opt/MRAT_Refactor -it -e DATASET=MONCTON mrat`
-	- `-e DATASET=MONCTON` this refers one of the test environments in tests/data. DATASET is the environment variable.
-	- bin/mrat.sh is the script that's added to the virtual machine and executes MRAT and tests. 
+To run variable select inside docker container use the following command:
 
-To run MRAT tests copy and paste the following command:
+* `docker run -v $PWD:/opt/MRAT_Refactor -it mrat bash`
 
-* `docker run -v $PWD:/opt/MRAT_Refactor -it -e DATASET=MONCTON mrat ./bin/test.sh`
-
-*Note: In order to have tests copy the results of first run to tests/regression/DATASET. Files to copy are noted below. The DATASET must correspond to the runtime folder above that exists in tests/data.*
-
-./runner.py log-id params
-
-## Refactoring
-
-Environment variable `DATASET` refers to analysis that is going to run on MRAT. start.sh will copy `tests/data/$DATASET/*.csv` into `Rwd` and `tests/data/$DATASET/XIterativeVarSel.R.conf` into `etc`. Key runtime files are **XVARSELV1.csv** and **ANALYSIS.csv**. **XVARSELV1.csv** is modified by MRAT and cannot be used in subsequent runs. classVariableName in tests/data/$DATASET/XIterativeVarSel.R.conf can be set as either _CLASS5_ or _CLPRDP_
-
-After each run the output in Rwd will be compared following files in tests/regresion/$DATASET and succesfull run should not generate any differentials:
-- UCORCOEF.csv
-- UNIQUEVAR.csv
-- VARRANK.csv 
-- VARSELECT.csv 
-- XVARSELV.csv
-- XVARSELV1_XCOUNT.csv
-- XVARSELV1.csv
+To test outputs compare the output directories. In order to create predicatable outputs call to *improve* in rvarselect is set to 
+use the same seed.
 
 ## Creating an R Library
 
