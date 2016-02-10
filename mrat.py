@@ -58,8 +58,8 @@ try:
     from libvariableselection.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
 except ImportError:
     devtools = importr('devtools')
-    pip.main(['install', 'git+https://' + os.getenv('GITHUB_TOKEN') + '@github.com/tesera/libvariableselection.git@' + os.getenv('GITHUB_REF', 'master')])
-    devtools.install_github('tesera/dicriminant-analysis-variable-selection', ref = os.getenv('GITHUB_REF', 'master'), auth_token=os.getenv('GITHUB_TOKEN'))
+    pip.main(['install', 'git+https://' + os.getenv('GITHUB_TOKEN') + '@github.com/tesera/pyvarselect.git@' + os.getenv('GITHUB_REF', 'master')])
+    devtools.install_github('tesera/rvarselect', ref = os.getenv('GITHUB_REF', 'master'), auth_token=os.getenv('GITHUB_TOKEN'))
     from libvariableselection.count_xvar_in_xvarsel import CountXVarInXvarSel
     from libvariableselection.test_extract_rvariable_combos import ExtractRVariableCombos
     from libvariableselection.rank_var import RankVar
