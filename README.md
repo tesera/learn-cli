@@ -5,7 +5,7 @@ The runner consists of two components
 - mrat.py: Base varselect tool that logs to command line. Type 'python mrat.py' for usage.
 - runner.py: Wrapper around mrat.py that pipes output to Cloudwatch and a log file. Usage, ./runner.py log-id params_for_mrat.py
 
-##Running the CLi using Docker
+##Running the CLI using Docker
 
 If you are using docker-machine make sure you have a machine running and that you have evaluated the machine environment.
 
