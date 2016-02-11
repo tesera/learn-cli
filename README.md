@@ -22,8 +22,11 @@ docker build -t="varselect-cli" varselect-cli
 
 ### How to Run the container
 
+#### Running in interactive mode
+
 ```shell
-docker run -v $PWD:/opt/MRAT_Refactor -it mrat bash
+cd varselect-cli
+docker run -v $PWD:/opt/MRAT_Refactor -it varselect-cli bash
 ```
 
 ## Testing
