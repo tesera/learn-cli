@@ -1,4 +1,4 @@
-# Variable Selection Client
+# Variable Selection CLI
 
 The runner consists of two components
 
