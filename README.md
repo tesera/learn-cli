@@ -1,6 +1,6 @@
 # Variable Selection CLI
 
-A variable selection client writen in Python and R.
+A variable selection client writen in Python and R. The CLI leverages [pyvarselect](https://github.com/tesera/pyvarselect) and [rvarslect](https://github.com/tesera/rvarselect) libraries. We use rpy2 as a proxy between Python and R.
 
 ##Dependencies
 
