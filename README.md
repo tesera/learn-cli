@@ -24,6 +24,8 @@ docker build -t="varselect-cli" varselect-cli
 
 #### Running in interactive mode
 
+In order to run the container you will need an access token for Github API token and access keys for AWS in order to use AWS S3.
+
 ```shell
 cd varselect-cli
 docker run -v $PWD:/opt/MRAT_Refactor -it \
