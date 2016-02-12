@@ -12,6 +12,12 @@ The runner consists of two components
 * virtualenv (recommended)
 * R
 
+##Installing
+
+Since this repo is private you will need to have Github keys setup on your computer in order to authenticate againt Github.
+
+`pip install git+git://github.com/tesera/varselect-cli.git`
+
 ##Running Locally
 
 Make sure you have installed all the dependencies listed above.
