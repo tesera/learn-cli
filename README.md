@@ -7,7 +7,7 @@ The runner consists of two components
 
 ##Dependencies
 
-* Python 2.4
+* Python 2.7
 * pip
 * virtualenv (recommended)
 * R
