@@ -1,9 +1,6 @@
 # Variable Selection CLI
 
-The runner consists of two components
-
-- mrat.py: Base varselect tool that logs to command line. Type 'python mrat.py' for usage.
-- runner.py: Wrapper around mrat.py that pipes output to Cloudwatch and a log file. Usage, ./runner.py log-id params_for_mrat.py
+A variable selection client writen in Python and R.
 
 ##Dependencies
 
