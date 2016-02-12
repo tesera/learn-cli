@@ -5,6 +5,35 @@ The runner consists of two components
 - mrat.py: Base varselect tool that logs to command line. Type 'python mrat.py' for usage.
 - runner.py: Wrapper around mrat.py that pipes output to Cloudwatch and a log file. Usage, ./runner.py log-id params_for_mrat.py
 
+##Dependencies
+
+* Python 2.4
+* pip
+* virtualenv (recommended)
+* R
+
+##Running Locally
+
+Make sure you have installed all the dependencies listed above.
+
+```shell
+$ git clone git@github.com:tesera/varselect-cli.git
+$ cd varselect-cli
+
+#optonal: setup isolated env
+$ virtualenv venv
+$ source venv/bin/activate
+
+# install package and dependencies
+$ pip install .
+
+# varselect cli is now in path
+$ varselect
+Usage:
+  varselect LVIFILENAME XVARSELECTFILENAME OUTDIR
+  varselect LVIFILENAME XVARSELECTFILENAME OUTDIR  [--classVariableName=<string>]  [--excludeRowValue=<int>]  [--excludeRowVarName=<string>]  [--xVarSelectCriteria=<string>]  [--minNvar=<int>]  [--maxNvar=<int>]  [--nSolutions=<int>]  [--criteria=<int>]  [--tempDir=<string>]
+```
+
 ##Running the CLI using Docker
 
 If you are using docker-machine make sure you have a machine running and that you have evaluated the machine environment.
