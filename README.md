@@ -26,7 +26,11 @@ docker build -t="varselect-cli" varselect-cli
 
 ```shell
 cd varselect-cli
-docker run -v $PWD:/opt/MRAT_Refactor -it varselect-cli bash
+docker run -v $PWD:/opt/MRAT_Refactor -it \
+  -e GITHUB_TOKEN=<your-github-token> \
+  -e AWS_ACCESS_KEY_ID=<your-aws-access-key> \
+  -e AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
+  varselect-cli bash ./example/run.sh
 ```
 
 ## Testing
