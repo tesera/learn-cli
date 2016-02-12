@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-python ./mrat.py \
+varselect \
   s3://tesera.svc.variable-selection/uploads/22a7f809-b28e-4ff5-bb05-39c126e45605/ANALYSIS.csv \
   s3://tesera.svc.variable-selection/uploads/22a7f809-b28e-4ff5-bb05-39c126e45605/XVARSELV1.csv \
   s3://tesera.svc.variable-selection/uploads/22a7f809-b28e-4ff5-bb05-39c126e45605/output/1 \
