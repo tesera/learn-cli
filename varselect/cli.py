@@ -52,20 +52,10 @@ import boto3
 # import imp # ?
 # import pip # something better?
 
-# try:
-#     from libvariableselection.count_xvar_in_xvarsel import CountXVarInXvarSel
-#     from libvariableselection.test_extract_rvariable_combos import ExtractRVariableCombos
-#     from libvariableselection.rank_var import RankVar
-#     from libvariableselection.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
-# except ImportError:
-#     devtools = importr('devtools')
-#     pip.main(['install', 'git+https://' + os.getenv('GITHUB_TOKEN') + '@github.com/tesera/pyvarselect.git@' + os.getenv('GITHUB_REF', 'master')])
-#     devtools.install_github('tesera/rvarselect', ref = os.getenv('GITHUB_REF', 'master'), auth_token=os.getenv('GITHUB_TOKEN'))
-#     from libvariableselection.count_xvar_in_xvarsel import CountXVarInXvarSel
-#     from libvariableselection.test_extract_rvariable_combos import ExtractRVariableCombos
-#     from libvariableselection.rank_var import RankVar
-#     from libvariableselection.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
-
+from libvariableselection.count_xvar_in_xvarsel import CountXVarInXvarSel
+from libvariableselection.test_extract_rvariable_combos import ExtractRVariableCombos
+from libvariableselection.rank_var import RankVar
+from libvariableselection.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
 
 #flog.flog_appender(flog.appender_file('varselect.log'))
 
@@ -112,33 +102,33 @@ def cli():
     print 'all good til here'
     print str(args)
 
-    # try:
-    #     args = schema.validate(args)
-    #     args['OUTDIR'] = args['OUTDIR'].rstrip('/') + '/';
-    #     args['WORKINGDIR'] = os.getcwd().rstrip('/').replace('/bin', '') + '/'
+    try:
+        args = schema.validate(args)
+        args['OUTDIR'] = args['OUTDIR'].rstrip('/') + '/';
+        args['WORKINGDIR'] = os.getcwd().rstrip('/').replace('/bin', '') + '/'
 
-    #     runner = Runner()
-    #     runner.variable_selection(args)
+        runner = Runner()
+        runner.variable_selection(args)
 
-    #     outdir_url = urlparse(outdir)
+        outdir_url = urlparse(outdir)
 
-    #     if(outdir_url.scheme == 's3'):
-    #         flog.flog_info("Copying results to %s%s", outdir_url.netloc, outdir_url.path)
-    #         for outfile in os.listdir(tempdir):
-    #             up = ("%s/%s" % (outdir_url.path, outfile)).strip('/')
-    #             outfile = ("%s/%s" % (tempdir, outfile))
-    #             s3_client.upload_file(outfile, outdir_url.netloc, up.strip('/'))
-    #     else:
-    #         flog.flog_info("Copying results to %s", outdir)
-    #         if not os.path.exists(outdir):
-    #             os.makedirs(outdir)
+        if(outdir_url.scheme == 's3'):
+            flog.flog_info("Copying results to %s%s", outdir_url.netloc, outdir_url.path)
+            for outfile in os.listdir(tempdir):
+                up = ("%s/%s" % (outdir_url.path, outfile)).strip('/')
+                outfile = ("%s/%s" % (tempdir, outfile))
+                s3_client.upload_file(outfile, outdir_url.netloc, up.strip('/'))
+        else:
+            flog.flog_info("Copying results to %s", outdir)
+            if not os.path.exists(outdir):
+                os.makedirs(outdir)
 
-    #         for outfile in os.listdir(tempdir):
-    #             up = ("%s/%s" % (outdir, outfile))
-    #             outfile = ("%s/%s" % (tempdir, outfile))
-    #             shutil.copy(outfile, up)
+            for outfile in os.listdir(tempdir):
+                up = ("%s/%s" % (outdir, outfile))
+                outfile = ("%s/%s" % (tempdir, outfile))
+                shutil.copy(outfile, up)
 
-    #     exit(0)
+        exit(0)
 
-    # except SchemaError as e:
-    #     exit(e)
+    except SchemaError as e:
+        exit(e)
