@@ -49,7 +49,7 @@ eval "$(docker-machine env default)"
 
 ```shell
 git clone git@github.com:tesera/varselect-cli.git
-docker build -t="varselect-cli" varselect-cli
+docker build -t="varselect-cli" --build-args GITHUB_TOKEN=<your-github-token> varselect-cli
 ```
 
 ### How to Run the container
@@ -61,7 +61,6 @@ In order to run the container you will need an access token for Github API token
 ```shell
 cd varselect-cli
 docker run -it \
-  -e GITHUB_TOKEN=<your-github-token> \
   -e AWS_ACCESS_KEY_ID=<your-aws-access-key> \
   -e AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
   varselect-cli bash ./example/run.sh
@@ -72,7 +71,6 @@ docker run -it \
 ```shell
 cd varselect-cli
 docker run -v $PWD:/opt/varselect -it \
-  -e GITHUB_TOKEN=<your-github-token> \
   -e AWS_ACCESS_KEY_ID=<your-aws-access-key> \
   -e AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
   varselect-cli /bin/bash
@@ -83,7 +81,6 @@ docker run -v $PWD:/opt/varselect -it \
 ```shell
 cd varselect-cli
 docker run \
-  -e GITHUB_TOKEN=<your-github-token> \
   -e AWS_ACCESS_KEY_ID=<your-aws-access-key> \
   -e AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
   varselect-cli /bin/bash
