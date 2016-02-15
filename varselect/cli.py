@@ -33,6 +33,7 @@ Options:
   --tempDir=<string>  Use this temp directory instead of generating one.
 
 """
+
 import os
 import sys
 import shutil
@@ -44,18 +45,12 @@ from docopt import docopt
 from schema import Schema, And, Or, Use, SchemaError, Optional
 import boto3
 
-# from varselect import Runner
+from varselect import Runner
 
-# determine if required
-# import atexit
-# import pdb # ?
-# import imp # ?
-# import pip # something better?
-
-from libvariableselection.count_xvar_in_xvarsel import CountXVarInXvarSel
-from libvariableselection.test_extract_rvariable_combos import ExtractRVariableCombos
-from libvariableselection.rank_var import RankVar
-from libvariableselection.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
+from pyvarselect.count_xvar_in_xvarsel import CountXVarInXvarSel
+from pyvarselect.test_extract_rvariable_combos import ExtractRVariableCombos
+from pyvarselect.rank_var import RankVar
+from pyvarselect.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
 
 #flog.flog_appender(flog.appender_file('varselect.log'))
 
@@ -98,9 +93,6 @@ def cli():
     args['LVIFILENAME'] = os.path.abspath(args['LVIFILENAME'])
     args['XVARSELECTFILENAME'] = os.path.abspath(args['XVARSELECTFILENAME'])
     args['OUTDIR'] = os.path.abspath(args['OUTDIR'])
-
-    print 'all good til here'
-    print str(args)
 
     try:
         args = schema.validate(args)
