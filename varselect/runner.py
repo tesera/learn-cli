@@ -2,10 +2,10 @@ import rpy2.robjects as robjects
 from rpy2.robjects.packages import STAP
 from rpy2.robjects.packages import importr
 
-from libvariableselection.count_xvar_in_xvarsel import CountXVarInXvarSel
-from libvariableselection.test_extract_rvariable_combos import ExtractRVariableCombos
-from libvariableselection.rank_var import RankVar
-from libvariableselection.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
+from pyvarselect.count_xvar_in_xvarsel import CountXVarInXvarSel
+from pyvarselect.test_extract_rvariable_combos import ExtractRVariableCombos
+from pyvarselect.rank_var import RankVar
+from pyvarselect.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
 
 class Runner(object):
     r = None
@@ -40,12 +40,12 @@ class Runner(object):
         rank_var = RankVar(args['OUTDIR'])
         extract_rvariable_combos = ExtractRVariableCombos(args['OUTDIR'])
         remove_highcorvar = RemoveHighCorVarFromXVarSel(args['OUTDIR'])
-        davs = importr('DiscriminantAnalysisVariableSelection')
+        rvarselect = importr('rvarselect')
 
         currentCount = count_xvar_in_xvarsel.count()
         self.r('initialCount <- scan(xVarCountFileName)')
         flog.flog_info("Initial variable count: %s", self.r['initialCount'])
-        davs.vs_IdentifyAndOrganizeUniqueVariableSets(self.r['lviFileName'], self.r['xVarSelectFileName'], self.r['varSelect'])
+        rvarselect.vs_IdentifyAndOrganizeUniqueVariableSets(self.r['lviFileName'], self.r['xVarSelectFileName'], self.r['varSelect'])
 
         # test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() identifies the unique variable sets and organizes them into a new file VARSELV.csv;
         uniqueVarSets = extract_rvariable_combos.extract_rvariable_combos()
@@ -54,9 +54,7 @@ class Runner(object):
         ranksVariables = rank_var.rank()
 
         # test2_XIterativeVarSelCorVarElimination.R runs steps 13 -18 ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
-        davs.vs_CompleteVariableSelectionPlusRemoveCorrelationVariables(self.r['lviFileName'], self.r['uniqueVarPath'], self.r['printFileName'])
-
-
+        rvarselect.vs_CompleteVariableSelectionPlusRemoveCorrelationVariables(self.r['lviFileName'], self.r['uniqueVarPath'], self.r['printFileName'])
 
         removeCorXVars = remove_highcorvar.remove_high_cor_vars()
         nextCount = count_xvar_in_xvarsel.count()
@@ -71,12 +69,12 @@ class Runner(object):
             currentCount = nextCount
             #config part of test_XItertative plus test_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
             #r.source("/opt/xvarselect/bin/XIterativeConfFile.R")
-            davs.vs_IdentifyAndOrganizeUniqueVariableSets(self.r['lviFileName'], self.r['xVarSelectFileName'], self.r['varSelect'])
+            rvarselect.vs_IdentifyAndOrganizeUniqueVariableSets(self.r['lviFileName'], self.r['xVarSelectFileName'], self.r['varSelect'])
 
             extract_rvariable_combos.extract_rvariable_combos()
             rank_var.rank()
 
-            davs.vs_CompleteVariableSelectionPlusRemoveCorrelationVariables(self.r['lviFileName'], self.r['uniqueVarPath'], self.r['printFileName'])
+            rvarselect.vs_CompleteVariableSelectionPlusRemoveCorrelationVariables(self.r['lviFileName'], self.r['uniqueVarPath'], self.r['printFileName'])
 
             remove_highcorvar.remove_high_cor_vars()
             count_xvar_in_xvarsel.count()
