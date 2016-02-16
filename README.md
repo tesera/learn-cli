@@ -13,9 +13,9 @@ A variable selection client writen in Python and R. The CLI leverages [pyvarsele
 * Docker (optional)
 * AWS Access Key (optional)
 
-### Running locally without Docker
+### Running without Docker
 
-#### via git clone
+#### Install via git clone
 
 ```console
 # install dependencies listed above
@@ -25,7 +25,7 @@ bash ./install-dependencies.sh
 pip install .
 ```
 
-#### via git direct install
+#### Install via git direct install
 
 ```console
 # update your-github-token -> your github personal access token and github-ref -> i.e. master
@@ -33,12 +33,9 @@ bash ./install-dependencies.sh
 pip install git+git://<your-github-token>@github.com/tesera/varselect-cli@<github-ref>.git
 ```
 
-###Running Locally without Docker
-
-Make sure you have installed all the dependencies listed above.
+#### Invoke the cli
 
 ```console
-# varselect cli is now in path
 $ varselect
 Usage:
   varselect LVIFILENAME XVARSELECTFILENAME OUTDIR  \ 
@@ -57,13 +54,13 @@ Usage:
 
 If you are using docker-machine make sure you have a machine running and that you have evaluated the machine environment.
 
-### Create a virtual machine
+#### Create a virtual machine
 ```console
 docker-machine create --driver virtualbox default
 eval "$(docker-machine env default)"
 ```
 
-### Build the container
+#### Build the container
 
 ```console
 git clone git@github.com:tesera/varselect-cli.git
@@ -74,9 +71,9 @@ docker build -t="varselect-cli" \
     varselect-cli
 ```
 
-### Run the container
+#### Run the container
 
-### Command
+#####Basic Command
 
 ```console
 docker run -it -v $PWD/example:/opt/data varselect-cli \
@@ -92,7 +89,7 @@ docker run -it -v $PWD/example:/opt/data varselect-cli \
   --criteria xi2
 ```
 
-### Running the Examples
+##### Running the Examples
 
 ```console
 docker run -it varselect-cli bash ./example/run.sh
@@ -105,7 +102,7 @@ docker run -it \
   varselect-cli bash ./example/run-s3.sh
 ```
 
-### Development
+##### Run in development mode
 
 ```console
 cd varselect-cli
@@ -115,10 +112,10 @@ docker run -v $PWD:/opt/varselect -it \
   varselect-cli /bin/bash
 ```
 
-## Testing
+### Testing
 >Tests will be added soon
 
-## Contributing
+### Contributing
 
 - [Python Style Guide](https://www.python.org/dev/peps/pep-0008/)
 - [R Style Guide](https://google.github.io/styleguide/Rguide.xml)
