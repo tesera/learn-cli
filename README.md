@@ -2,20 +2,18 @@
 
 A variable selection client writen in Python and R. The CLI leverages [pyvarselect](https://github.com/tesera/pyvarselect) and [rvarslect](https://github.com/tesera/rvarselect) libraries. We use rpy2 as a proxy between Python and R.
 
-##Dependencies
+###Dependencies
 
 * Python 2.7
 * R
 * pip
+* [Github Persona Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/)
 * littler (optional for local)
 * virtualenv (recommended for local)
 * Docker (optional)
+* AWS Access Key (optional)
 
-##Installing
-
-Since this repo is private you will need to have your [Github Persona Access] Token(https://help.github.com/articles/creating-an-access-token-for-command-line-use/) in order to authenticate againt Github.
-
-## Installing Locally
+### Running locally without Docker
 
 #### via git clone
 
@@ -35,21 +33,11 @@ bash ./install-dependencies.sh
 pip install git+git://<your-github-token>@github.com/tesera/varselect-cli@<github-ref>.git
 ```
 
-##Running Locally
+###Running Locally without Docker
 
 Make sure you have installed all the dependencies listed above.
 
 ```console
-$ git clone git@github.com:tesera/varselect-cli.git
-$ cd varselect-cli
-
-#optional: setup isolated env
-$ virtualenv venv
-$ source venv/bin/activate
-
-# install package and dependencies
-$ pip install .
-
 # varselect cli is now in path
 $ varselect
 Usage:
@@ -65,15 +53,17 @@ Usage:
       [--tempDir=<string>]
 ```
 
-##Running the CLI using Docker
+###Running with Docker
 
 If you are using docker-machine make sure you have a machine running and that you have evaluated the machine environment.
 
+### Create a virtual machine
 ```console
+docker-machine create --driver virtualbox default
 eval "$(docker-machine env default)"
 ```
 
-### How to build the container
+### Build the container
 
 ```console
 git clone git@github.com:tesera/varselect-cli.git
@@ -84,9 +74,7 @@ docker build -t="varselect-cli" \
     varselect-cli
 ```
 
-### How to Run the container
-
-In order to run the container you will need an access token for Github API token and access keys for AWS in order to use AWS S3.
+### Run the container
 
 ### Command
 
