@@ -4,14 +4,19 @@ A variable selection client writen in Python and R. The CLI leverages [pyvarsele
 
 ###Dependencies
 
-* Python 2.7
-* R
-* pip
 * [Github Persona Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/)
-* littler (optional for local)
-* virtualenv (recommended for local)
-* Docker (optional)
-* AWS Access Key (optional)
+* [AWS Access Key](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html) (optional)
+
+###Without Docker
+* [Python 2.7](https://www.python.org/)
+* [R](https://www.r-project.org/)
+* [pip](https://pypi.python.org/pypi/pip)
+* [virtualenv](https://virtualenv.readthedocs.org/en/latest/) (recommended)
+* [little r](http://dirk.eddelbuettel.com/code/littler.html)
+
+###With Docker
+* [Docker](https://www.docker.com/)
+* [Docker Machine](https://docs.docker.com/machine/) (Windows/OSX)
 
 ### Running without Docker
 
