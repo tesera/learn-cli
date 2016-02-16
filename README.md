@@ -5,25 +5,45 @@ A variable selection client writen in Python and R. The CLI leverages [pyvarsele
 ##Dependencies
 
 * Python 2.7
-* pip
-* virtualenv (recommended)
 * R
+* pip
+* littler (optional for local)
+* virtualenv (recommended for local)
+* Docker (optional)
 
 ##Installing
 
-Since this repo is private you will need to have Github keys setup on your computer in order to authenticate againt Github.
+Since this repo is private you will need to have your [Github Persona Access] Token(https://help.github.com/articles/creating-an-access-token-for-command-line-use/) in order to authenticate againt Github.
 
-`pip install git+git://github.com/tesera/varselect-cli.git`
+## Installing Locally
+
+#### via git clone
+
+```console
+# install dependencies listed above
+git clone git@github.com:tesera/varselect-cli.git
+cd varselect-cli
+bash ./install-dependencies.sh
+pip install .
+```
+
+#### via git direct install
+
+```console
+# update your-github-token -> your github personal access token and github-ref -> i.e. master
+bash ./install-dependencies.sh
+pip install git+git://<your-github-token>@github.com/tesera/varselect-cli@<github-ref>.git
+```
 
 ##Running Locally
 
 Make sure you have installed all the dependencies listed above.
 
-```shell
+```console
 $ git clone git@github.com:tesera/varselect-cli.git
 $ cd varselect-cli
 
-#optonal: setup isolated env
+#optional: setup isolated env
 $ virtualenv venv
 $ source venv/bin/activate
 
@@ -33,61 +53,82 @@ $ pip install .
 # varselect cli is now in path
 $ varselect
 Usage:
-  varselect LVIFILENAME XVARSELECTFILENAME OUTDIR
-  varselect LVIFILENAME XVARSELECTFILENAME OUTDIR  [--classVariableName=<string>]  [--excludeRowValue=<int>]  [--excludeRowVarName=<string>]  [--xVarSelectCriteria=<string>]  [--minNvar=<int>]  [--maxNvar=<int>]  [--nSolutions=<int>]  [--criteria=<int>]  [--tempDir=<string>]
+  varselect LVIFILENAME XVARSELECTFILENAME OUTDIR  \ 
+      [--classVariableName=<string>] \
+      [--excludeRowValue=<int>]  \
+      [--excludeRowVarName=<string>]  \
+      [--xVarSelectCriteria=<string>]  \
+      [--minNvar=<int>]  \
+      [--maxNvar=<int>]  \
+      [--nSolutions=<int>]  \
+      [--criteria=<int>]  \
+      [--tempDir=<string>]
 ```
 
 ##Running the CLI using Docker
 
 If you are using docker-machine make sure you have a machine running and that you have evaluated the machine environment.
 
-```shell
+```console
 eval "$(docker-machine env default)"
 ```
 
 ### How to build the container
 
-```shell
+```console
 git clone git@github.com:tesera/varselect-cli.git
-docker build -t="varselect-cli" --build-args GITHUB_TOKEN=<your-github-token> varselect-cli
+docker build -t="varselect-cli" \
+    --build-args GITHUB_TOKEN=<your-github-token> \
+    [--build-args PYVARSELECT_REF=<pyvarselect-lib-github-ref> ] \
+    [--build-args RVARSELECT_REF=<rvarselect-lib-github-ref> ] \
+    varselect-cli
 ```
 
 ### How to Run the container
 
 In order to run the container you will need an access token for Github API token and access keys for AWS in order to use AWS S3.
 
-### Example
+### Command
 
-```shell
-cd varselect-cli
+```console
+docker run -it -v $PWD/example:/opt/data varselect-cli \
+  /opt/data/ANALYSIS.csv \
+  /opt/data/XVARSELV1.csv \
+  /opt/data \
+  --classVariableName CLASS5 \
+  --excludeRowValue -1 \
+  --excludeRowVarName SORTGRP \
+  --minNvar 1 \
+  --maxNvar 20 \
+  --nSolutions 20 \
+  --criteria xi2
+```
+
+### Running the Examples
+
+```console
+docker run -it varselect-cli bash ./example/run.sh
+```
+
+```console
 docker run -it \
   -e AWS_ACCESS_KEY_ID=<your-aws-access-key> \
   -e AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
-  varselect-cli bash ./example/run.sh
+  varselect-cli bash ./example/run-s3.sh
 ```
 
 ### Development
 
-```shell
+```console
 cd varselect-cli
 docker run -v $PWD:/opt/varselect -it \
-  -e AWS_ACCESS_KEY_ID=<your-aws-access-key> \
-  -e AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
-  varselect-cli /bin/bash
-```
-
-### Production
-
-```shell
-cd varselect-cli
-docker run \
-  -e AWS_ACCESS_KEY_ID=<your-aws-access-key> \
-  -e AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
+  [-e AWS_ACCESS_KEY_ID=<your-aws-access-key>] \
+  [-e AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key>] \
   varselect-cli /bin/bash
 ```
 
 ## Testing
-To test outputs compare the output directories. In order to create predicatable outputs call to *improve* in rvarselect is set to use the same seed.
+>Tests will be added soon
 
 ## Contributing
 
