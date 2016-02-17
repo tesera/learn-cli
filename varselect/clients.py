@@ -8,15 +8,13 @@ from pyvarselect.rank_var import RankVar
 from pyvarselect.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
 
 class Runner(object):
-    r = None
+    importr('subselect')
 
     def __init__(self):
-        global flog
+        self.flog = importr('futile.logger')
         self.r = robjects.r
-        flog = importr('futile.logger')
 
-        flog.flog_info('test')
-        exit
+    def initR(self, args):
 
         for key, value in args.iteritems():
             if('--' in key):
@@ -35,7 +33,9 @@ class Runner(object):
         self.r('varSelect <- "%s/VARSELECT.csv"' % args['OUTDIR'])
 
     def variable_selection(self, args):
-        flog.flog_info("Starting variable_selection")
+        self.initR(args)
+
+        self.flog.flog_info("Starting variable_selection")
         count_xvar_in_xvarsel = CountXVarInXvarSel(args['OUTDIR'])
         rank_var = RankVar(args['OUTDIR'])
         extract_rvariable_combos = ExtractRVariableCombos(args['OUTDIR'])
@@ -44,7 +44,7 @@ class Runner(object):
 
         currentCount = count_xvar_in_xvarsel.count()
         self.r('initialCount <- scan(xVarCountFileName)')
-        flog.flog_info("Initial variable count: %s", self.r['initialCount'])
+        self.flog.flog_info("Initial variable count: %s", self.r['initialCount'])
         rvarselect.vs_IdentifyAndOrganizeUniqueVariableSets(self.r['lviFileName'], self.r['xVarSelectFileName'], self.r['varSelect'])
 
         # test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() identifies the unique variable sets and organizes them into a new file VARSELV.csv;
@@ -58,7 +58,7 @@ class Runner(object):
 
         removeCorXVars = remove_highcorvar.remove_high_cor_vars()
         nextCount = count_xvar_in_xvarsel.count()
-        flog.flog_info("CurrentCount = %s, nextCount %s", currentCount, nextCount)
+        self.flog.flog_info("CurrentCount = %s, nextCount %s", currentCount, nextCount)
 
         # "Kluge" is: Helps get around an unknown crash when calling test3_XiterativeVarSelCorVarElimination.R
         self.r('xVarCount <- scan(xVarCountFileName)')
@@ -80,4 +80,4 @@ class Runner(object):
             count_xvar_in_xvarsel.count()
             counter = counter +1
 
-        flog.flog_info("Number of Iterations: %s", counter)
+        self.flog.flog_info("Number of Iterations: %s", counter)

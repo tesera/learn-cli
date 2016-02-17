@@ -45,7 +45,9 @@ from docopt import docopt
 from schema import Schema, And, Or, Use, SchemaError, Optional
 import boto3
 
-from varselect import Runner
+from rpy2.robjects.packages import importr
+
+from varselect import clients
 
 from pyvarselect.count_xvar_in_xvarsel import CountXVarInXvarSel
 from pyvarselect.test_extract_rvariable_combos import ExtractRVariableCombos
@@ -56,6 +58,8 @@ from pyvarselect.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarS
 
 def cli():
     args = docopt(__doc__)
+    flog = importr('futile.logger')
+
     schema = Schema({
         'LVIFILENAME': And(os.path.isfile, error='LVIFILENAME should exist and be readable.'),
         'XVARSELECTFILENAME': And(os.path.isfile, error='XVARSELECTFILENAME should exist and be readable.'),
@@ -71,40 +75,39 @@ def cli():
         Optional('--tempDir'): Or(None, And(str, len))
     })
 
-    s3_client = boto3.client('s3')
     outdir = args['OUTDIR']
-    tmp = tempfile.mkdtemp('varselect')
-
-    if args['--tempDir'] != None:
-        tmp = args['--tempDir']
+    outdir_url = urlparse(outdir)
+    isS3Data = outdir_url.scheme == 's3'
+    tmp = args['--tempDir'] if args['--tempDir'] else tempfile.mkdtemp('varselect')
 
     args['OUTDIR'] = tempdir = tmp
 
-    try:
-        for key in ['LVIFILENAME', 'XVARSELECTFILENAME']:
-            url = urlparse(args[key])
-            if url.scheme == 's3':
+    # prep the data files
+    if (isS3Data) :
+        try:
+            s3_client = boto3.client('s3')
+            for key in ['LVIFILENAME', 'XVARSELECTFILENAME']:
+                url = urlparse(args[key])
                 dl = tempdir + '/' + args[key].split('/')[-1]
                 s3_client.download_file(url.netloc, url.path.strip('/'), dl)
                 args[key] = dl
-    except Exception as e:
+        except Exception as e:
             exit(e)
+    else :
+        shutil.copy(args['LVIFILENAME'], tmp)
+        shutil.copy(args['XVARSELECTFILENAME'], tmp)
 
-    args['LVIFILENAME'] = os.path.abspath(args['LVIFILENAME'])
-    args['XVARSELECTFILENAME'] = os.path.abspath(args['XVARSELECTFILENAME'])
-    args['OUTDIR'] = os.path.abspath(args['OUTDIR'])
 
+    # start the process
     try:
         args = schema.validate(args)
         args['OUTDIR'] = args['OUTDIR'].rstrip('/') + '/';
         args['WORKINGDIR'] = os.getcwd().rstrip('/').replace('/bin', '') + '/'
 
-        runner = Runner()
+        runner = clients.Runner()
         runner.variable_selection(args)
 
-        outdir_url = urlparse(outdir)
-
-        if(outdir_url.scheme == 's3'):
+        if(isS3Data):
             flog.flog_info("Copying results to %s%s", outdir_url.netloc, outdir_url.path)
             for outfile in os.listdir(tempdir):
                 up = ("%s/%s" % (outdir_url.path, outfile)).strip('/')
@@ -112,13 +115,7 @@ def cli():
                 s3_client.upload_file(outfile, outdir_url.netloc, up.strip('/'))
         else:
             flog.flog_info("Copying results to %s", outdir)
-            if not os.path.exists(outdir):
-                os.makedirs(outdir)
-
-            for outfile in os.listdir(tempdir):
-                up = ("%s/%s" % (outdir, outfile))
-                outfile = ("%s/%s" % (tempdir, outfile))
-                shutil.copy(outfile, up)
+            shutil.copytree(tempdir, outdir)
 
         exit(0)
 
