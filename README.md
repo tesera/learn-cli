@@ -2,6 +2,8 @@
 
 A variable selection client writen in Python and R. The CLI leverages [pyvarselect](https://github.com/tesera/pyvarselect) and [rvarslect](https://github.com/tesera/rvarselect) libraries. We use rpy2 as a proxy between Python and R.
 
+The cli is docker ready. You can choose to run the cli locally the old fashion way or through Docker with the Dockerfile included. Running the cli in Docker will simplify the efforts tremendously but Docker know how is required.
+
 ###Dependencies
 
 * [Github Persona Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/)
