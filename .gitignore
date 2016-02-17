@@ -12,3 +12,5 @@ Rwd/*.csv
 venv
 out
 tests
+pysite
+rlibs

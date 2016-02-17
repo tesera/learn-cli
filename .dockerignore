@@ -2,3 +2,9 @@
 .elasticbeanstalk/*
 .git
 .gitignore
+.dockerignore
+.editorconfig
+Dockerfile
+README.md
+rlibs
+pysite
