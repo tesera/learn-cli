@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 && rm -rf /var/lib/apt/lists/*
 
 ENV WD=/opt/varselect
+
 RUN bash -c "mkdir -p $WD/{pysite,rlibs}"
 WORKDIR $WD
 
@@ -30,15 +31,11 @@ ENV PY_USER_SCRIPT_DIR $PYTHONUSERBASE/bin
 ENV R_LIBS_USER $WD/rlibs
 ENV PATH $PATH:$PY_USER_SCRIPT_DIR
 
-RUN install2.r -l $R_LIBS_USER devtools
-
 COPY installGithub2.r installGithub2.r
-RUN r ./installGithub2.r tesera/rvarselect -t $GITHUB_TOKEN -r $RVARSELECT_REF
+COPY install-dependencies.sh install-dependencies.sh
 
-RUN pip install --user "git+https://$GITHUB_TOKEN@github.com/tesera/pyvarselect.git@$PYVARSELECT_REF#egg=pyvarselect"
+RUN bash ./install-dependencies.sh
 
-# COPY last since it could invalidate build cache
 COPY . $WD
 
-# Install the CLI
 RUN pip install --user .
