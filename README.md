@@ -121,10 +121,14 @@ docker run -v $PWD:/opt/varselect -it \
 
 ### Running in AWS ECS
 
+Varselect tasks will run by default in the `varselect` ECS Cluster. The instances will be placed in the `subnet-tesera-ecs` subnet the `tesera-master` VPC. In order to ssh into your ECS instances you will need to hop from the `master-bastion` server. The `subnet-tesera-ecs` talks out through the NAT Gateway so your instances will not require a public ip.
+
 #####Launching an EC2 Instances to the varselect ECS Cluster
 
+This step may not be required if there is already an instance running in the varselect cluster. In cases where you need many instances to run your tasks you can deploy more servers by passing in the instance count as an arg to the `launch-ec2.sh` script.
+
 ```console
-# usage: bash ./launch-ec2 [count=1]
+# usage: bash ./launch-ec2.sh [count=1]
 
 # launches 1 instance by default
 bash ./launch-ec2.sh
@@ -135,11 +139,15 @@ bash ./launch-ec2.sh 5
 
 #####Registering a Task Definition
 
+In most case you will not need to register a Task Definition since they have been registered already. You will need to register a new task only if you need to change its parameters.
+
 ```console
 bash ./register-task.sh
 ```
 
 #####Running a Task
+
+Running the task will run the most recent task definition by default. You can change the args in the `overrides.json` file for your analysis.
 
 ```console
 # edit overrides.json for your analysis
@@ -166,6 +174,18 @@ cat aws/overrides.json
 
 # run the task with the overides
 bash ./run-task.sh
+
+# the results should now be in the specified output path.
+aws s3 ls --recursive s3://tesera.svc.variable-selection/uploads/example/output/1
+2016-02-18 15:38:36      35048 uploads/example/output/1/ANALYSIS.csv
+2016-02-18 15:38:36       5186 uploads/example/output/1/UCORCOEF.csv
+2016-02-18 15:38:36        132 uploads/example/output/1/UNIQUEVAR.csv
+2016-02-18 15:38:36        281 uploads/example/output/1/VARRANK.csv
+2016-02-18 15:38:36      51560 uploads/example/output/1/VARSELECT.csv
+2016-02-18 15:38:36       1929 uploads/example/output/1/XVARSELV.csv
+2016-02-18 15:38:36        689 uploads/example/output/1/XVARSELV1.csv
+2016-02-18 15:38:36          3 uploads/example/output/1/XVARSELV1_XCOUNT.csv
+
 ```
 
 ### Testing
