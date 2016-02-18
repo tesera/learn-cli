@@ -119,6 +119,55 @@ docker run -v $PWD:/opt/varselect -it \
   varselect-cli /bin/bash
 ```
 
+### Running in AWS ECS
+
+#####Launching an EC2 Instances to the varselect ECS Cluster
+
+```console
+# usage: bash ./launch-ec2 [count=1]
+
+# launches 1 instance by default
+bash ./launch-ec2.sh
+
+# launches 5 instances
+bash ./launch-ec2.sh 5
+```
+
+#####Registering a Task Definition
+
+```console
+bash ./register-task.sh
+```
+
+#####Running a Task
+
+```console
+# edit overrides.json for your analysis
+cat aws/overrides.json
+{
+  "containerOverrides": [
+    {
+      "name": "varselect",
+      "command": [
+        "s3://tesera.svc.variable-selection/uploads/example/ANALYSIS.csv",
+        "s3://tesera.svc.variable-selection/uploads/example/XVARSELV1.csv",
+        "s3://tesera.svc.variable-selection/uploads/example/output/1",
+        "--classVariableName=CLASS5",
+        "--excludeRowValue=-1",
+        "--excludeRowVarName=SORTGRP",
+        "--minNvar=1",
+        "--maxNvar=20",
+        "--nSolutions=20",
+        "--criteria=xi2"
+      ]
+    }
+  ]
+}
+
+# run the task with the overides
+bash ./run-task.sh
+```
+
 ### Testing
 >Tests will be added soon
 
