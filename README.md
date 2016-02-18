@@ -72,9 +72,9 @@ eval "$(docker-machine env default)"
 ```console
 git clone git@github.com:tesera/varselect-cli.git
 docker build -t="varselect-cli" \
-    --build-args GITHUB_TOKEN=<your-github-token> \
-    [--build-args PYVARSELECT_REF=<pyvarselect-lib-github-ref> ] \
-    [--build-args RVARSELECT_REF=<rvarselect-lib-github-ref> ] \
+    --build-arg GITHUB_TOKEN=<your-github-token> \
+    [--build-arg PYVARSELECT_REF=<pyvarselect-lib-github-ref> ] \
+    [--build-arg RVARSELECT_REF=<rvarselect-lib-github-ref> ] \
     varselect-cli
 ```
 
