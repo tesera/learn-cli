@@ -7,7 +7,7 @@ from pyvarselect.test_extract_rvariable_combos import ExtractRVariableCombos
 from pyvarselect.rank_var import RankVar
 from pyvarselect.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
 
-class Runner(object):
+class VarSelect(object):
     importr('subselect')
 
     def __init__(self):
@@ -32,7 +32,7 @@ class Runner(object):
         self.r('xVarCountFileName <- "%s/XVARSELV1_XCOUNT.csv"' % args['OUTDIR'])
         self.r('varSelect <- "%s/VARSELECT.csv"' % args['OUTDIR'])
 
-    def variable_selection(self, args):
+    def run(self, args):
         self.initR(args)
 
         self.flog.flog_info("Starting variable_selection")

@@ -47,7 +47,7 @@ import boto3
 
 from rpy2.robjects.packages import importr
 
-from varselect import clients
+from clients.varselect import VarSelect
 
 from pyvarselect.count_xvar_in_xvarsel import CountXVarInXvarSel
 from pyvarselect.test_extract_rvariable_combos import ExtractRVariableCombos
@@ -104,8 +104,8 @@ def cli():
         args['OUTDIR'] = args['OUTDIR'].rstrip('/') + '/';
         args['WORKINGDIR'] = os.getcwd().rstrip('/').replace('/bin', '') + '/'
 
-        runner = clients.Runner()
-        runner.variable_selection(args)
+        varselect = VarSelect()
+        varselect.run(args)
 
         if(isS3Data):
             flog.flog_info("Copying results to %s%s", outdir_url.netloc, outdir_url.path)
