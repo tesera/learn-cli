@@ -125,16 +125,16 @@ Varselect tasks will run by default in the `varselect` ECS Cluster. The instance
 
 #####Launching an EC2 Instances to the varselect ECS Cluster
 
-This step may not be required if there is already an instance running in the varselect cluster. In cases where you need many instances to run your tasks you can deploy more servers by passing in the instance count as an arg to the `launch-ec2.sh` script.
+This step may not be required if there is already an instance running in the varselect cluster. In cases where you need many instances to run your tasks you can deploy more servers by passing in the instance count as an arg to the `launch-instances.sh` script.
 
 ```console
-# usage: bash ./launch-ec2.sh [count=1]
+# usage: bash ./launch-instances.sh [count=1]
 
 # launches 1 instance by default
-bash ./launch-ec2.sh
+bash ./launch-instances.sh
 
 # launches 5 instances
-bash ./launch-ec2.sh 5
+bash ./launch-instances.sh 5
 ```
 
 #####Registering a Task Definition
@@ -142,7 +142,7 @@ bash ./launch-ec2.sh 5
 In most case you will not need to register a Task Definition since they have been registered already. You will need to register a new task only if you need to change its parameters.
 
 ```console
-bash ./register-task.sh
+bash ./register-task-definition.sh
 ```
 
 #####Running a Task
