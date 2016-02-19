@@ -125,16 +125,16 @@ Varselect tasks will run by default in the `varselect` ECS Cluster. The instance
 
 #####Launching an EC2 Instances to the varselect ECS Cluster
 
-This step may not be required if there is already an instance running in the varselect cluster. In cases where you need many instances to run your tasks you can deploy more servers by passing in the instance count as an arg to the `launch-instances.sh` script.
+This step may not be required if there is already an instance running in the varselect cluster. In cases where you need many instances to run your tasks you can deploy more servers by passing in the instance count as an arg to the `run-instances.sh` script.
 
 ```console
-# usage: bash ./launch-instances.sh [count=1]
+# usage: bash ./run-instances.sh [count=1]
 
 # launches 1 instance by default
-bash ./launch-instances.sh
+bash ./run-instances.sh
 
 # launches 5 instances
-bash ./launch-instances.sh 5
+bash ./run-instances.sh 5
 ```
 
 #####Registering a Task Definition
