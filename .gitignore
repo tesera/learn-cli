@@ -17,3 +17,4 @@ rlibs
 example/output
 codeship.aes
 deployment.env
+build.env
