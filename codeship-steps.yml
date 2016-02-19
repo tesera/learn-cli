@@ -1,0 +1,5 @@
+- type: push
+  service: app
+  registry: https://674223647607.dkr.ecr.us-east-1.amazonaws.com
+  image_name:  674223647607.dkr.ecr.us-east-1.amazonaws.com/variable-selection:latest
+  dockercfg_service: aws_generator

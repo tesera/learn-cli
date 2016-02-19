@@ -15,3 +15,5 @@ tests
 pysite
 rlibs
 example/output
+codeship.aes
+deployment.env
