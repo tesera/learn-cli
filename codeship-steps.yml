@@ -1,7 +1,7 @@
 - service: app
   type: push
   tag: master
-  image_tag: latest
+  image_tag: codeship
   image_name: 674223647607.dkr.ecr.us-east-1.amazonaws.com/variable-selection
   registry: https://674223647607.dkr.ecr.us-east-1.amazonaws.com/
-  dockercfg_service: env_generator
+  dockercfg_service: dockercfg_generator
