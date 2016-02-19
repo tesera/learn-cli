@@ -1,7 +1,7 @@
 app:
   build:
     image: 674223647607.dkr.ecr.us-east-1.amazonaws.com/variable-selection:latest
-    dockerfile_path: ./Dockerfile
+    dockerfile_path: Dockerfile
     encrypted_env_file: build.env.encrypted
 env_generator:
   image: codeship/aws-ecr-dockercfg-generator
