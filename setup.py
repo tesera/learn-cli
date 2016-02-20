@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='varselect',
-    version='0.0.1',
+    version='0.0.2',
     description=u"Variable Selection CLI",
     classifiers=[],
     keywords='',
@@ -23,6 +23,6 @@ setup(name='varselect',
     },
     entry_points="""
     [console_scripts]
-    varselect=varselect.cli:cli
+    predict=varselect.cli:cli
     """
 )
