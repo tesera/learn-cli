@@ -19,8 +19,8 @@ Options:
     --nSolutions=<int>  Number of iterations to be applied [default: 20].
     --criteria=<string>  Set the criteria to be applied for variables selection: ccr12, Wilkes xi2 zeta2 [default: xi2].
     --tempDir=<string>  Use this temp directory instead of generating one.
-    --priorDistribution=<string>  TODO: Describe.
-    --classNames=<string>  TODO: Describe.
+    --priorDistribution=<string>  TODO: Describe [default: SAMPLE]
+    --classNames=<string>  TODO: Describe. [default: CLASS5]
 """
 
 import os
