@@ -2,10 +2,10 @@ import rpy2.robjects as robjects
 from rpy2.robjects.packages import STAP
 from rpy2.robjects.packages import importr
 
-from pyvarselect.varselect.count_xvar_in_xvarsel import CountXVarInXvarSel
-from pyvarselect.varselect.test_extract_rvariable_combos import ExtractRVariableCombos
-from pyvarselect.varselect.rank_var import RankVar
-from pyvarselect.varselect.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
+from pylearn.varselect.count_xvar_in_xvarsel import CountXVarInXvarSel
+from pylearn.varselect.test_extract_rvariable_combos import ExtractRVariableCombos
+from pylearn.varselect.rank_var import RankVar
+from pylearn.varselect.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
 
 class VarSelect(object):
     importr('subselect')
@@ -40,7 +40,7 @@ class VarSelect(object):
         rank_var = RankVar(args['<outputdir>'])
         extract_rvariable_combos = ExtractRVariableCombos(args['<outputdir>'])
         remove_highcorvar = RemoveHighCorVarFromXVarSel(args['<outputdir>'])
-        rvarselect = importr('rvarselect')
+        rvarselect = importr('rlearn')
 
         currentCount = count_xvar_in_xvarsel.count()
         self.r('initialCount <- scan(xVarCountFileName)')

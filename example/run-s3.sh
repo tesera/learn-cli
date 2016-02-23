@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-varselect \
-  s3://tesera.svc.variable-selection/uploads/example/ANALYSIS.csv \
-  s3://tesera.svc.variable-selection/uploads/example/XVARSELV1.csv \
-  s3://tesera.svc.variable-selection/uploads/example/output/1 \
+learn varsel \
+  s3://tesera.svc.learn/uploads/example/ANALYSIS.csv \
+  s3://tesera.svc.learn/uploads/example/XVARSELV1.csv \
+  s3://tesera.svc.learn/uploads/example/output/1 \
   --classVariableName CLASS5 \
   --excludeRowValue -1 \
   --excludeRowVarName SORTGRP \

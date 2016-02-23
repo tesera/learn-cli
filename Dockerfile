@@ -4,8 +4,8 @@ FROM r-base:latest
 MAINTAINER Tesera Systems Inc.
 
 ARG GITHUB_TOKEN=$GITHUB_TOKEN
-ARG PYVARSELECT_REF=master
-ARG RVARSELECT_REF=master
+ARG PYLEARN_REF=master
+ARG RLEARN_REF=master
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
 && rm -rf /var/lib/apt/lists/*
 
-ENV WD=/opt/varselect
+ENV WD=/opt/learn
 
 RUN bash -c "mkdir -p $WD/{pysite,rlibs}"
 WORKDIR $WD

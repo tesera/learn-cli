@@ -1,7 +1,7 @@
 #!/bin/bash
 
 aws ecs run-task \
-    --cluster varselect \
-    --task-definition varselect \
+    --cluster learn \
+    --task-definition learn \
     --overrides file://overrides.json \
-    --started-by yr:varselect
+    --started-by task:learn

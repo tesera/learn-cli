@@ -2,14 +2,14 @@ import rpy2.robjects as robjects
 from rpy2.robjects.packages import STAP
 from rpy2.robjects.packages import importr
 
-from pyvarselect.ldanalysis.CohensKhat import CohensKhat
-from pyvarselect.ldanalysis.CombineEvaluationDatasets import CombineEvaluationDatasets
+from pylearn.ldanalysis.CohensKhat import CohensKhat
+from pylearn.ldanalysis.CombineEvaluationDatasets import CombineEvaluationDatasets
 
 class Analyze(object):
     importr('MASS')
 
     def __init__(self):
-        self.analyze = importr('rvarselect').lda_RunLinearDiscriminantVariableAnalysis
+        self.analyze = importr('rlearn').lda_RunLinearDiscriminantVariableAnalysis
 
     def run(self, args):
         print('running analyze...')

@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 """
 Usage:
-    predict <operation> <datafile> <variablesfile> <outputdir> [options]
+    learn <operation> <datafile> <variablesfile> <outputdir> [options]
 
 Arguments:
-    <operation> varselect | analyze
+    <operation> varsel | lda
     <datafile>  Input file, local or S3 in format s3://bucket/path/filename.csv.
     <variablesfile>  File containing variable selections, local or S3 in format s3://bucket/path/filename.csv.
     <outputdir>  Directory to write results out too.
@@ -39,17 +39,12 @@ from rpy2.robjects.packages import importr
 from clients.varselect import VarSelect
 from clients.analyze import Analyze
 
-from pyvarselect.varselect.count_xvar_in_xvarsel import CountXVarInXvarSel
-from pyvarselect.varselect.test_extract_rvariable_combos import ExtractRVariableCombos
-from pyvarselect.varselect.rank_var import RankVar
-from pyvarselect.varselect.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
-
 def cli():
     args = docopt(__doc__)
     flog = importr('futile.logger')
     clients = {
-        'varselect': VarSelect,
-        'analyze': Analyze
+        'varsel': VarSelect,
+        'lda': Analyze
     }
 
     schema = Schema({
@@ -74,7 +69,7 @@ def cli():
     outdir = args['<outputdir>']
     outdir_url = urlparse(outdir)
     isS3Data = outdir_url.scheme == 's3'
-    tmp = args['--tempDir'] if args['--tempDir'] else tempfile.mkdtemp('varselect')
+    tmp = args['--tempDir'] if args['--tempDir'] else tempfile.mkdtemp('features')
 
     args['<outputdir>'] = tempdir = tmp
 
