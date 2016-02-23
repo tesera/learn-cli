@@ -2,10 +2,10 @@ import rpy2.robjects as robjects
 from rpy2.robjects.packages import STAP
 from rpy2.robjects.packages import importr
 
-from pyvarselect.count_xvar_in_xvarsel import CountXVarInXvarSel
-from pyvarselect.test_extract_rvariable_combos import ExtractRVariableCombos
-from pyvarselect.rank_var import RankVar
-from pyvarselect.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
+from pyvarselect.varselect.count_xvar_in_xvarsel import CountXVarInXvarSel
+from pyvarselect.varselect.test_extract_rvariable_combos import ExtractRVariableCombos
+from pyvarselect.varselect.rank_var import RankVar
+from pyvarselect.varselect.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
 
 class VarSelect(object):
     importr('subselect')

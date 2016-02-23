@@ -2,6 +2,9 @@ import rpy2.robjects as robjects
 from rpy2.robjects.packages import STAP
 from rpy2.robjects.packages import importr
 
+from pyvarselect.ldanalysis.CohensKhat import CohensKhat
+from pyvarselect.ldanalysis.CombineEvaluationDatasets import CombineEvaluationDatasets
+
 class Analyze(object):
     importr('MASS')
 
@@ -18,3 +21,9 @@ class Analyze(object):
                     args['--priorDistribution'],
                     args['--classNames'],
                     args['<outputdir>'])
+
+        cohens_khat = CohensKhat(args['<outputdir>'])
+        cohens_khat.run()
+
+        combine_evaluation = CombineEvaluationDatasets(args['<outputdir>'])
+        combine_evaluation.run()
