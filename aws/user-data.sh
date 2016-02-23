@@ -6,7 +6,7 @@ MIME-Version: 1.0
 Content-Type: text/text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 
-echo ECS_CLUSTER=varselect >> /etc/ecs/ecs.config
+echo ECS_CLUSTER=learn >> /etc/ecs/ecs.config
 
 # Install awslogs and the jq JSON parser
 yum install -y awslogs jq

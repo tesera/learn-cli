@@ -2,10 +2,10 @@ import rpy2.robjects as robjects
 from rpy2.robjects.packages import STAP
 from rpy2.robjects.packages import importr
 
-from pyvarselect.count_xvar_in_xvarsel import CountXVarInXvarSel
-from pyvarselect.test_extract_rvariable_combos import ExtractRVariableCombos
-from pyvarselect.rank_var import RankVar
-from pyvarselect.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
+from pylearn.varselect.count_xvar_in_xvarsel import CountXVarInXvarSel
+from pylearn.varselect.test_extract_rvariable_combos import ExtractRVariableCombos
+from pylearn.varselect.rank_var import RankVar
+from pylearn.varselect.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
 
 class VarSelect(object):
     importr('subselect')
@@ -24,23 +24,23 @@ class VarSelect(object):
                 else:
                     self.r('%s <- "%s"' % (key, value))
 
-        self.r('lviFileName <- "%s"' % args['LVIFILENAME'])
-        self.r('outDir <- "%s"' % args['OUTDIR'])
-        self.r('xVarSelectFileName <- "%s"' % args['XVARSELECTFILENAME'])
-        self.r('uniqueVarPath <- "%s/UNIQUEVAR.csv"' % args['OUTDIR'])
-        self.r('printFileName <- "%s/UCORCOEF.csv"' % args['OUTDIR'])
-        self.r('xVarCountFileName <- "%s/XVARSELV1_XCOUNT.csv"' % args['OUTDIR'])
-        self.r('varSelect <- "%s/VARSELECT.csv"' % args['OUTDIR'])
+        self.r('lviFileName <- "%s"' % args['<datafile>'])
+        self.r('outDir <- "%s"' % args['<outputdir>'])
+        self.r('xVarSelectFileName <- "%s"' % args['<variablesfile>'])
+        self.r('uniqueVarPath <- "%s/UNIQUEVAR.csv"' % args['<outputdir>'])
+        self.r('printFileName <- "%s/UCORCOEF.csv"' % args['<outputdir>'])
+        self.r('xVarCountFileName <- "%s/XVARSELV1_XCOUNT.csv"' % args['<outputdir>'])
+        self.r('varSelect <- "%s/VARSELECT.csv"' % args['<outputdir>'])
 
     def run(self, args):
         self.initR(args)
 
         self.flog.flog_info("Starting variable_selection")
-        count_xvar_in_xvarsel = CountXVarInXvarSel(args['OUTDIR'])
-        rank_var = RankVar(args['OUTDIR'])
-        extract_rvariable_combos = ExtractRVariableCombos(args['OUTDIR'])
-        remove_highcorvar = RemoveHighCorVarFromXVarSel(args['OUTDIR'])
-        rvarselect = importr('rvarselect')
+        count_xvar_in_xvarsel = CountXVarInXvarSel(args['<outputdir>'])
+        rank_var = RankVar(args['<outputdir>'])
+        extract_rvariable_combos = ExtractRVariableCombos(args['<outputdir>'])
+        remove_highcorvar = RemoveHighCorVarFromXVarSel(args['<outputdir>'])
+        rvarselect = importr('rlearn')
 
         currentCount = count_xvar_in_xvarsel.count()
         self.r('initialCount <- scan(xVarCountFileName)')

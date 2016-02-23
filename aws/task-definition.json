@@ -1,12 +1,12 @@
 {
-  "family": "varselect",
+  "family": "learn",
   "containerDefinitions": [
     {
       "memory": 1024,
-      "image": "674223647607.dkr.ecr.us-east-1.amazonaws.com/variable-selection:repack",
-      "name": "varselect",
+      "image": "https://674223647607.dkr.ecr.us-east-1.amazonaws.com/tesera/learn",
+      "name": "learn",
       "essential": true,
-      "entryPoint": ["varselect"]
+      "entryPoint": ["learn"]
     }
   ]
 }

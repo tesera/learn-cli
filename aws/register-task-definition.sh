@@ -1,5 +1,5 @@
 #!/bin/bash
 
 aws ecs register-task-definition \
-    --family varselect \
+    --family learn \
     --cli-input-json file://task-definition.json

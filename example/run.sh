@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-varselect \
-  /opt/varselect/example/ANALYSIS.csv \
-  /opt/varselect/example/XVARSELV1.csv \
-  /opt/varselect/example/output \
+learn varsel \
+  /opt/learn/example/ANALYSIS.csv \
+  /opt/learn/example/XVARSELV1.csv \
+  /opt/learn/example/output \
   --classVariableName CLASS5 \
   --excludeRowValue -1 \
   --excludeRowVarName SORTGRP \
