@@ -1,6 +1,6 @@
 app:
   build:
-    image: https://674223647607.dkr.ecr.us-east-1.amazonaws.com/tesera/learn:latest
+    image: 674223647607.dkr.ecr.us-east-1.amazonaws.com/tesera/learn
     dockerfile_path: Dockerfile
     encrypted_env_file: build.env.encrypted
 dockercfg_generator:
