@@ -1,8 +1,8 @@
-# Variable Selection CLI
+# Learn CLI
 
-A variable selection client writen in Python and R. The CLI leverages [pyvarselect](https://github.com/tesera/pyvarselect) and [rvarslect](https://github.com/tesera/rvarselect) libraries. We use rpy2 as a proxy between Python and R.
+Learn CLI performs variable selection, model development and target dataset processing. The CLI uses [pylearn](https://github.com/tesera/pylearn) and [rlearn](https://github.com/tesera/rlearn) libraries. The CLI is written in Python and uses the rpy2 package to invoke R functions.
 
-The cli is docker ready. You can choose to run the cli locally the old fashion way or through Docker with the Dockerfile included. Running the cli in Docker will simplify the efforts tremendously but Docker know how is required.
+The cli is docker ready. You can choose to run the cli locally the old fashion way or through Docker with the Dockerfile included. Running the cli in Docker will simplify the efforts tremendously but Docker is not required.
 
 ###Dependencies
 
@@ -20,44 +20,69 @@ The cli is docker ready. You can choose to run the cli locally the old fashion w
 * [Docker](https://www.docker.com/)
 * [Docker Machine](https://docs.docker.com/machine/) (Windows/OSX)
 
-### Running without Docker
+### Running without Docker on OSX (not recommended; use Docker)
+
+In order to run this CLI without Docker you need to install all the lower level dependencies in order to build the higher level dependencies. i.e. gcc, fortran... SciPy is also installed as a system level dependency because of its comples build steps. If you are confident you have all the dependencies installed and configured you can proceed otherwise we recommend the Docker approach.
+
+####Install Python and R Dependencies
+
+```
+export GITHUB_TOKEN=<your-github-token>
+export PYLEARN_REF=master
+export RLEARN_REF=master
+export AWS_ACCESS_KEY_ID=<your-access-key>
+export AWS_SECRET_ACCESS_KEY=<your-secret-key>
+export AWS_REGION=<your-aws-region>
+
+bash ./install-dependencies.sh
+```
 
 #### Install via git clone
 
 ```console
-# install dependencies listed above
-git clone git@github.com:tesera/varselect-cli.git
-cd varselect-cli
-bash ./install-dependencies.sh
+git clone git@github.com:tesera/learn-cli.git
+cd learn-cli
 pip install .
 ```
 
-#### Install via git direct install
+#### Install via Git direct install
 
 ```console
-# update your-github-token -> your github personal access token and github-ref -> i.e. master
-bash ./install-dependencies.sh
-pip install git+git://<your-github-token>@github.com/tesera/varselect-cli@<github-ref>.git
+pip install git+git://$GITHUB_TOKEN@github.com/tesera/learn-cli@master.git
 ```
 
-#### Invoke the cli
+#### Test the install
 
 ```console
-$ varselect
+$ learn --help
 Usage:
-  varselect LVIFILENAME XVARSELECTFILENAME OUTDIR  \ 
-      [--classVariableName=<string>] \
-      [--excludeRowValue=<int>]  \
-      [--excludeRowVarName=<string>]  \
-      [--xVarSelectCriteria=<string>]  \
-      [--minNvar=<int>]  \
-      [--maxNvar=<int>]  \
-      [--nSolutions=<int>]  \
-      [--criteria=<int>]  \
-      [--tempDir=<string>]
+    learn <operation> <datafile> <variablesfile> <outputdir> [options]
+
+Arguments:
+    <operation> varsel | lda
+    <datafile>  Input file, local or S3 in format s3://bucket/path/filename.csv.
+    <variablesfile>  File containing variable selections, local or S3 in format s3://bucket/path/filename.csv.
+    <outputdir>  Directory to write results out too.
+
+Options:
+    --classVariableName=<string>  Class variable name: CLASS5, CLPRDP [default: CLASS5].
+    --excludeRowValue=<int>  Variable value to exclude rows from a dataset [default: -1].
+    --excludeRowVarName=<string>  Variable name to exclude rows from a dataset [default: SORTGRP].
+    --xVarSelectCriteria=<string>  Variable indicator value [default: X].
+    --minNvar=<int>  Minimum number of variables to select [default: 1].
+    --maxNvar=<int>  Maximum number of variables to select [default: 20].
+    --nSolutions=<int>  Number of iterations to be applied [default: 20].
+    --criteria=<string>  Set the criteria to be applied for variables selection: ccr12, Wilkes xi2 zeta2 [default: xi2].
+    --tempDir=<string>  Use this temp directory instead of generating one.
+    --priorDistribution=<string>  TODO: Describe [default: SAMPLE]
+    --classNames=<string>  TODO: Describe. [default: CLASS5]
 ```
 
-###Running with Docker
+### Running without Docker on Windows
+
+> to do
+
+### Running with Docker
 
 If you are using docker-machine make sure you have a machine running and that you have evaluated the machine environment.
 
@@ -70,12 +95,14 @@ eval "$(docker-machine env default)"
 #### Build the container
 
 ```console
-git clone git@github.com:tesera/varselect-cli.git
-docker build -t="varselect-cli" \
+git clone git@github.com:tesera/learn-cli.git
+cd learn-cli
+
+docker build -t="learn-cli" \
     --build-arg GITHUB_TOKEN=<your-github-token> \
-    [--build-arg PYVARSELECT_REF=<pyvarselect-lib-github-ref> ] \
-    [--build-arg RVARSELECT_REF=<rvarselect-lib-github-ref> ] \
-    varselect-cli
+    [--build-arg PYLEARN_REF=<pylearnt-github-ref> ] \
+    [--build-arg RLEARN_REF=<rlearn-github-ref> ] \
+    learn-cli
 ```
 
 #### Run the container
@@ -83,10 +110,11 @@ docker build -t="varselect-cli" \
 #####Basic Command
 
 ```console
-docker run -it -v $PWD/example:/opt/data varselect-cli \
+docker run -it -v $PWD/example:/opt/data learn-cli \
+  varsel \
   /opt/data/ANALYSIS.csv \
   /opt/data/XVARSELV1.csv \
-  /opt/data \
+  /opt/data/varsel \
   --classVariableName CLASS5 \
   --excludeRowValue -1 \
   --excludeRowVarName SORTGRP \
@@ -99,33 +127,32 @@ docker run -it -v $PWD/example:/opt/data varselect-cli \
 ##### Running the Examples
 
 ```console
-docker run -it varselect-cli bash ./example/run.sh
+docker run -it learn-cli bash ./example/run.sh
 ```
 
 ```console
 docker run -it \
   -e AWS_ACCESS_KEY_ID=<your-aws-access-key> \
   -e AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
-  varselect-cli bash ./example/run-s3.sh
+  learn-cli bash ./example/run-s3.sh
 ```
 
 ##### Run in development mode
 
 ```console
-cd varselect-cli
-docker run -v $PWD:/opt/varselect -it \
+docker run -v $PWD:/opt/learn -it \
   [-e AWS_ACCESS_KEY_ID=<your-aws-access-key>] \
   [-e AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key>] \
-  varselect-cli /bin/bash
+  learn-cli /bin/bash
 ```
 
 ### Running in AWS ECS
 
-Varselect tasks will run by default in the `varselect` ECS Cluster. The instances will be placed in the `subnet-tesera-ecs` subnet the `tesera-master` VPC. In order to ssh into your ECS instances you will need to hop from the `master-bastion` server. The `subnet-tesera-ecs` talks out through the NAT Gateway so your instances will not require a public ip.
+Learn tasks will run by default in the `learn` ECS Cluster. The instances will be placed in the `subnet-tesera-ecs` subnet the `tesera-master` VPC. In order to ssh into your ECS instances you will need to hop from the `master-bastion` server. The `subnet-tesera-ecs` talks out through the NAT Gateway so your instances will not require a public ip.
 
-#####Launching an EC2 Instances to the varselect ECS Cluster
+#####Launching an EC2 Instances to the `learn` ECS Cluster
 
-This step may not be required if there is already an instance running in the varselect cluster. In cases where you need many instances to run your tasks you can deploy more servers by passing in the instance count as an arg to the `run-instances.sh` script.
+This step may not be required if there is already an instance running in the `learn` cluster. In cases where you need many instances to run your tasks you can deploy more servers by passing in the instance count as an arg to the `run-instances.sh` script.
 
 ```console
 # usage: bash ./run-instances.sh [count=1]
@@ -155,11 +182,12 @@ cat aws/overrides.json
 {
   "containerOverrides": [
     {
-      "name": "varselect",
+      "name": "learn",
       "command": [
-        "s3://tesera.svc.variable-selection/uploads/example/ANALYSIS.csv",
-        "s3://tesera.svc.variable-selection/uploads/example/XVARSELV1.csv",
-        "s3://tesera.svc.variable-selection/uploads/example/output/1",
+        "varsel",
+        "s3://tesera.svc.learn/uploads/example/ANALYSIS.csv",
+        "s3://tesera.svc.learn/uploads/example/XVARSELV1.csv",
+        "s3://tesera.svc.learn/uploads/example/varsel",
         "--classVariableName=CLASS5",
         "--excludeRowValue=-1",
         "--excludeRowVarName=SORTGRP",
@@ -176,15 +204,15 @@ cat aws/overrides.json
 bash ./run-task.sh
 
 # the results should now be in the specified output path.
-aws s3 ls --recursive s3://tesera.svc.variable-selection/uploads/example/output/1
-2016-02-18 15:38:36      35048 uploads/example/output/1/ANALYSIS.csv
-2016-02-18 15:38:36       5186 uploads/example/output/1/UCORCOEF.csv
-2016-02-18 15:38:36        132 uploads/example/output/1/UNIQUEVAR.csv
-2016-02-18 15:38:36        281 uploads/example/output/1/VARRANK.csv
-2016-02-18 15:38:36      51560 uploads/example/output/1/VARSELECT.csv
-2016-02-18 15:38:36       1929 uploads/example/output/1/XVARSELV.csv
-2016-02-18 15:38:36        689 uploads/example/output/1/XVARSELV1.csv
-2016-02-18 15:38:36          3 uploads/example/output/1/XVARSELV1_XCOUNT.csv
+aws s3 ls --recursive s3://tesera.svc.learn/uploads/example/varsel
+2016-02-18 15:38:36      35048 uploads/example/varsel/ANALYSIS.csv
+2016-02-18 15:38:36       5186 uploads/example/varsel/UCORCOEF.csv
+2016-02-18 15:38:36        132 uploads/example/varsel/UNIQUEVAR.csv
+2016-02-18 15:38:36        281 uploads/example/varsel/VARRANK.csv
+2016-02-18 15:38:36      51560 uploads/example/varsel/VARSELECT.csv
+2016-02-18 15:38:36       1929 uploads/example/varsel/XVARSELV.csv
+2016-02-18 15:38:36        689 uploads/example/varsel/XVARSELV1.csv
+2016-02-18 15:38:36          3 uploads/example/varsel/XVARSELV1_XCOUNT.csv
 
 ```
 
