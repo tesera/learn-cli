@@ -5,5 +5,5 @@ app:
     encrypted_env_file: build.env.encrypted
 dockercfg_generator:
   image: codeship/aws-ecr-dockercfg-generator
-  encrypted_env_file: deployment.env.encrypted
+  encrypted_env_file: deploy.env.encrypted
   add_docker: true

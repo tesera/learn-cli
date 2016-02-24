@@ -9,3 +9,8 @@ README.md
 rlibs
 pysite
 example/output
+
+build.env*
+deploy.env*
+codeship*
+

@@ -16,5 +16,5 @@ pysite
 rlibs
 example/output
 codeship.aes
-deployment.env
+deploy.env
 build.env
