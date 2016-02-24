@@ -1,5 +1,7 @@
 # Learn CLI
 
+[ ![Codeship Status for tesera/learn-cli](https://codeship.com/projects/f2a31230-b7e8-0133-9192-1269d3e58a72/status?branch=master)](https://codeship.com/projects/134949)
+
 Learn CLI performs variable selection, model development and target dataset processing. The CLI uses [pylearn](https://github.com/tesera/pylearn) and [rlearn](https://github.com/tesera/rlearn) libraries. The CLI is written in Python and uses the rpy2 package to invoke R functions.
 
 The cli is docker ready. You can choose to run the cli locally the old fashion way or through Docker with the Dockerfile included. Running the cli in Docker will simplify the efforts tremendously but Docker is not required.
