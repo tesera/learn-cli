@@ -80,15 +80,17 @@ Options:
     --classNames=<string>  TODO: Describe. [default: CLASS5]
 ```
 
-### Running without Docker on Windows
-
-> to do
-
 ### Running with Docker
 
 If you are using docker-machine make sure you have a machine running and that you have evaluated the machine environment.
 
-#### Create a virtual machine
+#### Create a virtual machine with Windows Powershell
+```console
+docker-machine create --driver virtualbox --virtualbox-host-dns-resolver default
+docker-machine env --shell powershell default | Invoke-Expression
+```
+
+#### Create a virtual machine with OSX Shell
 ```console
 docker-machine create --driver virtualbox default
 eval "$(docker-machine env default)"
