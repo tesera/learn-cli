@@ -1,9 +1,12 @@
+import os
+
 import rpy2.robjects as robjects
 from rpy2.robjects.packages import STAP
 from rpy2.robjects.packages import importr
 
 from pylearn.ldanalysis.CohensKhat import CohensKhat
 from pylearn.ldanalysis.CombineEvaluationDatasets import CombineEvaluationDatasets
+from pylearn.ldanalysis.ldarank import rank_file
 
 class Analyze(object):
     importr('MASS')
@@ -27,3 +30,6 @@ class Analyze(object):
 
         combine_evaluation = CombineEvaluationDatasets(args['<outputdir>'])
         combine_evaluation.run()
+
+        # todo: yr, rank_coefficient as cli arg?
+        rank_file(os.path.join(args['<outputdir>'], 'ASSESS.csv'), rank_coefficient=200)
