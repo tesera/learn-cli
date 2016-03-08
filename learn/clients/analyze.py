@@ -6,7 +6,7 @@ from rpy2.robjects.packages import importr
 
 from pylearn.ldanalysis.CohensKhat import CohensKhat
 from pylearn.ldanalysis.CombineEvaluationDatasets import CombineEvaluationDatasets
-from pylearn.ldanalysis.ldarank import rank_file
+from pylearn.ldanalysis.varset import rank_varsets, summarize_xy, adjust_dfunct_coef
 
 class Analyze(object):
     importr('MASS')
@@ -32,4 +32,14 @@ class Analyze(object):
         combine_evaluation.run()
 
         # todo: yr, rank_coefficient as cli arg?
-        rank_file(os.path.join(args['<outputdir>'], 'ASSESS.csv'), rank_coefficient=200)
+        rank_varsets(os.path.join(args['<outputdir>'], 'ASSESS.csv'), rank_coefficient=200)
+
+        # summarize all x-vars in varset via dfunct by ?claims pivot
+        xy_reference_path = os.path.join(args['<outputdir>'], 'ANALYSIS.csv')
+        x_var_dfunct_path = os.path.join(args['<outputdir>'], 'DFUNCT.csv')
+        x_vary_summary_path = os.path.join(args['<outputdir>'], 'SUMMARY.csv')
+
+        summarize_xy(xy_reference_path, x_var_dfunct_path, x_vary_summary_path)
+
+        # adjust dfunct coef sign based on summary result value
+        adjust_dfunct_coef(x_var_dfunct_path, x_vary_summary_path)

@@ -10,17 +10,17 @@ Arguments:
     <outputdir>  Directory to write results out too.
 
 Options:
-    --classVariableName=<string>  Class variable name: CLASS5, CLPRDP [default: CLASS5].
+    --classVariableName=<string>  Class variable name: CLASS5, CLPRDP [default: CLPRDP].
     --excludeRowValue=<int>  Variable value to exclude rows from a dataset [default: -1].
     --excludeRowVarName=<string>  Variable name to exclude rows from a dataset [default: SORTGRP].
     --xVarSelectCriteria=<string>  Variable indicator value [default: X].
     --minNvar=<int>  Minimum number of variables to select [default: 1].
     --maxNvar=<int>  Maximum number of variables to select [default: 20].
-    --nSolutions=<int>  Number of iterations to be applied [default: 20].
+    --nSolutions=<int>  Number of iterations to be applied [default: 10].
     --criteria=<string>  Set the criteria to be applied for variables selection: ccr12, Wilkes xi2 zeta2 [default: xi2].
     --tempDir=<string>  Use this temp directory instead of generating one.
     --priorDistribution=<string>  TODO: Describe [default: SAMPLE]
-    --classNames=<string>  TODO: Describe. [default: CLASS5]
+    --classNames=<string>  TODO: Describe. [default: CLPRDP]
 """
 
 import os
