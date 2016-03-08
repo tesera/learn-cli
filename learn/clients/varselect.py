@@ -16,30 +16,31 @@ class VarSelect(object):
 
     def initR(self, args):
 
-        for key, value in args.iteritems():
-            if('--' in key):
-                key = key.strip('-')
-                if(value is not None and value.isdigit()):
-                    self.r('%s <- %s' % (key, value))
-                else:
-                    self.r('%s <- "%s"' % (key, value))
+        self.r('classVariableName <- "%s"' % args['--yvar'])
+        self.r('excludeRowValue <- "%s"' % -1)
+        self.r('excludeRowVarName <- "SORTGRP"')
+        self.r('xVarSelectCriteria <- "X"')
+        self.r('minNvar <- %d' % int(args['--minNvar']))
+        self.r('maxNvar <- %d' % int(args['--maxNvar']))
+        self.r('nSolutions <- %d' % int(args['--nSolutions']))
+        self.r('criteria <- "%s"' % args['--criteria'])
 
-        self.r('lviFileName <- "%s"' % args['<datafile>'])
-        self.r('outDir <- "%s"' % args['<outputdir>'])
-        self.r('xVarSelectFileName <- "%s"' % args['<variablesfile>'])
-        self.r('uniqueVarPath <- "%s/UNIQUEVAR.csv"' % args['<outputdir>'])
-        self.r('printFileName <- "%s/UCORCOEF.csv"' % args['<outputdir>'])
-        self.r('xVarCountFileName <- "%s/XVARSELV1_XCOUNT.csv"' % args['<outputdir>'])
-        self.r('varSelect <- "%s/VARSELECT.csv"' % args['<outputdir>'])
+        self.r('lviFileName <- "%s"' % args['<xy_reference_csv>'])
+        self.r('outDir <- "%s"' % args['--output'])
+        self.r('xVarSelectFileName <- "%s"' % args['--config'])
+        self.r('uniqueVarPath <- "%s/UNIQUEVAR.csv"' % args['--output'])
+        self.r('printFileName <- "%s/UCORCOEF.csv"' % args['--output'])
+        self.r('xVarCountFileName <- "%s/XVARSELV1_XCOUNT.csv"' % args['--output'])
+        self.r('varSelect <- "%s/VARSELECT.csv"' % args['--output'])
 
     def run(self, args):
         self.initR(args)
 
         self.flog.flog_info("Starting variable_selection")
-        count_xvar_in_xvarsel = CountXVarInXvarSel(args['<outputdir>'])
-        rank_var = RankVar(args['<outputdir>'])
-        extract_rvariable_combos = ExtractRVariableCombos(args['<outputdir>'])
-        remove_highcorvar = RemoveHighCorVarFromXVarSel(args['<outputdir>'])
+        count_xvar_in_xvarsel = CountXVarInXvarSel(args['--output'])
+        rank_var = RankVar(args['--output'])
+        extract_rvariable_combos = ExtractRVariableCombos(args['--output'])
+        remove_highcorvar = RemoveHighCorVarFromXVarSel(args['--output'])
         rvarselect = importr('rlearn')
 
         currentCount = count_xvar_in_xvarsel.count()
