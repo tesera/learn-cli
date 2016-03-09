@@ -6,79 +6,58 @@ Learn CLI performs variable selection, model development and target dataset proc
 
 The cli is docker ready. You can choose to run the cli locally the old fashion way or through Docker with the Dockerfile included. Running the cli in Docker will simplify the efforts tremendously but Docker is not required.
 
+```console
+$ learn --help
+Usage:
+    learn varsel [<xy_reference_csv>] [options]
+    learn lda [<xy_reference_csv>] [options]
+
+Arguments:
+    <xy_reference_csv> The path to the XY reference CSV file. Can be an S3://... path.
+
+Options:
+    -h --help  Show help.
+    -c <file>, --config <file>  Variable selection file. Can be an S3://... path. [default: ./config.csv]
+    -o <dir>, --output <dir>  Output folder. [default: ./]
+    --yvar <string>  Class variable name: CLASS5, CLPRDP [default: Y].
+    --iteration <string>  Iteration specific arguments for variable selection. <solutions:x-min:x-max> [default: 10:1:10]
+    --criteria <string>  Set the criteria to be applied for variables selection: ccr12, Wilkes, xi2, zeta2 [default: xi2].
+
+Examples:
+    learn varsel
+    learn varsel ./myfolder/xy_reference.csv -x ./myfolder/xvar_sel.csv -o ./output/varsel --iteration 10:1:10
+    learn varsel s3://my-bucket/xy_reference.csv -x s3://my-bucket/xvar_sel.csv -o s3://my-bucket/varsel --iteration 10:1:10
+    learn lda
+    learn lda ./myfolder/xy_reference.csv -x ./myfolder/xvar_sel.csv -o ./output/varsel
+    learn lda s3://my-bucket/xy_reference.csv -x s3://my-bucket/xvar_sel.csv -o s3://my-bucket/varsel
+```
+
 ###Dependencies
 
 * [Github Persona Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/)
 * [AWS Access Key](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html) (optional)
+* `dev.env` file
 
-####Without Docker
-* [Python 2.7](https://www.python.org/)
-* [R](https://www.r-project.org/)
-* [pip](https://pypi.python.org/pypi/pip)
-* [virtualenv](https://virtualenv.readthedocs.org/en/latest/) (recommended)
-* [little r](http://dirk.eddelbuettel.com/code/littler.html)
-
-####With Docker
-* [Docker](https://www.docker.com/)
-* [Docker Machine](https://docs.docker.com/machine/) (Windows/OSX)
-
-### Running without Docker on OSX (not recommended; use Docker)
-
-In order to run this CLI without Docker you need to install all the lower level dependencies in order to build the higher level dependencies. i.e. gcc, fortran... SciPy is also installed as a system level dependency because of its comples build steps. If you are confident you have all the dependencies installed and configured you can proceed otherwise we recommend the Docker approach.
-
-####Install Python and R Dependencies
-
-```
+```console
+$ cat dev.env
 export GITHUB_TOKEN=<your-github-token>
 export PYLEARN_REF=master
 export RLEARN_REF=master
 export AWS_ACCESS_KEY_ID=<your-access-key>
 export AWS_SECRET_ACCESS_KEY=<your-secret-key>
 export AWS_REGION=<your-aws-region>
-
-bash ./install-dependencies.sh
 ```
 
-#### Install via git clone
+####Without Docker
+* [Python 2.7](https://www.python.org/)
+* [R](https://www.r-project.org/)
+* [pip](https://pypi.python.org/pypi/pip)
+* [little r](http://dirk.eddelbuettel.com/code/littler.html)
 
-```console
-git clone git@github.com:tesera/learn-cli.git
-cd learn-cli
-pip install .
-```
-
-#### Install via Git direct install
-
-```console
-pip install git+git://$GITHUB_TOKEN@github.com/tesera/learn-cli@master.git
-```
-
-#### Test the install
-
-```console
-$ learn --help
-Usage:
-    learn <operation> <datafile> <variablesfile> <outputdir> [options]
-
-Arguments:
-    <operation> varsel | lda
-    <datafile>  Input file, local or S3 in format s3://bucket/path/filename.csv.
-    <variablesfile>  File containing variable selections, local or S3 in format s3://bucket/path/filename.csv.
-    <outputdir>  Directory to write results out too.
-
-Options:
-    --classVariableName=<string>  Class variable name: CLASS5, CLPRDP [default: CLASS5].
-    --excludeRowValue=<int>  Variable value to exclude rows from a dataset [default: -1].
-    --excludeRowVarName=<string>  Variable name to exclude rows from a dataset [default: SORTGRP].
-    --xVarSelectCriteria=<string>  Variable indicator value [default: X].
-    --minNvar=<int>  Minimum number of variables to select [default: 1].
-    --maxNvar=<int>  Maximum number of variables to select [default: 20].
-    --nSolutions=<int>  Number of iterations to be applied [default: 20].
-    --criteria=<string>  Set the criteria to be applied for variables selection: ccr12, Wilkes xi2 zeta2 [default: xi2].
-    --tempDir=<string>  Use this temp directory instead of generating one.
-    --priorDistribution=<string>  TODO: Describe [default: SAMPLE]
-    --classNames=<string>  TODO: Describe. [default: CLASS5]
-```
+####With Docker
+* [Docker](https://www.docker.com/)
+* [Docker Machine](https://docs.docker.com/machine/) (Windows/OSX)
+* [Docker Compose](https://docs.docker.com/compose/overview/)
 
 ### Running with Docker
 
@@ -86,68 +65,34 @@ If you are using docker-machine make sure you have a machine running and that yo
 
 #### Create a virtual machine with Windows Powershell
 ```console
-docker-machine create --driver virtualbox --virtualbox-host-dns-resolver default
-docker-machine env --shell powershell default | Invoke-Expression
+$ docker-machine create --driver virtualbox --virtualbox-host-dns-resolver default
+$ docker-machine env --shell powershell default | Invoke-Expression
 ```
 
 #### Create a virtual machine with OSX Shell
 ```console
-docker-machine create --driver virtualbox default
-eval "$(docker-machine env default)"
-```
-
-#### Build the container
-
-```console
-git clone git@github.com:tesera/learn-cli.git
-cd learn-cli
-
-docker build -t="learn-cli" \
-    --build-arg GITHUB_TOKEN=<your-github-token> \
-    [--build-arg PYLEARN_REF=<pylearnt-github-ref> ] \
-    [--build-arg RLEARN_REF=<rlearn-github-ref> ] \
-    learn-cli
+$ docker-machine create --driver virtualbox default
+$ eval "$(docker-machine env default)"
 ```
 
 #### Run the container
 
-#####Basic Command
-
 ```console
-docker run -it -v $PWD/example:/opt/data learn-cli \
-  varsel \
-  /opt/data/ANALYSIS.csv \
-  /opt/data/XVARSELV1.csv \
-  /opt/data/varsel \
-  --classVariableName CLASS5 \
-  --excludeRowValue -1 \
-  --excludeRowVarName SORTGRP \
-  --minNvar 1 \
-  --maxNvar 20 \
-  --nSolutions 20 \
-  --criteria xi2
+$ docker-compose run dev
+# bash ./install-dependencies.sh --dev
 ```
 
-##### Running the Examples
+### Running without Docker on OSX (not recommended; use Docker)
+
+In order to run this CLI without Docker you need to install all the lower level dependencies in order to build the higher level dependencies. i.e. gcc, fortran... SciPy is also installed as a system level dependency because of its comples build steps. If you are confident you have all the dependencies installed and configured you can proceed otherwise we recommend the Docker approach.
+
 
 ```console
-docker run -it learn-cli bash ./example/run.sh
-```
-
-```console
-docker run -it \
-  -e AWS_ACCESS_KEY_ID=<your-aws-access-key> \
-  -e AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
-  learn-cli bash ./example/run-s3.sh
-```
-
-##### Run in development mode
-
-```console
-docker run -v $PWD:/opt/learn -it \
-  [-e AWS_ACCESS_KEY_ID=<your-aws-access-key>] \
-  [-e AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key>] \
-  learn-cli /bin/bash
+git clone git@github.com:tesera/learn-cli.git
+cd learn-cli
+source dev.env
+bash ./install-dependencies.sh
+pip install .
 ```
 
 ### Running in AWS ECS

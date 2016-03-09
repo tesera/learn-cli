@@ -1,9 +1,20 @@
 #!/usr/bin/env bash
 
+mkdir -p {pysite,rlibs}
+
 install2.r -l $R_LIBS_USER devtools
 
-r ./installGithub2.r tesera/rlearn -d TRUE -t $GITHUB_TOKEN -r $RLEARN_REF
+r ./installGithub2.r tesera/rlearn -d TRUE -t $GITHUB_TOKEN -r ${RLEARN_REF-master}
 
-pip install --user "git+https://$GITHUB_TOKEN@github.com/tesera/pylearn.git@$PYLEARN_REF"
+pip install --user git+https://github.com/tesera/agate.git@master
+
+pip install --user "git+https://$GITHUB_TOKEN@github.com/tesera/pylearn.git@${PYLEARN_REF-master}"
 
 rm -rf /tmp/downloaded_packages/ /tmp/*.rds
+
+# if this script is run in interactive mode install the cli too
+if [[ $1 == '--dev' ]]
+then
+    echo 'installing learn-cli...'
+    pip install --user .
+fi

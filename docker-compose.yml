@@ -1,0 +1,7 @@
+dev:
+  container_name: learn
+  build: .
+  volumes:
+    - ./:/opt/learn
+  env_file: ./dev.env
+  command: ['/bin/bash']
