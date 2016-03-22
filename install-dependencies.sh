@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "github token => $GITHUB_TOKEN"
+
 rm -rf pysite rlibs
 
 mkdir -p {pysite,rlibs}
