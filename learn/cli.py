@@ -38,14 +38,17 @@ from schema import Schema, And, Or, SchemaError, Optional
 from clients.varselect import VarSelect
 from clients.analyze import Analyze
 
+def is_s3_url(url):
+    return urlparse(url).scheme == 's3'
+
 def cli():
     args = docopt(__doc__)
     schema = Schema({
         Optional('varsel'): bool,
         Optional('lda'): bool,
-        '<xy_reference_csv>': And(os.path.isfile, error='<xy_reference_csv> should exist and be readable.'),
-        '--config': And(os.path.isfile, error='--config should exist and be readable.'),
-        '--output': And(os.path.exists, error='--output should exist and be writable.'),
+        '<xy_reference_csv>': Or(os.path.isfile, is_s3_url, error='<xy_reference_csv> should exist and be readable.'),
+        '--config': Or(os.path.isfile, is_s3_url, error='--config should exist and be readable.'),
+        '--output': Or(os.path.exists, is_s3_url,  error='--output should exist and be writable.'),
         '--yvar': And(str, len),
         '--iteration': And(str, len),
         '--criteria': And(str, len),
@@ -72,9 +75,9 @@ def cli():
             s3_client = boto3.client('s3')
             for key in ['<xy_reference_csv>', '--config']:
                 url = urlparse(args[key])
-                dl = tempdir + '/' + args[key].split('/')[-1]
-                s3_client.download_file(url.netloc, url.path.strip('/'), dl)
-                args[key] = dl
+                file_path = os.path.join(tmp, args[key].split('/')[-1])
+                s3_client.download_file(url.netloc, url.path.strip('/'), file_path)
+                args[key] = file_path
         except Exception as e:
             exit(e)
     else :
