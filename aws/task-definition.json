@@ -6,6 +6,12 @@
       "image": "674223647607.dkr.ecr.us-east-1.amazonaws.com/tesera/learn",
       "name": "learn",
       "essential": true,
+      "environment" : [
+          { "name" : "AWS_LOGS", "value" : "true" },
+          { "name" : "AWS_LOGS_GROUP", "value" : "learn-ecs" },
+          { "name" : "AWS_LOGS_STREAM_PREFIX", "value" : "learn" },
+          { "name" : "LOGGING_LEVEL", "value" : "INFO" }
+      ],
       "entryPoint": ["learn"]
     }
   ]
