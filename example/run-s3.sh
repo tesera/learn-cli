@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
 
 learn varsel \
-  s3://tesera.svc.learn/uploads/example/ANALYSIS.csv \
-  s3://tesera.svc.learn/uploads/example/XVARSELV1.csv \
-  s3://tesera.svc.learn/uploads/example/output/1 \
-  --classVariableName CLASS5 \
-  --excludeRowValue -1 \
-  --excludeRowVarName SORTGRP \
-  --minNvar 1 \
-  --maxNvar 20 \
-  --nSolutions 20 \
-  --criteria xi2
+    s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/filter/data_xy.csv \
+    --config s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/filter/vsel_xy_config.csv \
+    --output s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/varsel \
+    --yvar CLPRDP

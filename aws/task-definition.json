@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "memory": 1024,
-      "image": "https://674223647607.dkr.ecr.us-east-1.amazonaws.com/tesera/learn",
+      "image": "674223647607.dkr.ecr.us-east-1.amazonaws.com/tesera/learn",
       "name": "learn",
       "essential": true,
       "entryPoint": ["learn"]

@@ -1,6 +1,6 @@
 - service: app
   type: push
-  tag: master
+  tag: temp
   image_tag: latest
   image_name: 674223647607.dkr.ecr.us-east-1.amazonaws.com/tesera/learn
   registry: https://674223647607.dkr.ecr.us-east-1.amazonaws.com
