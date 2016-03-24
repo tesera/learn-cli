@@ -16,7 +16,7 @@ class Analyze(object):
 
     def run(self, args):
         print 'running analyze...'
-        self.analyze(args['<xy_reference_csv>'],
+        self.analyze(args['--xy-data'],
                     args['--config'],
                     'SORTGRP',
                     -1,
