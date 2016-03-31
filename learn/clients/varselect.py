@@ -25,7 +25,7 @@ class VarSelect(object):
         self.r('nSolutions <- %d' % int(args['--nSolutions']))
         self.r('criteria <- "%s"' % args['--criteria'])
 
-        self.r('lviFileName <- "%s"' % args['<xy_reference_csv>'])
+        self.r('lviFileName <- "%s"' % args['--xy-data'])
         self.r('outDir <- "%s"' % args['--output'])
         self.r('xVarSelectFileName <- "%s"' % args['--config'])
         self.r('uniqueVarPath <- "%s/UNIQUEVAR.csv"' % args['--output'])
