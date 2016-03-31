@@ -1,3 +1,5 @@
+import logging
+
 import rpy2.robjects as robjects
 from rpy2.robjects.packages import STAP
 from rpy2.robjects.packages import importr
@@ -6,6 +8,8 @@ from pylearn.varselect.count_xvar_in_xvarsel import CountXVarInXvarSel
 from pylearn.varselect.test_extract_rvariable_combos import ExtractRVariableCombos
 from pylearn.varselect.rank_var import RankVar
 from pylearn.varselect.remove_highcorvar_from_xvarsel import RemoveHighCorVarFromXVarSel
+
+logger = logging.getLogger('pylearn')
 
 class VarSelect(object):
     importr('subselect')
@@ -34,9 +38,10 @@ class VarSelect(object):
         self.r('varSelect <- "%s/VARSELECT.csv"' % args['--output'])
 
     def run(self, args):
+        logger.info("Starting variable_selection")
+
         self.initR(args)
 
-        self.flog.flog_info("Starting variable_selection")
         count_xvar_in_xvarsel = CountXVarInXvarSel(args['--output'])
         rank_var = RankVar(args['--output'])
         extract_rvariable_combos = ExtractRVariableCombos(args['--output'])
@@ -45,7 +50,7 @@ class VarSelect(object):
 
         currentCount = count_xvar_in_xvarsel.count()
         self.r('initialCount <- scan(xVarCountFileName)')
-        self.flog.flog_info("Initial variable count: %s", self.r['initialCount'])
+        logger.info("Initial variable count: %s", self.r['initialCount'])
         rvarselect.vs_IdentifyAndOrganizeUniqueVariableSets(self.r['lviFileName'], self.r['xVarSelectFileName'], self.r['varSelect'])
 
         # test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() identifies the unique variable sets and organizes them into a new file VARSELV.csv;
@@ -59,7 +64,7 @@ class VarSelect(object):
 
         removeCorXVars = remove_highcorvar.remove_high_cor_vars()
         nextCount = count_xvar_in_xvarsel.count()
-        self.flog.flog_info("CurrentCount = %s, nextCount %s", currentCount, nextCount)
+        logger.info("CurrentCount = %s, nextCount %s", currentCount, nextCount)
 
         # "Kluge" is: Helps get around an unknown crash when calling test3_XiterativeVarSelCorVarElimination.R
         self.r('xVarCount <- scan(xVarCountFileName)')
@@ -81,4 +86,4 @@ class VarSelect(object):
             count_xvar_in_xvarsel.count()
             counter = counter +1
 
-        self.flog.flog_info("Number of Iterations: %s", counter)
+        logger.info("Number of Iterations: %s", counter)

@@ -33,6 +33,7 @@ import shutil
 from urlparse import urlparse
 import tempfile
 from signal import *
+import logging
 
 import boto3
 from docopt import docopt
@@ -41,6 +42,8 @@ from schema import Schema, And, Or, SchemaError, Optional
 from clients.varselect import VarSelect
 from clients.analyze import Analyze
 from clients.discrating import Discrating
+
+logger = logging.getLogger('pylearn')
 
 def is_s3_url(url):
     return urlparse(url).scheme == 's3'
@@ -91,52 +94,58 @@ def cli():
     }
     files = files[command]
 
-    # prep the data files
+
     if (isS3Data) :
+        logger.info("copying s3 data files locally")
         try:
             s3_client = boto3.client('s3')
             for filepath in files:
+                logger.info("copying %s from S3", filepath)
                 url = urlparse(args[filepath])
                 file_path = os.path.join(tmp, args[filepath].split('/')[-1])
                 s3_client.download_file(url.netloc, url.path.strip('/'), file_path)
                 args[filepath] = file_path
         except Exception as e:
+            logger.error("error copying data from s3: %s", command, e)
             exit(e)
     else :
         for filepath in files:
             shutil.copy(filepath, tmp)
 
-    # here we rename the passed in filenames to the legacy filenames jic they where hardcoded
-    # legacy_config = 'XVARSELV1.csv' if command is 'varsel' else 'XVARSELV.csv'
-    # legacy = {
-    #     '--xy-data': os.path.join(tmp, 'ANALYSIS.csv'),
-    #     '--config': os.path.join(tmp, legacy_config)
-    # }
-    # os.rename(os.path.join(tmp, os.path.basename(args['--xy-data'])), legacy['--xy-data'])
-    # os.rename(os.path.join(tmp, os.path.basename(args['--config'])), legacy['--config'])
-    # args['--xy-data'] = legacy['--xy-data']
-    # args['--config'] = legacy['--config']
+    # rename the passed in filenames to the legacy filenames jic they where hardcoded
+    legacy_config = 'XVARSELV1.csv' if command is 'varsel' else 'XVARSELV.csv'
 
-    # start the process
+    legacy = {
+        '--xy-data': os.path.join(tmp, 'ANALYSIS.csv'),
+        '--config': os.path.join(tmp, legacy_config)
+    }
+
+    if command in ['varsel', 'lda']:
+        os.rename(os.path.join(tmp, os.path.basename(args['--config'])), legacy['--config'])
+        args['--config'] = legacy['--config']
+
+    os.rename(os.path.join(tmp, os.path.basename(args['--xy-data'])), legacy['--xy-data'])
+    args['--xy-data'] = legacy['--xy-data']
+
     try:
         args['--output'] = args['--output'].rstrip('/') + '/';
-        args['WORKINGDIR'] = os.getcwd().rstrip('/').replace('/bin', '') + '/'
 
         client = clients[command]()
         client.run(args)
 
         if(isS3Data):
-            print "Copying results to %s%s", outdir_url.netloc, outdir_url.path
+            logger.info("Copying results to s3 @ %s%s", outdir_url.netloc, outdir_url.path)
             for outfile in os.listdir(tmp):
                 up = ("%s/%s" % (outdir_url.path, outfile)).strip('/')
                 outfile = ("%s/%s" % (tmp, outfile))
                 s3_client.upload_file(outfile, outdir_url.netloc, up.strip('/'))
         else:
-            print "Copying results to %s" % outdir
+            logger.info("Copying results to %s", outdir)
             for outfile in os.listdir(tmp):
                 shutil.copy(os.path.join(tmp, outfile), os.path.join(outdir, outfile))
 
         exit(0)
 
     except SchemaError as e:
+        logger.error("error running client %s with error %s", command, e)
         exit(e)
