@@ -9,27 +9,30 @@ The cli is docker ready. You can choose to run the cli locally the old fashion w
 ```console
 $ learn --help
 Usage:
-    learn varsel [<xy_reference_csv>] [options]
-    learn lda [<xy_reference_csv>] [options]
-
-Arguments:
-    <xy_reference_csv> The path to the XY reference CSV file. Can be an S3://... path.
+    learn varsel (--xy-data <file> --config <file> --yvar <string>) [--iteration <solutions:x-min:x-max> --criteria <string> --output <dir>]
+    learn lda (--xy-data <file> --config <file> --yvar <string>) [--iteration <solutions:x-min:x-max> --criteria <string> --output <dir>]
+    learn discrat (--xy-data <file> --x-data <file> --dfunct <file> --idf <file> --varset <int>) [--output <dir>]
 
 Options:
-    -h --help  Show help.
-    -c <file>, --config <file>  Variable selection file. Can be an S3://... path. [default: ./config.csv]
-    -o <dir>, --output <dir>  Output folder. [default: ./]
+    --xy-data <file>  The path to the XY reference CSV file. Can be an S3://... path.
+    --x-data <file>  The path to the X filtered data CSV file. Can be an S3://... path.
+    --config <file>  Variable selection file. Can be an S3://... path. [default: ./config.csv]
     --yvar <string>  Class variable name: CLASS5, CLPRDP [default: Y].
     --iteration <string>  Iteration specific arguments for variable selection. <solutions:x-min:x-max> [default: 10:1:10]
     --criteria <string>  Set the criteria to be applied for variables selection: ccr12, Wilkes, xi2, zeta2 [default: xi2].
+    --dfunct <file>  The path to the lda dfunct file to use for the discriminant rating.
+    --idf <file>  The path to the IDF Curves file to use for the discriminant rating.
+    --varset <int>  The ID of the varset to use for the discriminant rating.
+    --output <dir>  Output folder. [default: ./]
+    -h --help  Show help.
 
 Examples:
-    learn varsel
-    learn varsel ./myfolder/xy_reference.csv -x ./myfolder/xvar_sel.csv -o ./output/varsel --iteration 10:1:10
-    learn varsel s3://my-bucket/xy_reference.csv -x s3://my-bucket/xvar_sel.csv -o s3://my-bucket/varsel --iteration 10:1:10
-    learn lda
-    learn lda ./myfolder/xy_reference.csv -x ./myfolder/xvar_sel.csv -o ./output/varsel
-    learn lda s3://my-bucket/xy_reference.csv -x s3://my-bucket/xvar_sel.csv -o s3://my-bucket/varsel
+    learn varsel --xy-data ./folder/xy_reference.csv --config ./folder/xvar_sel.csv --output ./output/varsel --iteration 10:1:10
+    learn varsel --xy-data s3://bucket/xy_reference.csv --config s3://bucket/xvar_sel.csv --output s3://bucket/varsel --iteration 10:1:10
+    learn lda --xy-data ./folder/xy_reference.csv --config ./folder/xvar_sel.csv --output./output/varsel
+    learn lda --xy-data s3://bucket/xy_reference.csv --config s3://bucket/xvar_sel.csv --output s3://bucket/varsel
+    learn discrat --xy-data ./folder/xy_reference.csv --x-data ./folder/x_filtered.csv --dfunct ./folder/dfunct.csv --idf ./folder/idf.csv --varset 18 --output ./output/varsel
+    learn discrat --xy-data s3://bucket/xy_reference.csv --x-data s3://bucket/x_filtered.csv --dfunct s3://bucket/dfunct.csv --idf s3://bucket/idf.csv --varset 18 --output s3://bucket/varsel
 ```
 
 ###Dependencies
@@ -134,16 +137,10 @@ cat aws/overrides.json
       "name": "learn",
       "command": [
         "varsel",
-        "s3://tesera.svc.learn/uploads/example/ANALYSIS.csv",
-        "s3://tesera.svc.learn/uploads/example/XVARSELV1.csv",
-        "s3://tesera.svc.learn/uploads/example/varsel",
-        "--classVariableName=CLASS5",
-        "--excludeRowValue=-1",
-        "--excludeRowVarName=SORTGRP",
-        "--minNvar=1",
-        "--maxNvar=20",
-        "--nSolutions=20",
-        "--criteria=xi2"
+        "--xy-data=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/filter/data_xy.csv",
+        "--config=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/filter/vsel_xy_config.csv",
+        "--output=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/varsel",
+        "--yvar=CLPRDP"
       ]
     }
   ]
@@ -153,7 +150,7 @@ cat aws/overrides.json
 bash ./run-task.sh
 
 # the results should now be in the specified output path.
-aws s3 ls --recursive s3://tesera.svc.learn/uploads/example/varsel
+aws s3 ls --recursive s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/varsel
 2016-02-18 15:38:36      35048 uploads/example/varsel/ANALYSIS.csv
 2016-02-18 15:38:36       5186 uploads/example/varsel/UCORCOEF.csv
 2016-02-18 15:38:36        132 uploads/example/varsel/UNIQUEVAR.csv
