@@ -14,14 +14,14 @@ class Discrating(object):
         logger.info("running dicsriminant ratings...")
 
     def run(self, args):
-        logger.info("exporting varset %s as dfunct..." % args['--varset'])
-        dfunct = pd.read_csv(args['--dfunct'])
-        param = get_param(dfunct, int(args['--varset']))
+        logger.info("invoking predict with varset: %s", args['--varset'])
 
         pargs = {
             'xy': pd.read_csv(args['--xy-data']),
             'x_filtered': pd.read_csv(args['--x-data']),
-            'param': param,
+            'dfunct': pd.read_csv(args['--dfunct']),
+            'varset': int(args['--varset']),
+            'yvar': args['--yvar'],
             'idf': pd.read_csv(args['--idf']),
         }
 
