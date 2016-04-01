@@ -130,35 +130,67 @@ Running the task will run the most recent task definition by default. You can ch
 
 ```console
 # edit overrides.json for your analysis
-cat aws/overrides.json
+cat aws/overrides-varsel.json
 {
   "containerOverrides": [
     {
       "name": "learn",
       "command": [
         "varsel",
-        "--xy-data=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/filter/data_xy.csv",
-        "--config=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/filter/vsel_xy_config.csv",
-        "--output=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/varsel",
-        "--yvar=CLPRDP"
+        "--xy-data=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/filter/data_xy.csv",
+        "--config=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/filter/vsel_xy_config.csv",
+        "--output=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel"
       ]
     }
   ]
 }
 
-# run the task with the overides
-bash ./run-task.sh
+cat aws/overrides-lda.json
+{
+  "containerOverrides": [
+    {
+      "name": "learn",
+      "command": [
+        "lda",
+        "--xy-data=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/filter/data_xy.csv",
+        "--config=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/XVARSELV.csv",
+        "--output=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/lda"
+      ]
+    }
+  ]
+}
+
+cat aws/overrides-discrat.json
+{
+  "containerOverrides": [
+    {
+      "name": "learn",
+      "command": [
+        "discrat",
+        "--xy-data=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/filter/data_xy.csv",
+        "--x-data=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/filter/data_x_filtered.csv",
+        "--dfunct=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/lda/DFUNCT.csv",
+        "--idf=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/data_idf.csv",
+        "--varset=18",
+        "--output=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/discrat"
+      ]
+    }
+  ]
+}
+
+# run cli via run-task and associated overrides
+bash ./run-task.sh (varsel | lda | discrat)
 
 # the results should now be in the specified output path.
-aws s3 ls --recursive s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/varsel
-2016-02-18 15:38:36      35048 uploads/example/varsel/ANALYSIS.csv
-2016-02-18 15:38:36       5186 uploads/example/varsel/UCORCOEF.csv
-2016-02-18 15:38:36        132 uploads/example/varsel/UNIQUEVAR.csv
-2016-02-18 15:38:36        281 uploads/example/varsel/VARRANK.csv
-2016-02-18 15:38:36      51560 uploads/example/varsel/VARSELECT.csv
-2016-02-18 15:38:36       1929 uploads/example/varsel/XVARSELV.csv
-2016-02-18 15:38:36        689 uploads/example/varsel/XVARSELV1.csv
-2016-02-18 15:38:36          3 uploads/example/varsel/XVARSELV1_XCOUNT.csv
+aws s3 ls --recursive s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel
+2016-04-01 16:22:42   15256507 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/ANALYSIS.csv
+2016-04-01 16:22:43     267998 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/UCORCOEF.csv
+2016-04-01 16:22:43       1042 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/UNIQUEVAR.csv
+2016-04-01 16:22:43       1892 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/VARRANK.csv
+2016-04-01 16:22:43      21671 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/VARSELECT.csv
+2016-04-01 16:22:43       3767 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/XVARSELV.csv
+2016-04-01 16:22:42      12859 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/XVARSELV1.csv
+2016-04-01 16:22:43          4 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/XVARSELV1_XCOUNT.csv
 
 ```
 
