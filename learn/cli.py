@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 """
 Usage:
-    learn varsel (--xy-data <file> --config <file> --yvar <string>) [--iteration <solutions:x-min:x-max> --criteria <string> --output <dir>]
-    learn lda (--xy-data <file> --config <file> --yvar <string>) [--iteration <solutions:x-min:x-max> --criteria <string> --output <dir>]
-    learn discrat (--xy-data <file> --x-data <file> --dfunct <file> --idf <file> --varset <int>) [--output <dir>]
+    learn varsel (--xy-data <file> --config <file>) [--yvar <string> --iteration <solutions:x-min:x-max> --criteria <string> --output <dir>]
+    learn lda (--xy-data <file> --config <file>) [--yvar <string> --output <dir>]
+    learn discrat (--xy-data <file> --x-data <file> --dfunct <file> --idf <file> --varset <int>) [--yvar <string> --output <dir>]
 
 Options:
     --xy-data <file>  The path to the XY reference CSV file. Can be an S3://... path.
