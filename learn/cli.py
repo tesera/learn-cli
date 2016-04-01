@@ -100,13 +100,13 @@ def cli():
         try:
             s3_client = boto3.client('s3')
             for filepath in files:
-                logger.info("copying %s from S3", filepath)
-                url = urlparse(args[filepath])
-                file_path = os.path.join(tmp, args[filepath].split('/')[-1])
+                logger.info("copying %s from S3" % filepath)
+                url = urlparse(filepath)
+                file_path = os.path.join(tmp, filepath.split('/')[-1])
                 s3_client.download_file(url.netloc, url.path.strip('/'), file_path)
-                args[filepath] = file_path
+                args[args.keys()[args.values().index(filepath)]] = file_path
         except Exception as e:
-            logger.error("error copying data from s3: %s", command, e)
+            logger.error("error copying data from s3: %s %s" % command, e)
             exit(e)
     else :
         for filepath in files:
