@@ -147,5 +147,9 @@ def cli():
         exit(0)
 
     except SchemaError as e:
-        logger.error("error running client %s with error %s", command, e)
+        logger.error(e)
         exit(e)
+
+    except:
+        logger.error("error running client %s with error %s", command, sys.exc_info()[0])
+        exit(1)
