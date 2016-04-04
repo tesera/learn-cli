@@ -30,7 +30,7 @@ Examples:
 import os
 import sys
 import shutil
-from urlparse import urlparse
+from urlparse import urlparse, urljoin
 import tempfile
 from signal import *
 import logging
@@ -71,7 +71,9 @@ def cli():
 
     outdir = args['--output']
     outdir_url = urlparse(outdir)
-    isS3Data = outdir_url.scheme == 's3'
+    if outdir_url.scheme == 's3':
+        s3bucket = outdir_url.netloc
+        s3prefix = outdir_url.path.strip('/')
     args['--output'] = tmp = tempfile.mkdtemp('learn-cli')
     args['--nSolutions'], args['--minNvar'], args['--maxNvar'] = args['--iteration'].split(':')
 
@@ -95,7 +97,7 @@ def cli():
     files = files[command]
 
 
-    if (isS3Data) :
+    if (s3bucket) :
         logger.info("copying s3 data files locally")
         try:
             s3_client = boto3.client('s3')
@@ -133,12 +135,19 @@ def cli():
         client = clients[command]()
         client.run(args)
 
-        if(isS3Data):
-            logger.info("Copying results to s3 @ %s%s", outdir_url.netloc, outdir_url.path)
-            for outfile in os.listdir(tmp):
-                up = ("%s/%s" % (outdir_url.path, outfile)).strip('/')
-                outfile = ("%s/%s" % (tmp, outfile))
-                s3_client.upload_file(outfile, outdir_url.netloc, up.strip('/'))
+        if(s3bucket):
+            logger.info("Copying results to s3 bucket %s to prefix %s", s3bucket, s3prefix)
+            for filename in os.listdir(tmp):
+                filepath = os.path.join(tmp, filename)
+                key = "%s/%s" % (s3prefix, filename)
+                logger.info("Copying %s to %s", filepath, key)
+                s3_client.upload_file(filepath, s3bucket, key)
+
+            for logfile in ['pylearn.log']:
+                logfile_path = os.path.join(os.getcwd(), logfile)
+                key = "%s/%s" % (s3prefix, logfile)
+                logger.info("Copying logfile %s to %s", logfile, key)
+                s3_client.upload_file(logfile_path, s3bucket, key)
         else:
             logger.info("Copying results to %s", outdir)
             for outfile in os.listdir(tmp):
@@ -146,10 +155,6 @@ def cli():
 
         exit(0)
 
-    except SchemaError as e:
-        logger.error(e)
-        exit(e)
-
-    except:
-        logger.error("error running client %s with error %s", command, sys.exc_info()[0])
+    except Exception as e:
+        logging.error(e)
         exit(1)
