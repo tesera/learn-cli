@@ -129,6 +129,8 @@ def cli():
     os.rename(os.path.join(tmp, os.path.basename(args['--xy-data'])), legacy['--xy-data'])
     args['--xy-data'] = legacy['--xy-data']
 
+    infiles = [os.path.basename(f) for f in os.listdir(tmp)]
+
     try:
         args['--output'] = args['--output'].rstrip('/') + '/';
 
@@ -138,10 +140,11 @@ def cli():
         if(s3bucket):
             logger.info("Copying results to s3 bucket %s to prefix %s", s3bucket, s3prefix)
             for filename in os.listdir(tmp):
-                filepath = os.path.join(tmp, filename)
-                key = "%s/%s" % (s3prefix, filename)
-                logger.info("Copying %s to %s", filepath, key)
-                s3_client.upload_file(filepath, s3bucket, key)
+                if filename not in infiles:
+                    filepath = os.path.join(tmp, filename)
+                    key = "%s/%s" % (s3prefix, filename)
+                    logger.info("Copying %s to %s", filepath, key)
+                    s3_client.upload_file(filepath, s3bucket, key)
 
             for logfile in ['pylearn.log']:
                 logfile_path = os.path.join(os.getcwd(), logfile)
