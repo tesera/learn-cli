@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 learn discrat \
-    --xy-data s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/filter/data_xy.csv \
-    --x-data s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/filter/data_x_filtered.csv \
-    --dfunct s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/lda/DFUNCT.csv \
-    --idf s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20160322-asd34/IDF.csv \
+    --xy-data s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459798999/filter/data_xy.csv \
+    --x-data s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459798999/filter/data_x_filtered.csv \
+    --dfunct s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459798999/lda/DFUNCT.csv \
+    --idf s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459798999/data_idf.csv \
     --varset 18 \
-    --output ./example/discrat
+    --output s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459798999/discrat
