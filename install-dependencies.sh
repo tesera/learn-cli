@@ -18,5 +18,5 @@ rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 if [[ $1 == '--dev' ]]
 then
     echo 'installing learn-cli...'
-    pip install --user .
+    pip install --user -e .
 fi

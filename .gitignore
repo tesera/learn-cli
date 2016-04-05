@@ -19,3 +19,4 @@ codeship.aes
 deploy.env
 build.env
 dev.env
+*.egg-info/

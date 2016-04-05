@@ -154,8 +154,13 @@ def cli():
                 s3_client.upload_file(logfile_path, s3bucket, key)
         else:
             logger.info("Copying results to %s", outdir)
+
+            if not os.path.exists(outdir):
+                os.makedirs(outdir)
+
             for outfile in os.listdir(tmp):
-                shutil.copy(os.path.join(tmp, outfile), os.path.join(outdir, outfile))
+                if outfile not in infiles:
+                    shutil.copy(os.path.join(tmp, outfile), os.path.join(outdir, outfile))
 
         exit(0)
 
