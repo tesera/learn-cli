@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 learn discrat \
-    --xy-data ./example/lda/ANALYSIS.csv \
-    --x-data ./example/lda/ANALYSIS.csv \
+    --xy-data ./example/data_xy.csv \
+    --x-data ./example/data_xy.csv \
     --dfunct ./example/lda/DFUNCT.csv \
-    --idf ./example/IDF.csv \
+    --idf ./example/data_idf.csv \
     --varset 18 \
     --output ./example/discrat
