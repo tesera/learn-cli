@@ -71,6 +71,7 @@ def cli():
 
     outdir = args['--output']
     outdir_url = urlparse(outdir)
+    s3bucket = None
     if outdir_url.scheme == 's3':
         s3bucket = outdir_url.netloc
         s3prefix = outdir_url.path.strip('/')
