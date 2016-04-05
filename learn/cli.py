@@ -45,29 +45,8 @@ from clients.discrating import Discrating
 
 logger = logging.getLogger('pylearn')
 
-def is_s3_url(url):
-    return urlparse(url).scheme == 's3'
-
 def cli():
     args = docopt(__doc__)
-
-    # schema = Schema({
-    #     'varsel': bool
-    #     'lda': bool,
-    #     'discrat': bool
-    #     '--xy-data': Or(os.path.isfile, is_s3_url, error='<xy_reference_csv> should exist and be readable.'),
-    #     '--x-data': Or(os.path.isfile, is_s3_url, error='<x_filtered_csv> should exist and be readable.'),
-    #     '--config': And(Or(args['varsel'], args['lda']), Or(os.path.isfile, is_s3_url)), error='--config should exist and be readable.'),
-    #     '--dfunct': Or(os.path.isfile, is_s3_url, error='--config should exist and be readable.'),
-    #     '--idf': Or(os.path.isfile, is_s3_url, error='--config should exist and be readable.'),
-    #     '--output': Or(os.path.exists, is_s3_url,  error='--output should exist and be writable.'),
-    #     '--yvar': And(str, len),
-    #     '--iteration': And(str, len),
-    #     '--criteria': And(str, len),
-    #     Optional('--help'): bool,
-    # })
-
-    # args = schema.validate(args)
 
     outdir = args['--output']
     outdir_url = urlparse(outdir)
