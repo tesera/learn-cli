@@ -48,22 +48,6 @@ logger = logging.getLogger('pylearn')
 def cli():
     args = docopt(__doc__)
 
-    outdir = args['--output']
-    outdir_url = urlparse(outdir)
-    s3bucket = None
-    if outdir_url.scheme == 's3':
-        s3bucket = outdir_url.netloc
-        s3prefix = outdir_url.path.strip('/')
-    args['--output'] = tmp = tempfile.mkdtemp('learn-cli')
-    args['--nSolutions'], args['--minNvar'], args['--maxNvar'] = args['--iteration'].split(':')
-
-    if args['varsel']:
-        command = 'varsel'
-    elif args['lda']:
-        command = 'lda'
-    elif args['discrat']:
-        command = 'discrat'
-
     clients = {
         'varsel': VarSelect,
         'lda': Analyze,
@@ -74,54 +58,74 @@ def cli():
         'lda': [args['--xy-data'], args['--config']],
         'discrat': [args['--xy-data'], args['--x-data'], args['--dfunct'], args['--idf']]
     }
-    files = files[command]
 
+    outdir = args['--output']
+    tmpdir = tempfile.mkdtemp('learn-cli')
+    args['--output'] = tmpdir.rstrip('/') + '/'
 
+    s3bucket = None
+    outdir_url = urlparse(outdir)
+    if outdir_url.scheme == 's3':
+        s3bucket = outdir_url.netloc
+        s3prefix = outdir_url.path.strip('/')
+
+    if args['varsel']:
+        command = 'varsel'
+    elif args['lda']:
+        command = 'lda'
+    elif args['discrat']:
+        command = 'discrat'
+
+    infiles = files[command]
+
+    # copy input files to tmpdir folder for processing
     if (s3bucket) :
         logger.info("copying s3 data files locally")
         try:
             s3_client = boto3.client('s3')
-            for filepath in files:
-                logger.info("copying %s from S3" % filepath)
-                url = urlparse(filepath)
-                file_path = os.path.join(tmp, filepath.split('/')[-1])
+            for infile in infiles:
+                logger.info("copying %s from S3" % infile)
+                url = urlparse(infile)
+                file_path = os.path.join(tmpdir, infile.split('/')[-1])
                 s3_client.download_file(url.netloc, url.path.strip('/'), file_path)
-                args[args.keys()[args.values().index(filepath)]] = file_path
+                args[args.keys()[args.values().index(infile)]] = file_path
         except Exception as e:
             logger.error("error copying data from s3: %s %s" % command, e)
             exit(e)
     else :
-        for filepath in files:
-            shutil.copy(filepath, tmp)
+        for infile in infiles:
+            shutil.copy(infile, tmpdir)
 
     # rename the passed in filenames to the legacy filenames jic they where hardcoded
     legacy_config = 'XVARSELV1.csv' if command is 'varsel' else 'XVARSELV.csv'
 
     legacy = {
-        '--xy-data': os.path.join(tmp, 'ANALYSIS.csv'),
-        '--config': os.path.join(tmp, legacy_config)
+        '--xy-data': os.path.join(tmpdir, 'ANALYSIS.csv'),
+        '--config': os.path.join(tmpdir, legacy_config)
     }
 
     if command in ['varsel', 'lda']:
-        os.rename(os.path.join(tmp, os.path.basename(args['--config'])), legacy['--config'])
+        os.rename(os.path.join(tmpdir, os.path.basename(args['--config'])), legacy['--config'])
         args['--config'] = legacy['--config']
 
-    os.rename(os.path.join(tmp, os.path.basename(args['--xy-data'])), legacy['--xy-data'])
+    os.rename(os.path.join(tmpdir, os.path.basename(args['--xy-data'])), legacy['--xy-data'])
     args['--xy-data'] = legacy['--xy-data']
 
-    infiles = [os.path.basename(f) for f in os.listdir(tmp)]
+    # make a list of the input filenames passsed in so we don't copy them to the output
+    infilenames = [os.path.basename(f) for f in os.listdir(tmpdir)]
 
     try:
-        args['--output'] = args['--output'].rstrip('/') + '/';
 
+        # run the command client with the args
         client = clients[command]()
         client.run(args)
 
+        # copy only output files to output dir
         if(s3bucket):
             logger.info("Copying results to s3 bucket %s to prefix %s", s3bucket, s3prefix)
-            for filename in os.listdir(tmp):
-                if filename not in infiles:
-                    filepath = os.path.join(tmp, filename)
+            for filename in os.listdir(tmpdir):
+                if filename not in infilenames:
+                    filepath = os.path.join(tmpdir, filename)
                     key = "%s/%s" % (s3prefix, filename)
                     logger.info("Copying %s to %s", filepath, key)
                     s3_client.upload_file(filepath, s3bucket, key)
@@ -137,9 +141,9 @@ def cli():
             if not os.path.exists(outdir):
                 os.makedirs(outdir)
 
-            for outfile in os.listdir(tmp):
-                if outfile not in infiles:
-                    shutil.copy(os.path.join(tmp, outfile), os.path.join(outdir, outfile))
+            for outfile in os.listdir(tmpdir):
+                if outfile not in infilenames:
+                    shutil.copy(os.path.join(tmpdir, outfile), os.path.join(outdir, outfile))
 
         exit(0)
 

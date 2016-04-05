@@ -40,6 +40,8 @@ class VarSelect(object):
     def run(self, args):
         logger.info("Starting variable_selection")
 
+        args['--nSolutions'], args['--minNvar'], args['--maxNvar'] = args['--iteration'].split(':')
+
         self.initR(args)
 
         count_xvar_in_xvarsel = CountXVarInXvarSel(args['--output'])
