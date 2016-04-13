@@ -40,20 +40,25 @@ class Analyze(object):
         logger.info(':lda: running lda analyze...')
         analyze(xy, config, yvar)
 
-        prior = com.load_data('lda.prior')
-        ctabulation = com.load_data('lda.ctabulation')
-        posterior = com.load_data('lda.posterior')
-        ctball = com.load_data('lda.ctball')
-        varmeans = com.load_data('lda.varmeans')
-        dfunct = com.load_data('lda.dfunct')
-        bwratio = com.load_data('lda.bwratio')
+        outputs = {
+            prior: com.load_data('lda.prior')
+            ctabulation: com.load_data('lda.ctabulation')
+            posterior: com.load_data('lda.posterior')
+            ctball: com.load_data('lda.ctball')
+            varmeans: com.load_data('lda.varmeans')
+            dfunct: com.load_data('lda.dfunct')
+            bwratio: com.load_data('lda.bwratio')
+        }
 
         logger.info(':lda: applying Cohens Khat and writing to ctabsum')
-        ctabsum = cohens_khat(ctabulation)
+        outputs.ctabsum = cohens_khat(outputs.ctabulation)
 
         logger.info(':lda: combininig evaluation datasets into assess')
-        assess = combine_evaluation_datasets(ctabsum, posterior, config)
+        assess = combine_evaluation_datasets(outputs.ctabsum, outputs.posterior, config)
 
         assess.to_csv(os.path(outdir, 'lda_x_assess.csv'))
+
+        for filename, df in enumerate(outputs):
+            df.to_csv(os.path(outdir, "%s.csv" % filename))
 
         #TODO: eval if we really need to serialize avgp and rloadrank
