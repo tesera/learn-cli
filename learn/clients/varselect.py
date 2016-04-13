@@ -18,7 +18,13 @@ class VarSelect(object):
         self.flog = importr('futile.logger')
         self.r = robjects.r
 
-    def initR(self, args):
+    def init(self, args):
+        self.count_xvars = CountXVarInXvarSel(args['--output']).count
+        self.rank_xvars = RankVar(args['--output']).rank
+        self.extract_rvariable_combos = ExtractRVariableCombos(args['--output']).extract_rvariable_combos
+        self.remove_highcorvar = RemoveHighCorVarFromXVarSel(args['--output']).remove_high_cor_vars
+
+        self.rlearn = importr('rlearn')
 
         self.r('classVariableName <- "%s"' % args['--yvar'])
         self.r('excludeRowValue <- "%s"' % -1)
@@ -37,55 +43,55 @@ class VarSelect(object):
         self.r('xVarCountFileName <- "%s/XVARSELV1_XCOUNT.csv"' % args['--output'])
         self.r('varSelect <- "%s/VARSELECT.csv"' % args['--output'])
 
-    def run(self, args):
-        logger.info("Starting variable_selection")
 
-        args['--nSolutions'], args['--minNvar'], args['--maxNvar'] = args['--iteration'].split(':')
+    def varselect(self):
 
-        self.initR(args)
+        # Input: data_xy.csv, vsel_xy_config.csv
+        # Output: VARSELECT.csv
+        self.rlearn.vs_IdentifyAndOrganizeUniqueVariableSets(self.r['lviFileName'], self.r['xVarSelectFileName'], self.r['varSelect'])
 
-        count_xvar_in_xvarsel = CountXVarInXvarSel(args['--output'])
-        rank_var = RankVar(args['--output'])
-        extract_rvariable_combos = ExtractRVariableCombos(args['--output'])
-        remove_highcorvar = RemoveHighCorVarFromXVarSel(args['--output'])
-        rvarselect = importr('rlearn')
-
-        currentCount = count_xvar_in_xvarsel.count()
-        self.r('initialCount <- scan(xVarCountFileName)')
-        logger.info("Initial variable count: %s", self.r['initialCount'])
-        rvarselect.vs_IdentifyAndOrganizeUniqueVariableSets(self.r['lviFileName'], self.r['xVarSelectFileName'], self.r['varSelect'])
-
-        # test_EXTRACT_RVARIABLE_COMBOS_v2.Extract_RVariable_Combos_v2() identifies the unique variable sets and organizes them into a new file VARSELV.csv;
-        uniqueVarSets = extract_rvariable_combos.extract_rvariable_combos()
+        # Identifies the unique variable sets
+        # Input: VARSELECT.csv
+        # Output: vsel_x.csv, vsel_uniquevar.csv
+        self.extract_rvariable_combos()
 
         # Rank the variables in terms of their contribution to a model
-        ranksVariables = rank_var.rank()
+        # Input: VARSELECT.csv
+        # Output: vsel_varrank.csv (VARRANK.csv)
+        self.rank_xvars()
 
-        # test2_XIterativeVarSelCorVarElimination.R runs steps 13 -18 ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
-        rvarselect.vs_CompleteVariableSelectionPlusRemoveCorrelationVariables(self.r['lviFileName'], self.r['uniqueVarPath'], self.r['printFileName'])
+        # Input: data_xy.csv, vsel_uniquevar
+        # Output: UCORCOEF.csv
+        self.rlearn.vs_CompleteVariableSelectionPlusRemoveCorrelationVariables(self.r['lviFileName'], self.r['uniqueVarPath'], self.r['printFileName'])
 
-        removeCorXVars = remove_highcorvar.remove_high_cor_vars()
-        nextCount = count_xvar_in_xvarsel.count()
-        logger.info("CurrentCount = %s, nextCount %s", currentCount, nextCount)
+        # Removes variables which have a high correlation
+        # Input: UCORCOEF.csv, VARRANK.csv
+        # Output: vsel_xy_config.csv
+        self.remove_highcorvar()
 
-        # "Kluge" is: Helps get around an unknown crash when calling test3_XiterativeVarSelCorVarElimination.R
-        self.r('xVarCount <- scan(xVarCountFileName)')
 
-        # LOOP THROUGH THE AUTOMATED VARIABLE SELECTION PROCESS TO ELIMINATE VARIABLES THAT DO NOT CONTRIBUTE TO THE MODEL
-        counter = 0
-        while currentCount != nextCount:
-            currentCount = nextCount
-            #config part of test_XItertative plus test_ZCompleteVariableSelectionPlusRemoveCorrelationVariables.R
-            #r.source("/opt/xvarselect/bin/XIterativeConfFile.R")
-            rvarselect.vs_IdentifyAndOrganizeUniqueVariableSets(self.r['lviFileName'], self.r['xVarSelectFileName'], self.r['varSelect'])
+    def run(self, args):
+        logger.info("Starting variable_selection")
+        args['--nSolutions'], args['--minNvar'], args['--maxNvar'] = args['--iteration'].split(':')
+        self.init(args)
 
-            extract_rvariable_combos.extract_rvariable_combos()
-            rank_var.rank()
+        current_nxvar = self.count_xvars()
+        self.r('current_nxvar <- %d' % current_nxvar)
+        logger.info("Initial variable count: %s", current_nxvar)
 
-            rvarselect.vs_CompleteVariableSelectionPlusRemoveCorrelationVariables(self.r['lviFileName'], self.r['uniqueVarPath'], self.r['printFileName'])
+        self.varselect()
 
-            remove_highcorvar.remove_high_cor_vars()
-            count_xvar_in_xvarsel.count()
-            counter = counter +1
+        next_nxvar = self.count_xvars()
+        self.r('xVarCount <- %d' % next_nxvar)
+        logger.info("CurrentCount = %s, nxvar %s", current_nxvar, next_nxvar)
 
-        logger.info("Number of Iterations: %s", counter)
+        iteration = 0
+        while current_nxvar != next_nxvar:
+            current_nxvar = next_nxvar
+
+            self.varselect()
+
+            next_nxvar = self.count_xvars()
+            iteration = iteration + 1
+
+        logger.info("Number of Iterations: %s", iteration)
