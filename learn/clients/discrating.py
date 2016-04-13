@@ -25,6 +25,6 @@ class Discrating(object):
             'idf': pd.read_csv(args['--idf']),
         }
 
-        logger.info("invoking predict...")
         forecasts = predict(**pargs)
+
         forecasts.to_csv(os.path.join(args['--output'], 'forecasts.csv'))
