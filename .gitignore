@@ -3,20 +3,10 @@
 *.pyc
 *.DS_Store
 *.log
-Rwd/*.csv
-
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
-venv
 out
-tests
 pysite
 rlibs
-example/output
+example/output/
 codeship.aes
-deploy.env
-build.env
-dev.env
+*.env
 *.egg-info/
