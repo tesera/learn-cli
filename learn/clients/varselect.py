@@ -7,7 +7,8 @@ pandas2ri.activate()
 import rpy2.robjects as robjects
 from rpy2.robjects.packages import importr
 
-from pylearn.varselect import count_xvars, rank_xvars, extract_xvar_combos, remove_high_corvar
+from pylearn.varselect import (count_xvars, rank_xvars, extract_xvar_combos,
+                               remove_high_corvar)
 
 logger = logging.getLogger('pylearn')
 importr('subselect')
@@ -59,6 +60,7 @@ def varselect(data_xy, xy_config, args):
 class VarSelect(object):
 
     def run(self, args):
+        rlearn.logger_init()
         logger.info("*** Starting Variable Selection ***")
         outdir = args['--output']
 
@@ -79,11 +81,11 @@ class VarSelect(object):
         iteration = 1
         while current_nxvar > next_nxvar:
             current_nxvar = next_nxvar
-
             vsel_x, varrank, xy_config = varselect(data_xy, xy_config, args)
 
             next_nxvar = count_xvars(xy_config)
-            logger.info("Iteration %s complete with %s variables left.", iteration, next_nxvar)
+            logger.info("Iteration %s complete with %s variables left.",
+                        iteration, next_nxvar)
             iteration = iteration + 1
 
         logger.info("Number of Iterations: %s", iteration)
