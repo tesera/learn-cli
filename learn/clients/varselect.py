@@ -1,5 +1,5 @@
 import logging
-
+import os
 import pandas as pd
 from rpy2.robjects import pandas2ri
 pandas2ri.activate()
@@ -76,17 +76,25 @@ class VarSelect(object):
         next_nxvar = count_xvars(xy_config)
         r('xVarCount <- %d' % next_nxvar)
         logger.info("First iteration Complete %s with variables left.", next_nxvar)
+        iteration = 1
 
         logger.info("Run variable selection while model improves")
-        iteration = 1
+
         while current_nxvar > next_nxvar:
+            iteration += 1
             current_nxvar = next_nxvar
-            vsel_x, varrank, xy_config = varselect(data_xy, xy_config, args)
+
+            try:
+                vsel_x, varrank, xy_config = varselect(data_xy, xy_config, args)
+            except Exception as e:
+                logger.error(
+                    ('Variable selection stopped due to an error'
+                     'Results from iteration %d will be used') % (iteration-1))
+                logger.error(e)
 
             next_nxvar = count_xvars(xy_config)
             logger.info("Iteration %s complete with %s variables left.",
                         iteration, next_nxvar)
-            iteration = iteration + 1
 
         logger.info("Number of Iterations: %s", iteration)
         varrank.to_csv(os.path.join(outdir, 'vsel_varrank.csv'))
