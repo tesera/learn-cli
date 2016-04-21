@@ -3,7 +3,7 @@ import logging
 
 import pandas as pd
 
-from pylearn.ldanalysis.varset import get_param
+from pylearn.varset import get_param
 from pylearn.discrating import predict
 
 logger = logging.getLogger('pylearn')

@@ -41,13 +41,13 @@ class Analyze(object):
         analyze(xy, config, yvar)
 
         outputs = {
-            prior: com.load_data('lda.prior')
-            ctabulation: com.load_data('lda.ctabulation')
-            posterior: com.load_data('lda.posterior')
-            ctball: com.load_data('lda.ctball')
-            varmeans: com.load_data('lda.varmeans')
-            dfunct: com.load_data('lda.dfunct')
-            bwratio: com.load_data('lda.bwratio')
+            'prior': com.load_data('lda.prior'),
+            'ctabulation': com.load_data('lda.ctabulation'),
+            'posterior': com.load_data('lda.posterior'),
+            'ctball': com.load_data('lda.ctball'),
+            'varmeans': com.load_data('lda.varmeans'),
+            'dfunct': com.load_data('lda.dfunct'),
+            'bwratio': com.load_data('lda.bwratio')
         }
 
         logger.info(':lda: applying Cohens Khat and writing to ctabsum')
