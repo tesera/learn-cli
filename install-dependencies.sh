@@ -12,6 +12,8 @@ r ./installGithub2.r tesera/rlearn -d TRUE -t $GITHUB_TOKEN -r ${RLEARN_REF-mast
 
 pip install --user "git+https://$GITHUB_TOKEN@github.com/tesera/pylearn.git@${PYLEARN_REF-master}"
 
+pip install --user awscli
+
 rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
 # if this script is run in interactive mode install the cli too
