@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 learn varsel \
-    --xy-data ./example/data_xy.csv \
-    --config ./example/config_vsel.csv \
-    --output ./example/varsel \
-    --yvar CLPRDP
+    --xy-data ./example/input/data_xy.csv \
+    --config ./example/input/vsel_xy_config.csv \
+    --output ./example/output \
+    --yvar VAR47
