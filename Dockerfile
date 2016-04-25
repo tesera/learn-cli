@@ -28,6 +28,7 @@ WORKDIR $WD
 
 RUN echo "github token => $GITHUB_TOKEN"
 
+ENV HISTFILE=$WD/.bash_history
 ENV PYTHONUSERBASE $WD/pysite
 ENV PYTHONPATH=/usr/lib/python2.7/dist-packages:$PYTHONPATH
 ENV PY_USER_SCRIPT_DIR $PYTHONUSERBASE/bin
