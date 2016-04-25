@@ -2,37 +2,29 @@
 
 setup () {
 
-    output_folder="./tests/integration/output/varsel"
     data_xy="data_xy.csv"
     vsel_xy_config="vsel_xy_config.csv"
-    s3_bucket="s3://tesera.svc.learn"
-    s3_fixture_prefix="tests/fixtures"
-    s3_fixture_path="$s3_bucket/$s3_fixture_prefix"
+    input="./tests/integration/input"
+    output="./tests/integration/output"
 
-    mkdir -p "$output_folder"
-    aws s3 cp "$s3_fixture_path/$data_xy" "$output_folder/$data_xy"
-    aws s3 cp "$s3_fixture_path/$vsel_xy_config" "$output_folder/$vsel_xy_config"
+    mkdir -p "$output"
 
-    learn varsel --xy-data "$output_folder/$data_xy" --config "$output_folder/$vsel_xy_config" --output "$output_folder"
+    learn varsel \
+        --xy-data "$input/$data_xy" \
+        --config "$input/$vsel_xy_config" \
+        --yvar VAR47 \
+        --output "$output"
 
 }
 
-@test "varsels runs on ecs and output expected files" {
-    expected_files=(
-        UCORCOEF.csv
-        UNIQUEVAR.csv
-        VARRANK.csv
-        VARSELECT.csv
-        XVARSELV.csv
-        XVARSELV1_XCOUNT.csv
-        pylearn.log
-    )
-    for expected_file in $expected_files
-    do
-        [ -f "$output_folder/$expected_file" ]
-    done
+@test "varsels and output expected files" {
+    [ -f "$output/vsel_x.csv" ]
+    [ -f "$output/vsel_varrank.csv" ]
+    [ -f "pylearn.log" ]
+    [ -f "rlearn.log" ]
 }
 
 teardown () {
-    rm $output_folder/*
+    rm $output/*
+    rm *.log
 }

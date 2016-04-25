@@ -35,6 +35,7 @@ def analyze(xy, config, yvar, output):
 class Analyze(object):
 
     def run(self, args):
+        rlearn.logger_init()
         outdir = args['--output']
         yvar = args['--yvar']
 
