@@ -1,3 +1,4 @@
+import os
 import logging
 import os
 import pandas as pd
@@ -41,18 +42,24 @@ def varselect(data_xy, xy_config, args):
 
     logger.info('Identify and organize variable sets (varsets)')
     varselect = var_select(data_xy, xy_config, args)
+    # todo: remove after trobleshooting
+    # varselect.to_csv(os.path.join('/opt/learn/example', 'varselect.csv'))
 
     logger.info('Identifies the unique variable sets')
     vsel_x, uniquevar = extract_xvar_combos(varselect)
 
     logger.info('Rank the variables in terms of their contribution to a model')
     varrank = rank_xvars(varselect)
+    # todo: remove after trobleshooting
+    # varrank.to_csv(os.path.join('/opt/learn/example', 'varrank.csv'))
 
     logger.info('Complete var select and remove correlation variables')
     ucorcoef = get_var_corr(data_xy, uniquevar, args)
+    # todo: remove after trobleshooting
+    # ucorcoef.to_csv(os.path.join('/opt/learn/example', 'ucorcoef.csv'))
 
     logger.info('Removes variables which have a high correlation')
-    config = remove_high_corvar(xy_config, ucorcoef)
+    config = remove_high_corvar(varrank, xy_config, ucorcoef)
 
     return (vsel_x, varrank, config)
 
@@ -93,6 +100,7 @@ class VarSelect(object):
                 logger.error(e)
 
             next_nxvar = count_xvars(xy_config)
+
             logger.info("Iteration %s complete with %s variables left.",
                         iteration, next_nxvar)
 
