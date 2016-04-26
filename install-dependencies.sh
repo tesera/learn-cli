@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
 
-echo "github token => $GITHUB_TOKEN"
-
 rm -rf pysite rlibs
 
 mkdir -p {pysite,rlibs}
 
 install2.r -l $R_LIBS_USER devtools
 
-r ./installGithub2.r tesera/rlearn -d TRUE -t $GITHUB_TOKEN -r ${RLEARN_REF-master}
+r ./installGithub2.r tesera/rlearn -d TRUE -r ${RLEARN_REF-master}
 
-pip install --user "git+https://$GITHUB_TOKEN@github.com/tesera/pylearn.git@${PYLEARN_REF-master}"
+pip install --user "git+https://github.com/tesera/pylearn.git@${PYLEARN_REF-master}"
 
 pip install --user awscli
 

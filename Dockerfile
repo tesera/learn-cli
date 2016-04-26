@@ -3,10 +3,6 @@ FROM r-base:latest
 
 MAINTAINER Tesera Systems Inc.
 
-ARG GITHUB_TOKEN=$GITHUB_TOKEN
-ARG PYLEARN_REF=master
-ARG RLEARN_REF=master
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     python-dev \
@@ -21,19 +17,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     bats \
 && rm -rf /var/lib/apt/lists/*
 
+ENV PYLEARN_REF=master
+ENV RLEARN_REF=master
 ENV WD=/opt/learn
-
-RUN bash -c "mkdir -p $WD/{pysite,rlibs}"
-WORKDIR $WD
-
-RUN echo "github token => $GITHUB_TOKEN"
-
 ENV HISTFILE=$WD/.bash_history
 ENV PYTHONUSERBASE $WD/pysite
 ENV PYTHONPATH=/usr/lib/python2.7/dist-packages:$PYTHONPATH
 ENV PY_USER_SCRIPT_DIR $PYTHONUSERBASE/bin
 ENV R_LIBS_USER $WD/rlibs
 ENV PATH $PATH:$PY_USER_SCRIPT_DIR
+
+WORKDIR $WD
 
 COPY installGithub2.r installGithub2.r
 COPY install-dependencies.sh install-dependencies.sh
