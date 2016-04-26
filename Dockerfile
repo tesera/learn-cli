@@ -29,8 +29,8 @@ ENV PATH $PATH:$PY_USER_SCRIPT_DIR
 
 WORKDIR $WD
 
-COPY installGithub2.r installGithub2.r
-COPY install-dependencies.sh install-dependencies.sh
+COPY ./bin/installGithub2.r installGithub2.r
+COPY ./bin/install-dependencies.sh install-dependencies.sh
 
 RUN bash ./install-dependencies.sh
 
