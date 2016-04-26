@@ -3,5 +3,10 @@ dev:
   build: .
   volumes:
     - ./:/opt/learn
-  env_file: ./dev.env
+  env_file: ./env/dev.env
   command: ['/bin/bash']
+test:
+  container_name: learn
+  build: .
+  env_file: ./env/dev.env
+  command: ['bats ./tests/integration']

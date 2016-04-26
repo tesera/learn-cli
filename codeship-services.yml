@@ -2,9 +2,9 @@ app:
   build:
     image: 674223647607.dkr.ecr.us-east-1.amazonaws.com/tesera/learn
     dockerfile_path: Dockerfile
-  encrypted_env_file: build.env.encrypted
+  encrypted_env_file: ./env/build.env.encrypted
   cached: true
 dockercfg_generator:
   image: codeship/aws-ecr-dockercfg-generator
-  encrypted_env_file: deploy.env.encrypted
+  encrypted_env_file: ./env/deploy.env.encrypted
   add_docker: true
