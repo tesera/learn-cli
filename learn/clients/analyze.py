@@ -39,8 +39,8 @@ class Analyze(object):
         outdir = args['--output']
         yvar = args['--yvar']
 
-        xy = pd.read_csv(args['--xy-data'])
-        config = pd.read_csv(args['--config'])
+        xy = pd.read_csv(args['--xy-data'], index_col=0, header=0)
+        config = pd.read_csv(args['--config'], index_col=0, header=0)
 
         logger.info(':lda: running lda analyze...')
         analyze(xy, config, yvar, outdir)
