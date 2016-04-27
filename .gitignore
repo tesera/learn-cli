@@ -3,12 +3,10 @@
 *.pyc
 *.DS_Store
 *.log
-out
 pysite
 rlibs
-example/output/
 codeship.aes
 *.env
 *.egg-info/
-/example/varsel/vsel_varrank.csv
-/example/varsel/vsel_x.csv
+.bash_history
+tests/integration/output/*.csv
