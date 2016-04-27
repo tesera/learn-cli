@@ -90,7 +90,7 @@ def cli():
                 s3_client.download_file(url.netloc, url.path.strip('/'), file_path)
                 args[args.keys()[args.values().index(infile)]] = file_path
         except Exception as e:
-            logger.error("error copying data from s3: %s %s" % command, e)
+            # logger.error("error copying data from s3: %s %s", command, e)
             exit(e)
     else :
         for infile in infiles:
