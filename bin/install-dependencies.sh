@@ -6,11 +6,11 @@ mkdir -p {pysite,rlibs}
 
 install2.r -l $R_LIBS_USER devtools
 
-r ./installGithub2.r tesera/rlearn -d TRUE -r ${RLEARN_REF-master}
+r ./bin/installGithub2.r tesera/rlearn -d TRUE -r ${RLEARN_REF-master}
+
+pip install --user scipy awscli
 
 pip install --user "git+https://github.com/tesera/pylearn.git@${PYLEARN_REF-master}"
-
-pip install --user awscli
 
 rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
