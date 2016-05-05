@@ -62,4 +62,5 @@ class Analyze(object):
             os.unlink(filename)
 
         dfunct.to_csv(os.path.join(outdir, 'lda_x_dfunct.csv'), index=False)
-        assess.to_csv(os.path.join(outdir, 'lda_x_assess.csv'), index=False)
+        assess.to_csv(os.path.join(outdir, 'lda_x_assess.csv'), index=True,
+                      index_label=True)
