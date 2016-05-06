@@ -40,19 +40,24 @@ class Analyze(object):
         yvar = args['--yvar']
 
         xy = pd.read_csv(args['--xy-data'], index_col=0, header=0)
-        config = pd.read_csv(args['--config'], index_col=0, header=0)
+        config = pd.read_csv(args['--config'], header=0)
 
         logger.info(':lda: running lda analyze...')
         analyze(xy, config, yvar, outdir)
 
         ctabulation = pd.read_csv(os.path.join(outdir, 'CTABULATION.csv'))
         posterior = pd.read_csv(os.path.join(outdir, 'POSTERIOR.csv'), index_col=['VARSET'])
+        # hack; combine_evaluation_datasets is only smart enough to merge on VARSET
+        # config has the proper NVAR value
+        posterior.drop('NVAR', axis=1, inplace=True)
         dfunct = pd.read_csv(os.path.join(outdir, 'DFUNCT.csv'))
 
         logger.info(':lda: applying Cohens Khat and writing to ctabsum')
         ctabsum = cohens_khat(ctabulation)
 
         logger.info(':lda: combininig evaluation datasets into assess')
+        # need to reindex ctabsum on varset or make combine deal without that
+        import pdb; pdb.set_trace()
         assess = combine_evaluation_datasets(ctabsum, posterior, config)
 
         # todo: hack; remove once rlearn fixed
