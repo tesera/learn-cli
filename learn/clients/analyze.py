@@ -57,7 +57,6 @@ class Analyze(object):
 
         logger.info(':lda: combininig evaluation datasets into assess')
         # need to reindex ctabsum on varset or make combine deal without that
-        import pdb; pdb.set_trace()
         assess = combine_evaluation_datasets(ctabsum, posterior, config)
 
         # todo: hack; remove once rlearn fixed
