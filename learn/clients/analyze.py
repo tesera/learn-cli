@@ -29,7 +29,7 @@ def analyze(xy, config, yvar, output):
         True
     ]
 
-    rlearn.lda(*args)
+    rlearn.lda(*args, modelsFirstVarColumnIndex=5)
 
 
 class Analyze(object):
