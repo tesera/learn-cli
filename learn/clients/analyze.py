@@ -56,10 +56,9 @@ class Analyze(object):
         ctabsum = cohens_khat(ctabulation)
 
         logger.info(':lda: combininig evaluation datasets into assess')
-        # need to reindex ctabsum on varset or make combine deal without that
         assess = combine_evaluation_datasets(ctabsum, posterior, config)
 
-        # todo: hack; remove once rlearn fixed
+        # remove when rlearn passes data frames back from lda/analyze
         import glob
         files = glob.glob(os.path.join(outdir, '*.csv'))
         for filename in files:

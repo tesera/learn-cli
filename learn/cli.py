@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Usage:
     learn varsel (--xy-data <file> --config <file>) [--yvar <string> --iteration <solutions:x-min:x-max> --criteria <string> --output <dir>]
@@ -78,7 +77,6 @@ def cli():
 
     infiles = files[command]
 
-    # copy input files to tmpdir folder for processing
     if (s3bucket) :
         logger.info("copying s3 data files locally")
         try:
@@ -115,8 +113,6 @@ def cli():
     infilenames = [os.path.basename(f) for f in os.listdir(tmpdir)]
 
     try:
-
-        # run the command client with the args
         client = clients[command]()
         client.run(args)
 
