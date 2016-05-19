@@ -13,6 +13,7 @@ from pylearn.lda import cohens_khat, combine_evaluation_datasets
 logger = logging.getLogger('pylearn')
 importr('MASS')
 importr('logging')
+importr('jsonlite')
 r = robjects.r
 rlearn = importr('rlearn')
 

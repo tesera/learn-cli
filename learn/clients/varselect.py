@@ -14,6 +14,7 @@ from pylearn.varselect import (count_xvars, rank_xvars, extract_xvar_combos,
 logger = logging.getLogger('pylearn')
 importr('subselect')
 importr('logging')
+importr('jsonlite')
 r = robjects.r
 rlearn = importr('rlearn')
 
