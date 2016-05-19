@@ -2,59 +2,69 @@ import os
 import logging
 
 import pandas as pd
+from rpy2.robjects import pandas2ri
+pandas2ri.activate()
 
 import rpy2.robjects as robjects
-from rpy2.robjects.packages import STAP
 from rpy2.robjects.packages import importr
 
-from pylearn.ldanalysis.CohensKhat import CohensKhat
-from pylearn.ldanalysis.CombineEvaluationDatasets import CombineEvaluationDatasets
-from pylearn.ldanalysis.varset import get_xvars, get_rloadrank, get_avgp
+from pylearn.lda import cohens_khat, combine_evaluation_datasets
 
 logger = logging.getLogger('pylearn')
+importr('MASS')
+importr('logging')
+importr('jsonlite')
+r = robjects.r
+rlearn = importr('rlearn')
+
+def analyze(xy, config, yvar, output):
+
+    args = [
+        xy,
+        config,
+        'SORTGRP',
+        -1,
+        yvar,
+        False,
+        output,
+        True
+    ]
+
+    rlearn.lda(*args, modelsFirstVarColumnIndex=5)
+
 
 class Analyze(object):
-    importr('MASS')
-
-    def __init__(self):
-        self.analyze = importr('rlearn').lda_RunLinearDiscriminantVariableAnalysis
 
     def run(self, args):
+        # disable cloudwatch rlearn logging until it is prod ready
+        rlearn.logger_init(log_toAwslogs=False)
         outdir = args['--output']
         yvar = args['--yvar']
 
+        xy = pd.read_csv(args['--xy-data'], index_col=0, header=0)
+        config = pd.read_csv(args['--config'], header=0)
+
         logger.info(':lda: running lda analyze...')
-        aargs = [
-            args['--xy-data'],
-            args['--config'],
-            'SORTGRP',
-            -1,
-            yvar,
-            'SAMPLE',
-            outdir
-        ]
+        analyze(xy, config, yvar, outdir)
 
-        self.analyze(*aargs)
+        ctabulation = pd.read_csv(os.path.join(outdir, 'CTABULATION.csv'))
+        posterior = pd.read_csv(os.path.join(outdir, 'POSTERIOR.csv'), index_col=['VARSET'])
+        # hack; combine_evaluation_datasets is only smart enough to merge on VARSET
+        # config has the proper NVAR value
+        posterior.drop('NVAR', axis=1, inplace=True)
+        dfunct = pd.read_csv(os.path.join(outdir, 'DFUNCT.csv'))
 
-        logger.info(':lda: running CohensKhat...')
-        cohens_khat = CohensKhat(outdir)
-        cohens_khat.run()
+        logger.info(':lda: applying Cohens Khat and writing to ctabsum')
+        ctabsum = cohens_khat(ctabulation)
 
-        logger.info(':lda: running CombineEvaluationDatasets...')
-        combine_evaluation = CombineEvaluationDatasets(outdir)
-        combine_evaluation.run()
+        logger.info(':lda: combininig evaluation datasets into assess')
+        assess = combine_evaluation_datasets(ctabsum, posterior, config)
 
-        xy_reference_path = os.path.join(outdir, 'ANALYSIS.csv')
-        x_var_dfunct_path = os.path.join(outdir, 'DFUNCT.csv')
+        # remove when rlearn passes data frames back from lda/analyze
+        import glob
+        files = glob.glob(os.path.join(outdir, '*.csv'))
+        for filename in files:
+            os.unlink(filename)
 
-        xy = pd.read_csv(xy_reference_path)
-        dfunct = pd.read_csv(x_var_dfunct_path)
-
-        logger.info(':lda: exporting relative loading ranks for all unique xvars in varsets (rloadrank)')
-        rloadrank = get_rloadrank(xy=xy, dfunct=dfunct, yvar=yvar)
-        rloadrank.to_csv(os.path.join(outdir, 'RLOADRANK.csv'))
-
-        logger.info(':lda: exporting an average p file per unique xvar in varsets')
-        all_xvars = get_xvars(dfunct)
-        avgp = get_avgp(xy, all_xvars)
-        avgp.to_csv(os.path.join(outdir, 'AVGP.csv'))
+        dfunct.to_csv(os.path.join(outdir, 'lda_x_dfunct.csv'), index=False)
+        assess.to_csv(os.path.join(outdir, 'lda_x_assess.csv'), index=False)

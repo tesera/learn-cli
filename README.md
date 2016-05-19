@@ -1,11 +1,25 @@
-# Learn CLI
+# learn-cli
 
 [ ![Codeship Status for tesera/learn-cli](https://codeship.com/projects/f2a31230-b7e8-0133-9192-1269d3e58a72/status?branch=master)](https://codeship.com/projects/134949)
 
-Learn CLI performs variable selection, model development and target dataset processing. The CLI uses [pylearn](https://github.com/tesera/pylearn) and [rlearn](https://github.com/tesera/rlearn) libraries. The CLI is written in Python and uses the rpy2 package to invoke R functions.
+learn-cli performs variable selection, model development and target dataset processing. It uses [pylearn](https://github.com/tesera/pylearn) and [rlearn](https://github.com/tesera/rlearn) libraries. The cli invokes rlearn function via rpy2.
 
-The cli is docker ready. You can choose to run the cli locally the old fashion way or through Docker with the Dockerfile included. Running the cli in Docker will simplify the efforts tremendously but Docker is not required.
+Although the cli is docker ready you can choose to run the cli locally the old fashion way. Running the cli in Docker will simplify the efforts tremendously but Docker is not required.
 
+### Prerequisites
+
+* R
+* Python 2.7
+* rlearn `library('devtools'); install_github(repo='tesera/rlearn', dependencies=TRUE, ref='master');`
+* AWS Access Keys (optional: for using S3 data location)
+
+### Install
+
+```console
+$ pip install git+https://github.com/tesera/learn-cli.git
+```
+
+### Usage
 ```console
 $ learn --help
 Usage:
@@ -35,15 +49,44 @@ Examples:
     learn discrat --xy-data s3://bucket/xy_reference.csv --x-data s3://bucket/x_filtered.csv --dfunct s3://bucket/dfunct.csv --idf s3://bucket/idf.csv --varset 18 --output s3://bucket/varsel
 ```
 
-###Dependencies
+### Testing
 
-* [Github Persona Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/)
-* [AWS Access Key](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html) (optional)
-* `dev.env` file
+`bats ./tests/intergration`
+
+### Docker
+
+If you are using docker-machine make sure you have a machine running and that you have evaluated the machine environment.
+
+#### Creating a Docker Machine Host VM
+
+#####Windows Powershell
+```console
+$ docker-machine create --driver virtualbox --virtualbox-host-dns-resolver default
+$ docker-machine env --shell powershell default | Invoke-Expression
+```
+
+##### OSX
+```console
+$ docker-machine create --driver virtualbox default
+$ eval "$(docker-machine env default)"
+```
+
+#### Running the container
+
+```console
+$ docker build -t learn .
+$ docker run learn /bin/bash
+root@1e36bb3275b5:/opt/learn# learn --help
+```
+
+#### Development
+
+During development you will want to bring in the codebase with you in the container. You can simply use the Docker Compose command bellow. Once in the container run the `install-dependencies.sh` script passing in the `--dev` flag to make the project editable. This wil install all the Python dependencies in the project root under the `pysite folder and the R dependencies under the rlibs folder. You will only need to run this once unless you dependencies change.
+
+You will need to add a `dev.env` file with at least `PYLEARN_REF` and `RLEARN_REF` variables set to the Github ref/version of the respective libraries. Optionaly you can also add you AWS Access Keys and region in order to use S3 as a data location.
 
 ```console
 $ cat dev.env
-export GITHUB_TOKEN=<your-github-token>
 export PYLEARN_REF=master
 export RLEARN_REF=master
 export AWS_ACCESS_KEY_ID=<your-access-key>
@@ -51,151 +94,15 @@ export AWS_SECRET_ACCESS_KEY=<your-secret-key>
 export AWS_REGION=<your-aws-region>
 ```
 
-####Without Docker
-* [Python 2.7](https://www.python.org/)
-* [R](https://www.r-project.org/)
-* [pip](https://pypi.python.org/pypi/pip)
-* [little r](http://dirk.eddelbuettel.com/code/littler.html)
-
-####With Docker
-* [Docker](https://www.docker.com/)
-* [Docker Machine](https://docs.docker.com/machine/) (Windows/OSX)
-* [Docker Compose](https://docs.docker.com/compose/overview/)
-
-### Running with Docker
-
-If you are using docker-machine make sure you have a machine running and that you have evaluated the machine environment.
-
-#### Create a virtual machine with Windows Powershell
-```console
-$ docker-machine create --driver virtualbox --virtualbox-host-dns-resolver default
-$ docker-machine env --shell powershell default | Invoke-Expression
-```
-
-#### Create a virtual machine with OSX Shell
-```console
-$ docker-machine create --driver virtualbox default
-$ eval "$(docker-machine env default)"
-```
-
-#### Run the container
-
 ```console
 $ docker-compose run dev
-# bash ./install-dependencies.sh --dev
+root@1e36bb3275b5:/opt/learn# bash ./install-dependencies --dev
+root@1e36bb3275b5:/opt/learn# learn --help
 ```
 
-### Running without Docker on OSX (not recommended; use Docker)
+#### Testing
 
-In order to run this CLI without Docker you need to install all the lower level dependencies in order to build the higher level dependencies. i.e. gcc, fortran... SciPy is also installed as a system level dependency because of its comples build steps. If you are confident you have all the dependencies installed and configured you can proceed otherwise we recommend the Docker approach.
-
-
-```console
-git clone git@github.com:tesera/learn-cli.git
-cd learn-cli
-source dev.env
-bash ./install-dependencies.sh
-pip install .
-```
-
-### Running in AWS ECS
-
-Learn tasks will run by default in the `learn` ECS Cluster. The instances will be placed in the `subnet-tesera-ecs` subnet the `tesera-master` VPC. In order to ssh into your ECS instances you will need to hop from the `master-bastion` server. The `subnet-tesera-ecs` talks out through the NAT Gateway so your instances will not require a public ip.
-
-#####Launching an EC2 Instances to the `learn` ECS Cluster
-
-This step may not be required if there is already an instance running in the `learn` cluster. In cases where you need many instances to run your tasks you can deploy more servers by passing in the instance count as an arg to the `run-instances.sh` script.
-
-```console
-# usage: bash ./run-instances.sh [count=1]
-
-# launches 1 instance by default
-bash ./run-instances.sh
-
-# launches 5 instances
-bash ./run-instances.sh 5
-```
-
-#####Registering a Task Definition
-
-In most case you will not need to register a Task Definition since they have been registered already. You will need to register a new task only if you need to change its parameters.
-
-```console
-bash ./register-task-definition.sh
-```
-
-#####Running a Task
-
-Running the task will run the most recent task definition by default. You can change the args in the `overrides.json` file for your analysis.
-
-```console
-# edit overrides.json for your analysis
-cat aws/overrides-varsel.json
-{
-  "containerOverrides": [
-    {
-      "name": "learn",
-      "command": [
-        "varsel",
-        "--xy-data=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/filter/data_xy.csv",
-        "--config=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/filter/vsel_xy_config.csv",
-        "--output=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel"
-      ]
-    }
-  ]
-}
-
-cat aws/overrides-lda.json
-{
-  "containerOverrides": [
-    {
-      "name": "learn",
-      "command": [
-        "lda",
-        "--xy-data=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/filter/data_xy.csv",
-        "--config=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/XVARSELV.csv",
-        "--output=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/lda"
-      ]
-    }
-  ]
-}
-
-cat aws/overrides-discrat.json
-{
-  "containerOverrides": [
-    {
-      "name": "learn",
-      "command": [
-        "discrat",
-        "--xy-data=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/filter/data_xy.csv",
-        "--x-data=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/filter/data_x_filtered.csv",
-        "--dfunct=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/lda/DFUNCT.csv",
-        "--idf=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/data_idf.csv",
-        "--varset=18",
-        "--output=s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/discrat"
-      ]
-    }
-  ]
-}
-
-# run cli via run-task and associated overrides
-bash ./run-task.sh (varsel | lda | discrat)
-
-# the results should now be in the specified output path.
-aws s3 ls --recursive s3://tesera.svc.learn/organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel
-2016-04-01 16:22:42   15256507 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/ANALYSIS.csv
-2016-04-01 16:22:43     267998 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/UCORCOEF.csv
-2016-04-01 16:22:43       1042 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/UNIQUEVAR.csv
-2016-04-01 16:22:43       1892 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/VARRANK.csv
-2016-04-01 16:22:43      21671 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/VARSELECT.csv
-2016-04-01 16:22:43       3767 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/XVARSELV.csv
-2016-04-01 16:22:42      12859 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/XVARSELV1.csv
-2016-04-01 16:22:43          4 organizations/tesera/projects/example/scenarios/20150116-1459525313/varsel/XVARSELV1_XCOUNT.csv
-
-```
-
-### Testing
->Tests will be added soon
+`docker-compose run tests`
 
 ### Contributing
 

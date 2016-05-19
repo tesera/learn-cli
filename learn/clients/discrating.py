@@ -3,7 +3,7 @@ import logging
 
 import pandas as pd
 
-from pylearn.ldanalysis.varset import get_param
+from pylearn.varset import get_param
 from pylearn.discrating import predict
 
 logger = logging.getLogger('pylearn')
@@ -25,6 +25,6 @@ class Discrating(object):
             'idf': pd.read_csv(args['--idf']),
         }
 
-        logger.info("invoking predict...")
         forecasts = predict(**pargs)
+
         forecasts.to_csv(os.path.join(args['--output'], 'forecasts.csv'))

@@ -1,7 +1,14 @@
 - service: app
   type: push
-  tag: temp
+  tag: master
   image_tag: latest
+  image_name: 674223647607.dkr.ecr.us-east-1.amazonaws.com/tesera/learn
+  registry: https://674223647607.dkr.ecr.us-east-1.amazonaws.com
+  dockercfg_service: dockercfg_generator
+- service: app
+  type: push
+  tag: refactor/pandas
+  image_tag: dev
   image_name: 674223647607.dkr.ecr.us-east-1.amazonaws.com/tesera/learn
   registry: https://674223647607.dkr.ecr.us-east-1.amazonaws.com
   dockercfg_service: dockercfg_generator
