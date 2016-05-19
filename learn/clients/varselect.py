@@ -62,7 +62,8 @@ def varselect(data_xy, xy_config, args):
 class VarSelect(object):
 
     def run(self, args):
-        rlearn.logger_init()
+        # disable cloudwatch rlearn logging until it is prod ready
+        rlearn.logger_init(log_toAwslogs=False)
         logger.info("*** Starting Variable Selection ***")
         outdir = args['--output']
 

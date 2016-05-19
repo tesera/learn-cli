@@ -36,7 +36,8 @@ def analyze(xy, config, yvar, output):
 class Analyze(object):
 
     def run(self, args):
-        rlearn.logger_init()
+        # disable cloudwatch rlearn logging until it is prod ready
+        rlearn.logger_init(log_toAwslogs=False)
         outdir = args['--output']
         yvar = args['--yvar']
 
