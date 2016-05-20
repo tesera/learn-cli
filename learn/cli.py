@@ -1,6 +1,6 @@
 """
 Usage:
-    learn describe (--xy-data <file>) [--quantile-type <string> --format <string> --outdir <dir>]
+    learn describe (--xy-data <file>) [--quantile-type <string> --format <string> --output <dir>]
     learn varsel (--xy-data <file> --config <file>) [--yvar <string> --iteration <solutions:x-min:x-max> --criteria <string> --output <dir>]
     learn lda (--xy-data <file> --config <file>) [--yvar <string> --output <dir>]
     learn discrat (--xy-data <file> --x-data <file> --dfunct <file> --idf <file> --varset <int>) [--yvar <string> --output <dir>]
