@@ -22,6 +22,7 @@ Options:
 
 Examples:
     learn describe --xy-data ./folder/xy_reference.csv --quantile-type decile --format json --output ./output/describe
+    learn describe --xy-data s3://bucket/xy_reference.csv --quantile-type decile --format json --output s3://bucket/describe
     learn varsel --xy-data ./folder/xy_reference.csv --config ./folder/xvar_sel.csv --output ./output/varsel --iteration 10:1:10
     learn varsel --xy-data s3://bucket/xy_reference.csv --config s3://bucket/xvar_sel.csv --output s3://bucket/varsel --iteration 10:1:10
     learn lda --xy-data ./folder/xy_reference.csv --config ./folder/xvar_sel.csv --output./output/varsel

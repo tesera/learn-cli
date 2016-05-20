@@ -23,6 +23,7 @@ $ pip install git+https://github.com/tesera/learn-cli.git
 ```console
 $ learn --help
 Usage:
+    learn describe (--xy-data <file>) [--quantile-type <string> --format <string> --output <dir>]
     learn varsel (--xy-data <file> --config <file>) [--yvar <string> --iteration <solutions:x-min:x-max> --criteria <string> --output <dir>]
     learn lda (--xy-data <file> --config <file>) [--yvar <string> --output <dir>]
     learn discrat (--xy-data <file> --x-data <file> --dfunct <file> --idf <file> --varset <int>) [--yvar <string> --output <dir>]
@@ -37,10 +38,14 @@ Options:
     --dfunct <file>  The path to the lda dfunct file to use for the discriminant rating.
     --idf <file>  The path to the IDF Curves file to use for the discriminant rating.
     --varset <int>  The ID of the varset to use for the discriminant rating.
+    --format <string>  Output format: json or csv. [default: json]
+    --quantile-type <string>  Quantiles: decile or quartile. [default: decile]
     --output <dir>  Output folder. [default: ./]
     -h --help  Show help.
 
 Examples:
+    learn describe --xy-data ./folder/xy_reference.csv --quantile-type decile --format json --output ./output/describe
+    learn describe --xy-data s3://bucket/xy_reference.csv --quantile-type decile --format json --output s3://bucket/describe
     learn varsel --xy-data ./folder/xy_reference.csv --config ./folder/xvar_sel.csv --output ./output/varsel --iteration 10:1:10
     learn varsel --xy-data s3://bucket/xy_reference.csv --config s3://bucket/xvar_sel.csv --output s3://bucket/varsel --iteration 10:1:10
     learn lda --xy-data ./folder/xy_reference.csv --config ./folder/xvar_sel.csv --output./output/varsel
