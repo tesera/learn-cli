@@ -4,7 +4,7 @@ import pandas as pd
 import prelurn
 
 
-logger = logging.getLogger('describe')
+logger = logging.getLogger('pylearn')
 
 class Describe(object):
 
