@@ -87,11 +87,13 @@ You will need to add a `dev.env` file with at least `PYLEARN_REF` and `RLEARN_RE
 
 ```console
 $ cat dev.env
-export PYLEARN_REF=master
-export RLEARN_REF=master
-export AWS_ACCESS_KEY_ID=<your-access-key>
-export AWS_SECRET_ACCESS_KEY=<your-secret-key>
-export AWS_REGION=<your-aws-region>
+PYLEARN_REF=master
+RLEARN_REF=master
+RLEARN_REF=master
+AWS_ACCESS_KEY_ID=<your-access-key>
+AWS_SECRET_ACCESS_KEY=<your-secret-key>
+AWS_REGION=<your-aws-region>
+LOG_LEVEL=INFO
 ```
 
 ```console
@@ -107,4 +109,4 @@ root@1e36bb3275b5:/opt/learn# learn --help
 ### Contributing
 
 - [Python Style Guide](https://www.python.org/dev/peps/pep-0008/)
-- [R Style Guide](https://google.github.io/styleguide/Rguide.xml)
+- [R Style Guide](http://adv-r.had.co.nz/Style.html)
