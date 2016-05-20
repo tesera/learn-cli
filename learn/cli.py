@@ -1,5 +1,6 @@
 """
 Usage:
+    learn describe (--xy-data <file>) [--quantile-type <string> --format <string> --outdir <dir>]
     learn varsel (--xy-data <file> --config <file>) [--yvar <string> --iteration <solutions:x-min:x-max> --criteria <string> --output <dir>]
     learn lda (--xy-data <file> --config <file>) [--yvar <string> --output <dir>]
     learn discrat (--xy-data <file> --x-data <file> --dfunct <file> --idf <file> --varset <int>) [--yvar <string> --output <dir>]
@@ -14,10 +15,13 @@ Options:
     --dfunct <file>  The path to the lda dfunct file to use for the discriminant rating.
     --idf <file>  The path to the IDF Curves file to use for the discriminant rating.
     --varset <int>  The ID of the varset to use for the discriminant rating.
+    --format <string>  Output format: json or csv. [default: json]
+    --quantile-type <string>  Quantiles: decile or quartile. [default: decile]
     --output <dir>  Output folder. [default: ./]
     -h --help  Show help.
 
 Examples:
+    learn describe --xy-data ./folder/xy_reference.csv --quantile-type decile --format json --output ./output/describe
     learn varsel --xy-data ./folder/xy_reference.csv --config ./folder/xvar_sel.csv --output ./output/varsel --iteration 10:1:10
     learn varsel --xy-data s3://bucket/xy_reference.csv --config s3://bucket/xvar_sel.csv --output s3://bucket/varsel --iteration 10:1:10
     learn lda --xy-data ./folder/xy_reference.csv --config ./folder/xvar_sel.csv --output./output/varsel
@@ -41,6 +45,8 @@ from schema import Schema, And, Or, SchemaError, Optional
 from clients.varselect import VarSelect
 from clients.analyze import Analyze
 from clients.discrating import Discrating
+from clients.describe import Describe
+
 
 logger = logging.getLogger('pylearn')
 
@@ -48,14 +54,16 @@ def cli():
     args = docopt(__doc__)
 
     clients = {
+        'describe': Describe,
         'varsel': VarSelect,
         'lda': Analyze,
-        'discrat': Discrating
+        'discrat': Discrating,
     }
     files = {
+        'describe': [args['--xy-data']],
         'varsel': [args['--xy-data'], args['--config']],
         'lda': [args['--xy-data'], args['--config']],
-        'discrat': [args['--xy-data'], args['--x-data'], args['--dfunct'], args['--idf']]
+        'discrat': [args['--xy-data'], args['--x-data'], args['--dfunct'], args['--idf']],
     }
 
     outdir = args['--output']
@@ -68,7 +76,9 @@ def cli():
         s3bucket = outdir_url.netloc
         s3prefix = outdir_url.path.strip('/')
 
-    if args['varsel']:
+    if args['describe']:
+        command = 'describe'
+    elif args['varsel']:
         command = 'varsel'
     elif args['lda']:
         command = 'lda'
