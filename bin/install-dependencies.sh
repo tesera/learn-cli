@@ -11,6 +11,7 @@ r ./bin/installGithub2.r tesera/rlearn -d TRUE -r ${RLEARN_REF-master}
 pip install --user scipy awscli
 
 pip install --user "git+https://github.com/tesera/pylearn.git@${PYLEARN_REF-master}"
+pip install --user "git+https://github.com/tesera/prelurn.git@${PRELURN_REF-master}"
 
 rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
