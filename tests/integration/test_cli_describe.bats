@@ -13,7 +13,7 @@ setup () {
         --output=$output
 }
 
-@test "discrat runs and output expected files" {
+@test "describe runs and output expected files" {
     [ -f "$output/describe.json" ]
     [ -f "pylearn.log" ]
 }
