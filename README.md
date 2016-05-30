@@ -94,7 +94,7 @@ You will need to add a `dev.env` file with at least `PYLEARN_REF` and `RLEARN_RE
 $ cat dev.env
 PYLEARN_REF=master
 RLEARN_REF=master
-RLEARN_REF=master
+PRELURN_REF=master
 AWS_ACCESS_KEY_ID=<your-access-key>
 AWS_SECRET_ACCESS_KEY=<your-secret-key>
 AWS_REGION=<your-aws-region>

@@ -1,7 +1,8 @@
 from setuptools import setup, find_packages
 
-setup(name='learn-cli',
-    version='0.0.3',
+setup(
+    name='learn-cli',
+    version='0.1.0',
     description=u"Learn Model Builder",
     classifiers=[],
     keywords='',
@@ -19,10 +20,11 @@ setup(name='learn-cli',
         'rpy2'
     ],
     extras_require={
-      'test': ['pytest'],
+        'test': ['pytest'],
     },
-    entry_points="""
-    [console_scripts]
-    learn=learn.cli:cli
-    """
+    entry_points={
+        'console_scripts': [
+            'learn=learn.cli:cli'
+        ]
+    }
 )
