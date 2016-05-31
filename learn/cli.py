@@ -102,22 +102,6 @@ def cli():
         for infile in infiles:
             shutil.copy(infile, tmpdir)
 
-    legacy_config = 'XVARSELV1.csv' if command is 'varsel' else 'XVARSELV.csv'
-
-    legacy = {
-        '--xy-data': os.path.join(tmpdir, 'ANALYSIS.csv'),
-        '--config': os.path.join(tmpdir, legacy_config)
-    }
-
-    if command in ['varsel', 'lda']:
-        os.rename(os.path.join(tmpdir, os.path.basename(args['--config'])),
-                  legacy['--config'])
-        args['--config'] = legacy['--config']
-
-    os.rename(os.path.join(tmpdir, os.path.basename(args['--xy-data'])),
-              legacy['--xy-data'])
-    args['--xy-data'] = legacy['--xy-data']
-
     # make a list of the input filenames passsed in so we don't copy them to the output
     infilenames = [os.path.basename(f) for f in os.listdir(tmpdir)]
 
