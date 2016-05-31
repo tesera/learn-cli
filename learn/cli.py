@@ -84,7 +84,6 @@ def cli():
         command = 'discrat'
 
     infiles = files[command]
-
     if s3bucket:
         logger.info("copying s3 data files locally")
         try:
@@ -104,13 +103,15 @@ def cli():
 
     # make a list of the input filenames passsed in so we don't copy them to the output
     infilenames = [os.path.basename(f) for f in os.listdir(tmpdir)]
+    log_files = ['pylearn.log'] if command in ['describe', 'discrat'] \
+                else ['pylearn.log', 'rlearn.log']
 
     try:
         client = clients[command]()
         client.run(args)
         if s3bucket:
             copy_output_files_to_s3(s3_client, s3bucket, s3prefix,
-                                    tmpdir, infilenames, ['pylearn.log'])
+                                    tmpdir, infilenames, log_files)
         else:
             copy_output_files_to_folder(outdir, tmpdir, infilenames)
 
@@ -120,7 +121,7 @@ def cli():
         logging.error(e)
         if s3bucket:
             copy_output_files_to_s3(s3_client, s3bucket, s3prefix,
-                                    tmpdir, infilenames, ['pylearn.log'])
+                                    tmpdir, infilenames, log_files)
         else:
             copy_output_files_to_folder(outdir, tmpdir, infilenames)
 
@@ -150,7 +151,11 @@ def copy_output_files_to_s3(s3client, s3bucket, s3prefix, in_dir,
         logfile_path = os.path.join(os.getcwd(), filename)
         key = "%s/%s" % (s3prefix, filename)
         logger.info("Copying logfile %s to %s", filename, key)
-        s3client.upload_file(logfile_path, s3bucket, key)
+        if os.path.exists(logfile_path):
+            s3client.upload_file(logfile_path, s3bucket, key)
+        else:
+            logger.warning('File %s cannot be copied to s3; file does not exist',
+                           logfile_path)
 
 
 def copy_output_files_to_folder(destination, in_dir, exclude_files):
