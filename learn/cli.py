@@ -32,16 +32,13 @@ Examples:
 """
 
 import os
-import sys
 import shutil
-from urlparse import urlparse, urljoin
+from urlparse import urlparse
 import tempfile
-from signal import *
 import logging
 
 import boto3
 from docopt import docopt
-from schema import Schema, And, Or, SchemaError, Optional
 
 from clients.varselect import VarSelect
 from clients.analyze import Analyze
@@ -88,24 +85,23 @@ def cli():
 
     infiles = files[command]
 
-    if (s3bucket) :
+    if s3bucket:
         logger.info("copying s3 data files locally")
         try:
             s3_client = boto3.client('s3')
             for infile in infiles:
-                logger.info("copying %s from S3" % infile)
+                logger.info("copying %s from S3", infile)
                 url = urlparse(infile)
                 file_path = os.path.join(tmpdir, infile.split('/')[-1])
                 s3_client.download_file(url.netloc, url.path.strip('/'), file_path)
                 args[args.keys()[args.values().index(infile)]] = file_path
         except Exception as e:
-            # logger.error("error copying data from s3: %s %s", command, e)
-            exit(e)
-    else :
+            logger.error("error copying data from s3: %s %s", command, e)
+            exit(1)
+    else:
         for infile in infiles:
             shutil.copy(infile, tmpdir)
 
-    # rename the passed in filenames to the legacy filenames jic they where hardcoded
     legacy_config = 'XVARSELV1.csv' if command is 'varsel' else 'XVARSELV.csv'
 
     legacy = {
@@ -114,10 +110,12 @@ def cli():
     }
 
     if command in ['varsel', 'lda']:
-        os.rename(os.path.join(tmpdir, os.path.basename(args['--config'])), legacy['--config'])
+        os.rename(os.path.join(tmpdir, os.path.basename(args['--config'])),
+                  legacy['--config'])
         args['--config'] = legacy['--config']
 
-    os.rename(os.path.join(tmpdir, os.path.basename(args['--xy-data'])), legacy['--xy-data'])
+    os.rename(os.path.join(tmpdir, os.path.basename(args['--xy-data'])),
+              legacy['--xy-data'])
     args['--xy-data'] = legacy['--xy-data']
 
     # make a list of the input filenames passsed in so we don't copy them to the output
@@ -126,34 +124,68 @@ def cli():
     try:
         client = clients[command]()
         client.run(args)
-
-        # copy only output files to output dir
-        if(s3bucket):
-            logger.info("Copying results to s3 bucket %s to prefix %s", s3bucket, s3prefix)
-            for filename in os.listdir(tmpdir):
-                if filename not in infilenames:
-                    filepath = os.path.join(tmpdir, filename)
-                    key = "%s/%s" % (s3prefix, filename)
-                    logger.info("Copying %s to %s", filepath, key)
-                    s3_client.upload_file(filepath, s3bucket, key)
-
-            for logfile in ['pylearn.log']:
-                logfile_path = os.path.join(os.getcwd(), logfile)
-                key = "%s/%s" % (s3prefix, logfile)
-                logger.info("Copying logfile %s to %s", logfile, key)
-                s3_client.upload_file(logfile_path, s3bucket, key)
+        if s3bucket:
+            copy_output_files_to_s3(s3_client, s3bucket, s3prefix,
+                                    tmpdir, infilenames, ['pylearn.log'])
         else:
-            logger.info("Copying results to %s", outdir)
-
-            if not os.path.exists(outdir):
-                os.makedirs(outdir)
-
-            for outfile in os.listdir(tmpdir):
-                if outfile not in infilenames:
-                    shutil.copy(os.path.join(tmpdir, outfile), os.path.join(outdir, outfile))
+            copy_output_files_to_folder(outdir, tmpdir, infilenames)
 
         exit(0)
 
     except Exception as e:
         logging.error(e)
+        if s3bucket:
+            copy_output_files_to_s3(s3_client, s3bucket, s3prefix,
+                                    tmpdir, infilenames, ['pylearn.log'])
+        else:
+            copy_output_files_to_folder(outdir, tmpdir, infilenames)
+
         exit(1)
+
+def copy_output_files_to_s3(s3client, s3bucket, s3prefix, in_dir,
+                            exclude_files, cwd_files):
+    """Copy files to s3 bucket
+
+    :param s3bucket: s3 bucket URI, no trailing slash
+    :param s3prefix: folder, no leading slash
+    :param in_dir: directory from which to copy files
+    :param exclude: paths to exclude relative to dir
+    :cwd_files: additional files to copy from the working directory
+
+    """
+    logger.info("Copying results to s3 bucket %s to prefix %s", s3bucket, s3prefix)
+    for filename in os.listdir(in_dir):
+        if filename in exclude_files:
+            continue
+        filepath = os.path.join(in_dir, filename)
+        key = "%s/%s" % (s3prefix, filename)
+        logger.info("Copying %s to %s", filepath, key)
+        s3client.upload_file(filepath, s3bucket, key)
+
+    for filename in cwd_files:
+        logfile_path = os.path.join(os.getcwd(), filename)
+        key = "%s/%s" % (s3prefix, filename)
+        logger.info("Copying logfile %s to %s", filename, key)
+        s3client.upload_file(logfile_path, s3bucket, key)
+
+
+def copy_output_files_to_folder(destination, in_dir, exclude_files):
+    """Copy files to s3 bucket
+
+    :param destination: destination directory for files
+    :param in_dir: directory from which to copy files
+    :param exclude_files: paths to exclude relative to dir
+
+    """
+    logger.info("Copying results to %s", destination)
+
+    if not os.path.exists(destination):
+        os.makedirs(destination)
+
+    for outfile in os.listdir(in_dir):
+        if outfile in exclude_files:
+            continue
+        shutil.copy(os.path.join(in_dir, outfile), os.path.join(destination, outfile))
+
+
+
