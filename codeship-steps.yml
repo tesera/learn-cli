@@ -7,7 +7,7 @@
   dockercfg_service: dockercfg_generator
 - service: app
   type: push
-  tag: refactor/pandas
+  tag: enhancement/copy-fail-logs-to-s3
   image_tag: dev
   image_name: 674223647607.dkr.ecr.us-east-1.amazonaws.com/tesera/learn
   registry: https://674223647607.dkr.ecr.us-east-1.amazonaws.com
