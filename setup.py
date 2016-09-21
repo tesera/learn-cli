@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='learn-cli',
-    version='0.1.1',
+    version='1.0.0',
     description=u"Learn Model Builder",
     classifiers=[],
     keywords='',
@@ -19,9 +19,6 @@ setup(
         'boto3',
         'rpy2'
     ],
-    extras_require={
-        'test': ['pytest'],
-    },
     entry_points={
         'console_scripts': [
             'learn=learn.cli:cli'

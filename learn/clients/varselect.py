@@ -1,12 +1,12 @@
 import os
 import logging
 import pandas as pd
+from learn.utils import is_s3_url
 from rpy2.robjects import pandas2ri
 pandas2ri.activate()
-
 import rpy2.robjects as robjects
 from rpy2.robjects.packages import importr
-
+from schema import Schema, And, Or, Optional
 from pylearn.varselect import (count_xvars, rank_xvars, extract_xvar_combos,
                                remove_high_corvar)
 
@@ -20,14 +20,16 @@ rlearn = importr('rlearn')
 def var_select(xy, config, args):
     args['--nSolutions'], args['--minNvar'], args['--maxNvar'] = args['--iteration'].split(':')
 
-    varselect = rlearn.vs_selectVars(xy=xy, config=config,
+    varselect = rlearn.vs_selectVars(
+        xy=xy, config=config,
         yName=args['--yvar'],
         removeRowValue=-1,
         removeRowColName='SORTGRP',
         improveCriteriaVarName=args['--criteria'],
         minNumVar=int(args['--minNvar']),
         maxNumVar=int(args['--maxNvar']),
-        nSolutions=int(args['--nSolutions']))
+        nSolutions=int(args['--nSolutions'])
+    )
 
     return pandas2ri.ri2py(varselect)
 
@@ -59,6 +61,29 @@ def varselect(data_xy, xy_config, args):
 
 
 class VarSelect(object):
+
+    @staticmethod
+    def _validate(args):
+        schema = Schema({
+            '--xy-data': Or(
+                os.path.isfile, is_s3_url,
+                error='<xy_reference_csv> should exist and be readable.'),
+            '--config': Or(
+                os.path.isfile, is_s3_url,
+                error='--config should exist and be readable.'),
+            Optional('--output'): Or(
+                os.path.exists, is_s3_url,
+                error='--output should exist and be writable.'),
+            Optional('--yvar'): And(str, len),
+            Optional('--iteration'): And(str, len),
+            Optional('--criteria'): And(
+                str,
+                lambda s: s in ('ccr12', 'Wilkes', 'xi2', 'zeta2')
+            ),
+        }, ignore_extra_keys=True)
+
+        args = schema.validate(args)
+        return args
 
     def run(self, args):
         # disable cloudwatch rlearn logging until it is prod ready

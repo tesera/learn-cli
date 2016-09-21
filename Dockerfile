@@ -1,4 +1,3 @@
-
 FROM r-base:latest
 
 MAINTAINER Tesera Systems Inc.
@@ -17,8 +16,9 @@ RUN apt-get update && apt-get install -y \
     bats \
 && rm -rf /var/lib/apt/lists/*
 
-ENV PYLEARN_REF master
-ENV RLEARN_REF master
+ENV PYLEARN_REF v1.0.1
+ENV PRELURN_REF v1.0.0
+ENV RLEARN_REF v1.0.1
 
 ENV WD /opt/learn
 ENV HISTFILE $WD/.bash_history

@@ -2,24 +2,18 @@
 
 [ ![Codeship Status for tesera/learn-cli](https://codeship.com/projects/f2a31230-b7e8-0133-9192-1269d3e58a72/status?branch=master)](https://codeship.com/projects/134949)
 
-learn-cli performs variable selection, model development and target dataset processing. It uses [pylearn](https://github.com/tesera/pylearn) and [rlearn](https://github.com/tesera/rlearn) libraries. The cli invokes rlearn function via rpy2.
+learn-cli performs machine learning tasks, including variable selection, model
+development and target dataset processing. It uses
+[pylearn](https://github.com/tesera/pylearn),
+[prelurn](https://github.com/tesera/pylearn), and
+[rlearn](https://github.com/tesera/rlearn) libraries. The cli invokes rlearn
+function via rpy2.
 
-Although the cli is docker ready you can choose to run the cli locally the old fashion way. Running the cli in Docker will simplify the efforts tremendously but Docker is not required.
+Support for developing and using the CLI is only provided if you are using
+docker, as the CLI has a fairly complex set of requirements (packages,
+runtimes, etc)
 
-### Prerequisites
-
-* R
-* Python 2.7
-* rlearn `library('devtools'); install_github(repo='tesera/rlearn', dependencies=TRUE, ref='master');`
-* AWS Access Keys (optional: for using S3 data location)
-
-### Install
-
-```console
-$ pip install git+https://github.com/tesera/learn-cli.git
-```
-
-### Usage
+## Usage
 ```console
 $ learn --help
 Usage:
@@ -54,17 +48,13 @@ Examples:
     learn discrat --xy-data s3://bucket/xy_reference.csv --x-data s3://bucket/x_filtered.csv --dfunct s3://bucket/dfunct.csv --idf s3://bucket/idf.csv --varset 18 --output s3://bucket/varsel
 ```
 
-### Testing
-
-`bats ./tests/intergration`
-
-### Docker
+## Setup with Docker
 
 If you are using docker-machine make sure you have a machine running and that you have evaluated the machine environment.
 
-#### Creating a Docker Machine Host VM
+### Creating a Docker Machine Host VM
 
-#####Windows Powershell
+#### Windows Powershell
 ```console
 $ docker-machine create --driver virtualbox --virtualbox-host-dns-resolver default
 $ docker-machine env --shell powershell default | Invoke-Expression
@@ -76,7 +66,7 @@ $ docker-machine create --driver virtualbox default
 $ eval "$(docker-machine env default)"
 ```
 
-#### Running the container
+### Running the container
 
 ```console
 $ docker build -t learn .
@@ -84,11 +74,11 @@ $ docker run learn /bin/bash
 root@1e36bb3275b5:/opt/learn# learn --help
 ```
 
-#### Development
+### Development
 
-During development you will want to bring in the codebase with you in the container. You can simply use the Docker Compose command bellow. Once in the container run the `install-dependencies.sh` script passing in the `--dev` flag to make the project editable. This wil install all the Python dependencies in the project root under the `pysite folder and the R dependencies under the rlibs folder. You will only need to run this once unless you dependencies change.
+During development you will want to bring in the codebase with you in the container. You can simply use the Docker Compose command bellow. Once in the container run the `install-dependencies.sh` script passing in the `--dev` flag to make the project editable. This wil install all the Python dependencies in the project root under the `pysite folder and the R dependencies under the rlibs folder. You will only need to run this once unless your dependencies change.
 
-You will need to add a `dev.env` file with at least `PYLEARN_REF` and `RLEARN_REF` variables set to the Github ref/version of the respective libraries. Optionaly you can also add you AWS Access Keys and region in order to use S3 as a data location.
+You will need to add a `dev.env` file with at least `PYLEARN_REF`, `RLEARN_REF` and `PRELURN_REF` variables set to the Github ref (branch or tag) of the respective libraries. Optionaly you can also add you AWS Access Keys and region in order to use S3 as a data location.
 
 ```console
 $ cat dev.env
@@ -107,11 +97,27 @@ root@1e36bb3275b5:/opt/learn# bash ./install-dependencies --dev
 root@1e36bb3275b5:/opt/learn# learn --help
 ```
 
-#### Testing
+### Testing
+
+You can run the tests, which are written with bats, using the following docker compose task:
 
 `docker-compose run tests`
 
-### Contributing
+You can also enter the contianer and run specific tests as follows:
 
-- [Python Style Guide](https://www.python.org/dev/peps/pep-0008/)
-- [R Style Guide](http://adv-r.had.co.nz/Style.html)
+```
+> dc run dev
+root@4d3df46d52c7:/opt/learn# bats tests/integration/
+.DS_Store               output/                 test_cli_discrat.bats   test_cli_varsel.bats
+input/                  test_cli_describe.bats  test_cli_lda.bats
+root@4d3df46d52c7:/opt/learn# bats tests/integration/test_cli_describe.bats
+ ✓ describe runs and output expected files
+
+ 1 test, 0 failures
+```
+
+## Contributing
+
+Refer to the [pylearn](https://github.com/tesera/pylearn#contribution-guidelines) and
+[rlearn](https://github.com/tesera/rlearn#contribution-guidelines) for guides on how to
+contribute.

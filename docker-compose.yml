@@ -8,5 +8,7 @@ dev:
 test:
   container_name: learn
   build: .
+  volumes:
+    - ./:/opt/learn
   env_file: ./env/dev.env
-  command: ['bats ./tests/integration']
+  command: ['bats', './tests/integration']
