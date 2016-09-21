@@ -1,14 +1,14 @@
 import os
 import logging
-
 import pandas as pd
 from rpy2.robjects import pandas2ri
 pandas2ri.activate()
-
 import rpy2.robjects as robjects
 from rpy2.robjects.packages import importr
-
+from schema import Schema, And, Or
 from pylearn.lda import cohens_khat, combine_evaluation_datasets
+
+from learn.utils import is_s3_url
 
 logger = logging.getLogger('pylearn')
 importr('MASS')
@@ -35,9 +35,29 @@ def analyze(xy, config, yvar, output):
 
 class Analyze(object):
 
+    @staticmethod
+    def _validate(args):
+        schema = Schema({
+            '--xy-data': Or(
+                os.path.isfile, is_s3_url,
+                error='<xy_reference_csv> should exist and be readable.'),
+            '--config': Or(
+                os.path.isfile, is_s3_url,
+                error='--config should exist and be readable.'),
+            '--output': Or(
+                os.path.exists, is_s3_url,
+                error='--output should exist and be writable.'),
+            '--yvar': And(str, len),
+        }, ignore_extra_keys=True)
+        args = schema.validate(args)
+        return args
+
     def run(self, args):
         # disable cloudwatch rlearn logging until it is prod ready
         rlearn.logger_init(log_toAwslogs=False)
+
+        logger.info('Validating args')
+        args = self._validate(args)
         outdir = args['--output']
         yvar = args['--yvar']
 
