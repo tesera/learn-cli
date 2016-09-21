@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 import pandas as pd
 
@@ -14,13 +15,21 @@ class Discrating(object):
         logger.info("running dicsriminant ratings...")
 
     def run(self, args):
-        logger.info("invoking predict with varset: %s", args['--varset'])
+        varset = int(args['--varset'])
+        dfunct = pd.read_csv(args['--dfunct'])
+
+        # this is a hack to avoid handling this in pylearn right now in pylearn
+        # an exception should be raised which we can catch when running predict
+        if varset not in dfunct.VARSET3.unique():
+            msg = "varset '%d' missing from dfunct" %varset
+            logger.error(msg)
+            sys.exit(msg)
 
         pargs = {
             'xy': pd.read_csv(args['--xy-data']),
             'x_filtered': pd.read_csv(args['--x-data']),
-            'dfunct': pd.read_csv(args['--dfunct']),
-            'varset': int(args['--varset']),
+            'dfunct': dfunct,
+            'varset': varset,
             'yvar': args['--yvar'],
             'idf': pd.read_csv(args['--idf']),
         }

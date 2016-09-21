@@ -12,8 +12,7 @@ setup () {
 }
 
 @test "discrat runs and output expected files" {
-    skip
-    learn discrat \
+    run learn discrat \
         --xy-data=$input/$data_xy \
         --x-data=$input/$data_x_filtered \
         --dfunct=$input/$lda_x_dfunct \
@@ -34,11 +33,10 @@ setup () {
         --varset=100 \
         --output=$output_dir
 
-    [ "$status" -eq 1 ]
     [ "$output" = "varset '100' missing from dfunct" ]
+    [ "$status" -eq 1 ]
 }
 
 teardown () {
     rm -f $output_dir/*
-    rm -f *.log
 }
