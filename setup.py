@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='learn-cli',
-    version='0.0.1',
+    version='1.0.0',
     description=u"Learn Model Builder",
     classifiers=[],
     keywords='',
