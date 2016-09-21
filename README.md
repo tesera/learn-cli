@@ -88,7 +88,7 @@ root@1e36bb3275b5:/opt/learn# learn --help
 
 During development you will want to bring in the codebase with you in the container. You can simply use the Docker Compose command bellow. Once in the container run the `install-dependencies.sh` script passing in the `--dev` flag to make the project editable. This wil install all the Python dependencies in the project root under the `pysite folder and the R dependencies under the rlibs folder. You will only need to run this once unless you dependencies change.
 
-You will need to add a `dev.env` file with at least `PYLEARN_REF` and `RLEARN_REF` variables set to the Github ref/version of the respective libraries. Optionaly you can also add you AWS Access Keys and region in order to use S3 as a data location.
+You will need to add a `dev.env` file with at least `PYLEARN_REF`, `RLEARN_REF` and `PRELURN_REF` variables set to the Github ref (branch or tag) of the respective libraries. Optionaly you can also add you AWS Access Keys and region in order to use S3 as a data location.
 
 ```console
 $ cat dev.env
