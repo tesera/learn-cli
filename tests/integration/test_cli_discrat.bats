@@ -39,4 +39,5 @@ setup () {
 
 teardown () {
     rm -f $output_dir/*
+    rm *.log
 }

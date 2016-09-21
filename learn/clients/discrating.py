@@ -2,9 +2,10 @@ import os
 import sys
 import logging
 import pandas as pd
-
+from schema import Schema, And, Or
 from pylearn.discrating import predict
 
+from learn.utils import is_s3_url
 
 logger = logging.getLogger('pylearn')
 
@@ -13,6 +14,29 @@ class Discrating(object):
 
     def __init__(self):
         logger.info("running dicsriminant ratings...")
+
+    @staticmethod
+    def _validate(args):
+        schema = Schema({
+            '--xy-data': Or(
+                os.path.isfile, is_s3_url,
+                error='<--xy-data should exist and be readable.'),
+            '--x-data': Or(
+                os.path.isfile, is_s3_url,
+                error='--x-data should exist and be readable.'),
+            '--dfunct': Or(
+                os.path.isfile, is_s3_url,
+                error='--dfunct should exist and be readable.'),
+            '--idf': Or(
+                os.path.exists, is_s3_url,
+                error='--idf should exist and be writable.'),
+            '--output': Or(
+                os.path.exists, is_s3_url,
+                error='--output should exist and be writable.'),
+            '--yvar': And(str, len),
+        }, ignore_extra_keys=True)
+        args = schema.validate(args)
+        return args
 
     def run(self, args):
         varset = int(args['--varset'])
