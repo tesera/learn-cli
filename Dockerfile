@@ -1,4 +1,4 @@
-FROM r-base:latest
+FROM r-base:3.3.1
 
 MAINTAINER Tesera Systems Inc.
 
